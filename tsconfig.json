@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    // Version JavaScript: ES2020
+    "target": "ES2020",
+    // Nouvelle création de classes
+    "useDefineForClassFields": true,
+    // Bibliothèques utilisées
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // Version système de modules: ESNext
+    "module": "ESNext",
+    // Ignorer vérifications lors de la compilation
+    "skipLibCheck": true,
+
+    /* Mode de regroupement */
+    // Travail avec webpack
+    "moduleResolution": "bundler",
+    // Importation de types de fichiers spécifiques
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    // Isolation des modules
+    "isolatedModules": true,
+    // Désactivation création de fichiers lors de la compilation
+    "noEmit": true,
+    // Utilisation de JSX pour React
+    "jsx": "react-jsx",
+
+    /* Linting */
+    // Code propre et sans erreurs
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  // Dossier code source
+  "include": ["src"],
+  // Fichier de configuration pour Node.js
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

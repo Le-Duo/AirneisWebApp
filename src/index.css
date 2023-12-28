@@ -1,0 +1,53 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a.my-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-image {
+  max-width: 400px;
+  width: 100%;
+}
+
+img.large {
+  max-width: 100%;
+}
+
+img.thumbnail {
+  height: 80px;
+}
+
+.small-container {
+  max-width: 600px;
+}
+
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #005eb8;
+  color: #005eb8;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 0;
+}
+
+.product-cards {
+  padding: calc(var(--bs-gutter-x) * 0.5);
+}
+
+.bw-filter {
+  filter: grayscale(100%);
+}
