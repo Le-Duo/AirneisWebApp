@@ -9,8 +9,10 @@ import {
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import App from './App.tsx'
 import './index.css'
-import HomePage from './pages/HomePage.tsx'
+import ProductsPage from './pages/ProductsPage.tsx'
 import ProductPage from './pages/ProductPage.tsx'
+import CartPage from './pages/CartPage'
+import Index from './pages/index.tsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -21,8 +23,10 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       {' '}
-      <Route index={true} path="/" element={<HomePage />} />
+      <Route path="/" element={<Index />} />
+      <Route index={true} path="/products" element={<ProductsPage />} />
       <Route path="product/:slug" element={<ProductPage />} />
+      <Route path="cart" element={<CartPage />} />{' '}
     </Route>
   )
 )

@@ -5,6 +5,7 @@ import { useContext } from 'react'
 import { Store } from '../Store'
 import { CartItem } from '../types/Cart'
 import { ConvertProductToCartItem } from '../utils'
+import { toast } from 'react-toastify'
 
 function ProductItem({ product }: { product: Product }) {
   const { state, dispatch } = useContext(Store)
@@ -20,12 +21,13 @@ function ProductItem({ product }: { product: Product }) {
       return
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
+    toast.success('Product added to cart')
   }
   return (
     <Card>
       <Link to={`/product/${product.slug}`}>
         <img
-          src={product.URLimage}
+          src={product.URLimage || '/images/no-image.png'}
           className="card-img-top"
           alt={product.name}
         />

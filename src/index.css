@@ -51,3 +51,43 @@ img.thumbnail {
 .bw-filter {
   filter: grayscale(100%);
 }
+footer {
+  position: relative; /* au lieu de fixed ou absolute */
+}
+
+.carousel .d-block.w-100 {
+  height: 40dvh; /* Fixed height for the carousel */
+  object-fit: cover; /* Images cover the entire area of the carousel */
+  object-position: center; /* Images are centered in the carousel */
+  width: 100%; /* Carousel takes the full width of the page */
+}
+.carousel .carousel-caption.dark-mode {
+  color: white; /* ou une autre couleur appropriée pour le mode sombre */
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Cela répartira l'espace uniformément autour des éléments */
+}
+
+/* Styles pour les petits écrans (par défaut) */
+.category-item {
+  width: 20dvw; /* Prend toute la largeur sur les petits écrans */
+}
+
+@media only screen and (max-width: 780px) {
+  .category-grid .category-item {
+    width: 100%; /* Affiche un seul élément par ligne sur les petits écrans */
+  }
+}
+
+.category-item img {
+  width: 100%; /* L'image remplit la largeur de .category-item */
+  height: auto; /* Maintient le ratio de l'image */
+  max-width: none; /* Supprimez la restriction de la largeur maximale */
+}
+
+img.thumbnail {
+  height: 80px;
+}

@@ -1,10 +1,13 @@
 import { Container, Navbar, NavbarBrand, Nav, Badge } from 'react-bootstrap'
 import { Outlet, Link } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { Store } from './Store'
 import { useContext } from 'react'
 import { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import { LinkContainer } from 'react-router-bootstrap'
 
 function App() {
   const {
@@ -26,10 +29,14 @@ function App() {
     // Rendu du composant App
     <>
       <div className="d-flex flex-column vh-100">
+        {/* // Conteneur des notifications */}
+        <ToastContainer position="bottom-center" limit={1} />
         <header>
           <Navbar expand="lg">
             <Container>
-              <NavbarBrand>Airneis</NavbarBrand>
+              <LinkContainer to="/">
+                <NavbarBrand>Airneis</NavbarBrand>
+              </LinkContainer>
             </Container>
             <Nav>
               <Button variant={mode} onClick={switchModeHandler}>

@@ -7,7 +7,7 @@ import { useGetProductsQuery } from '../hooks/productHook'
 import { getError } from '../utils'
 import { ApiError } from '../types/APIError'
 
-export default function HomePage() {
+export default function ProductsPage() {
   const { data: products, error, isLoading } = useGetProductsQuery()
   return isLoading ? (
     <LoadingBox />
