@@ -1,0 +1,97 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a.my-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-image {
+  max-width: 400px;
+  width: 100%;
+}
+
+img.large {
+  max-width: 100%;
+}
+
+img.thumbnail {
+  height: 80px;
+}
+
+.small-container {
+  max-width: 600px;
+}
+
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #005eb8;
+  color: #005eb8;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 0;
+}
+
+.product-cards {
+  padding: calc(var(--bs-gutter-x) * 0.5);
+}
+
+.bw-filter {
+  filter: grayscale(100%);
+}
+footer {
+  position: relative; /* au lieu de fixed ou absolute */
+}
+
+.carousel .d-block.w-100 {
+  height: 40dvh; /* Fixed height for the carousel */
+  object-fit: cover; /* Images cover the entire area of the carousel */
+  object-position: center; /* Images are centered in the carousel */
+  width: 100%; /* Carousel takes the full width of the page */
+}
+.carousel .carousel-caption.dark-mode {
+  color: white; /* ou une autre couleur appropriée pour le mode sombre */
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Cela répartira l'espace uniformément autour des éléments */
+}
+
+/* Styles pour les petits écrans (par défaut) */
+.category-item {
+  width: 20dvw; /* Prend toute la largeur sur les petits écrans */
+}
+
+@media only screen and (max-width: 780px) {
+  .category-grid .category-item {
+    width: 100%; /* Affiche un seul élément par ligne sur les petits écrans */
+  }
+}
+
+.category-item img {
+  width: 100%; /* L'image remplit la largeur de .category-item */
+  height: auto; /* Maintient le ratio de l'image */
+  max-width: none; /* Supprimez la restriction de la largeur maximale */
+}
+
+img.thumbnail {
+  height: 80px;
+}
+
+.small-container {
+  max-width: 600px;
+}
