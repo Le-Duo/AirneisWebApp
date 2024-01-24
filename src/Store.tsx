@@ -70,7 +70,6 @@ function reducer(state: AppState, action: Action): AppState {
       localStorage.setItem('cartItems', JSON.stringify(cartItems)) // Panier: Définir le panier dans la mémoire locale
       return { ...state, cart: { ...state.cart, cartItems } } // Retourner: Nouveau panier
     }
-
     case 'USER_SIGNIN':
       return { ...state, userInfo: action.payload } // Retourner: Nouvel utilisateur
 

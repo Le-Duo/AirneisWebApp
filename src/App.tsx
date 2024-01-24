@@ -1,11 +1,4 @@
-import {
-  Container,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  Badge,
-  NavDropdown,
-} from 'react-bootstrap'
+import { Container, Navbar, NavbarBrand, Nav, Badge } from 'react-bootstrap'
 import { Outlet, Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -40,7 +33,7 @@ function App() {
     localStorage.removeItem('paymentMethod')
     window.location.href = '/signin'
   }
-
+    
   return (
     // Rendu du composant App
     <>
