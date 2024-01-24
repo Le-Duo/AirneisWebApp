@@ -5,37 +5,46 @@ import {
   Nav,
   Badge,
   NavLink,
-} from "react-bootstrap";
-import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Store } from "./Store";
-import { useContext } from "react";
-import { useEffect } from "react";
-import { Button } from "react-bootstrap";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import { LinkContainer } from "react-router-bootstrap";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+} from 'react-bootstrap'
+import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { Store } from './Store'
+import { useContext } from 'react'
+import { useEffect } from 'react'
+import { Button } from 'react-bootstrap'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import { LinkContainer } from 'react-router-bootstrap'
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import { useMediaQuery } from 'react-responsive'
+import { Link } from 'react-router-dom'
 
 function App() {
   const {
-    state: { mode, cart },
+    state: { mode, cart, userInfo },
     dispatch,
-  } = useContext(Store);
+  } = useContext(Store)
 
   const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
-  });
+    query: '(min-width: 1224px)',
+  })
 
   useEffect(() => {
-    document.body.setAttribute("data-bs-theme", mode);
-  }, [mode]);
+    document.body.setAttribute('data-bs-theme', mode)
+  }, [mode])
 
   const switchModeHandler = () => {
-    dispatch({ type: "SWITCH_MODE" });
-  };
+    dispatch({ type: 'SWITCH_MODE' })
+  }
+
+  const signoutHandler = () => {
+    dispatch({ type: 'USER_SIGNOUT' })
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('cartItems')
+    localStorage.removeItem('shippingAddress')
+    localStorage.removeItem('paymentMethod')
+    window.location.href = '/signin'
+  }
 
   return (
     <>
@@ -49,7 +58,7 @@ function App() {
                   <img
                     src="../public/images/airneis.svg"
                     alt="logo"
-                    style={{ maxWidth: "40px", height: "auto", padding: "4px" }}
+                    style={{ maxWidth: '40px', height: 'auto', padding: '4px' }}
                   />
                 </NavbarBrand>
               </LinkContainer>
@@ -71,9 +80,9 @@ function App() {
               <Button variant={mode} onClick={switchModeHandler}>
                 <i
                   className={
-                    mode === "light"
-                      ? "fa-sharp fa-solid fa-sun"
-                      : "fa-sharp fa-solid fa-moon"
+                    mode === 'light'
+                      ? 'fa-sharp fa-solid fa-sun'
+                      : 'fa-sharp fa-solid fa-moon'
                   }
                 ></i>
               </Button>
@@ -85,7 +94,11 @@ function App() {
               >
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id="offcanvasNavbarLabel">
-                    Menu
+                    {userInfo ? (
+                      <span>Halo, {userInfo.name}!</span>
+                    ) : (
+                      <span>Menu</span>
+                    )}
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
@@ -156,6 +169,6 @@ function App() {
         </footer>
       </div>
     </>
-  );
+  )
 }
-export default App;
+export default App

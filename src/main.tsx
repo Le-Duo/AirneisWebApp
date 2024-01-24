@@ -15,6 +15,8 @@ import CartPage from './pages/CartPage'
 import LegalNoticePage from './pages/LegalNoticePage'
 import TOSPage from './pages/TOSPage'
 import SearchPage from './pages/SearchPage'
+import SigninPage from './pages/SigninPage'
+import SignupPage from './pages/SignupPage'
 import Index from './pages/index.tsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -25,7 +27,6 @@ import { StoreProvider } from './Store'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      {' '}
       <Route path="/" element={<Index />} />
       <Route index={true} path="/products" element={<ProductsPage />} />
       <Route path="product/:slug" element={<ProductPage />} />
@@ -34,6 +35,8 @@ const router = createBrowserRouter(
       <Route path="/legal-notice" element={<LegalNoticePage />} />
       <Route path="/tos" element={<TOSPage />} />
       <Route path="*" element={<h1>Not Found</h1>} />
+      <Route path="signin" element={<SigninPage />} />
+      <Route path="signup" element={<SignupPage />} />
     </Route>
   )
 )

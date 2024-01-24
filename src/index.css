@@ -136,4 +136,7 @@ footer .desktop-footer .text-links {
 
 footer .desktop-footer .icon-links {
   order: 2;
+  
+.small-container {
+  max-width: 600px;
 }
