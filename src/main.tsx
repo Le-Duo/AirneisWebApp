@@ -12,6 +12,9 @@ import './index.css'
 import ProductsPage from './pages/ProductsPage.tsx'
 import ProductPage from './pages/ProductPage.tsx'
 import CartPage from './pages/CartPage'
+import LegalNoticePage from './pages/LegalNoticePage'
+import TOSPage from './pages/TOSPage'
+import SearchPage from './pages/SearchPage'
 import SigninPage from './pages/SigninPage'
 import SignupPage from './pages/SignupPage'
 import Index from './pages/index.tsx'
@@ -27,10 +30,13 @@ const router = createBrowserRouter(
       <Route path="/" element={<Index />} />
       <Route index={true} path="/products" element={<ProductsPage />} />
       <Route path="product/:slug" element={<ProductPage />} />
-      <Route path="cart" element={<CartPage />} />
+      <Route path="cart" element={<CartPage />} />{' '}
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/legal-notice" element={<LegalNoticePage />} />
+      <Route path="/tos" element={<TOSPage />} />
+      <Route path="*" element={<h1>Not Found</h1>} />
       <Route path="signin" element={<SigninPage />} />
       <Route path="signup" element={<SignupPage />} />
-      {/* Add this line to handle not found routes */}
     </Route>
   )
 )

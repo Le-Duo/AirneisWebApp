@@ -11,15 +11,15 @@ export default function HomePage() {
   if (error)
     return (
       <MessageBox variant="danger">
-        Erreur de chargement des catégories
+        Error loading categories
       </MessageBox>
     )
 
   return (
     <div className="home-page">
       <HomeCarousel />
-      <p>PROVENANT DES HAUTES TERRES D'ÉCOSSE</p>
-      <p>NOS MEUBLES SONT IMMORTELS</p>
+      <p>FROM THE HIGHLANDS OF SCOTLAND</p>
+      <p>OUR FURNITURE IS IMMORTAL</p>
       <div className="category-grid">
         {categories?.map((category) => (
           <div key={category._id} className="category-item">
@@ -28,7 +28,7 @@ export default function HomePage() {
           </div>
         ))}
       </div>
-      <h2>Les Highlanders du moment</h2>
+      <h2>The Highlanders of the moment</h2>
       <div className="product-grid">
         {/* Product grid will be filled with data from the backoffice */}
       </div>
