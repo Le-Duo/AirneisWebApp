@@ -1,3 +1,19 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root { /* Assurez-vous que l'ID correspond à l'élément racine de votre application React */
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+footer {
+  margin-top: auto; /* Pousse le pied de page vers le bas */
+  position: relative; /* au lieu de fixed ou absolute */
+}
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
@@ -51,9 +67,6 @@ img.thumbnail {
 .bw-filter {
   filter: grayscale(100%);
 }
-footer {
-  position: relative; /* au lieu de fixed ou absolute */
-}
 
 .carousel .d-block.w-100 {
   height: 40dvh; /* Fixed height for the carousel */
@@ -90,4 +103,37 @@ footer {
 
 img.thumbnail {
   height: 80px;
+}
+
+@media (max-width: 1223px) {
+  .desktop-footer {
+    display: none;
+  }
+}
+
+footer .desktop-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 8rem;
+}
+
+footer .desktop-footer a {
+  margin-right: 0.5rem;
+}
+
+footer .desktop-footer a:last-child {
+  margin-right: 0;
+}
+
+footer .desktop-footer .fab {
+  margin-left: 0.5rem;
+}
+
+footer .desktop-footer .text-links {
+  order: 1;
+}
+
+footer .desktop-footer .icon-links {
+  order: 2;
 }

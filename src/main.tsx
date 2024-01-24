@@ -12,6 +12,9 @@ import './index.css'
 import ProductsPage from './pages/ProductsPage.tsx'
 import ProductPage from './pages/ProductPage.tsx'
 import CartPage from './pages/CartPage'
+import LegalNoticePage from './pages/LegalNoticePage'
+import TOSPage from './pages/TOSPage'
+import SearchPage from './pages/SearchPage'
 import Index from './pages/index.tsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -27,6 +30,10 @@ const router = createBrowserRouter(
       <Route index={true} path="/products" element={<ProductsPage />} />
       <Route path="product/:slug" element={<ProductPage />} />
       <Route path="cart" element={<CartPage />} />{' '}
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/legal-notice" element={<LegalNoticePage />} />
+      <Route path="/tos" element={<TOSPage />} />
+      <Route path="*" element={<h1>Not Found</h1>} />
     </Route>
   )
 )
