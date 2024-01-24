@@ -11,7 +11,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 function App() {
   const {
-    state: { mode, cart }, // Récupération de l'état de l'application
+    state: { mode, cart, userInfo }, // Récupération de l'état de l'application
     dispatch, // Récupération de la fonction dispatch pour envoyer des actions au store
   } = useContext(Store) // Utilisation du hook useContext pour accéder au store
 
@@ -25,6 +25,15 @@ function App() {
     dispatch({ type: 'SWITCH_MODE' }) // Envoi de l'action SWITCH_MODE au store
   }
 
+  const signoutHandler = () => {
+    dispatch({ type: 'USER_SIGNOUT' })
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('cartItems')
+    localStorage.removeItem('shippingAddress')
+    localStorage.removeItem('paymentMethod')
+    window.location.href = '/signin'
+  }
+    
   return (
     // Rendu du composant App
     <>
@@ -53,7 +62,23 @@ function App() {
                   </Badge>
                 )}
               </Link>
-              <a href="/signin" className="nav-link"></a>
+              {userInfo ? ( //si unserInfo existe
+                // affiche le nom de l'utilisateur dans le dropdown
+                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                  <Link
+                    className="dropdown-item"
+                    to="#signout"
+                    onClick={signoutHandler}
+                  >
+                    Sign Out
+                  </Link>
+                </NavDropdown>
+              ) : (
+                // sinon affiche le lien vers la page de connexion
+                <Link className="nav-link" to="/signin">
+                  Sign In
+                </Link>
+              )}
             </Nav>
           </Navbar>
         </header>

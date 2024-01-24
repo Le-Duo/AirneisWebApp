@@ -12,6 +12,8 @@ import './index.css'
 import ProductsPage from './pages/ProductsPage.tsx'
 import ProductPage from './pages/ProductPage.tsx'
 import CartPage from './pages/CartPage'
+import SigninPage from './pages/SigninPage'
+import SignupPage from './pages/SignupPage'
 import Index from './pages/index.tsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -22,11 +24,13 @@ import { StoreProvider } from './Store'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      {' '}
       <Route path="/" element={<Index />} />
       <Route index={true} path="/products" element={<ProductsPage />} />
       <Route path="product/:slug" element={<ProductPage />} />
-      <Route path="cart" element={<CartPage />} />{' '}
+      <Route path="cart" element={<CartPage />} />
+      <Route path="signin" element={<SigninPage />} />
+      <Route path="signup" element={<SignupPage />} />
+      {/* Add this line to handle not found routes */}
     </Route>
   )
 )

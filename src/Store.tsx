@@ -1,18 +1,23 @@
 import React from 'react'
 import { Cart, CartItem } from './types/Cart'
+import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
 
 // Définition du type pour l'état de l'application
 type AppState = {
   mode: string
   cart: Cart
+  userInfo?: UserInfo
 }
 
 // Initialisation de l'état de l'application
 const initialState: AppState = {
+  userInfo: localStorage.getItem('userInfo') // Utilisateur: Obtenir de la mémoire locale
+    ? JSON.parse(localStorage.getItem('userInfo')!) // Si existe: Obtenir de la mémoire locale
+    : null, // Sinon: Indéfini
   mode: localStorage.getItem('mode')
     ? localStorage.getItem('mode')
     : window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+      window.matchMedia('(prefers-color-scheme: light)').matches
     ? 'dark'
     : 'light',
   cart: {
@@ -37,6 +42,8 @@ type Action =
   | { type: 'SWITCH_MODE' }
   | { type: 'CART_ADD_ITEM'; payload: CartItem }
   | { type: 'CART_REMOVE_ITEM'; payload: CartItem }
+  | { type: 'USER_SIGNIN'; payload: UserInfo } // Type: Action
+  | { type: 'USER_SIGNOUT' } // Type: Action
 
 // Fonction réducteur pour gérer les actions
 function reducer(state: AppState, action: Action): AppState {
@@ -63,9 +70,34 @@ function reducer(state: AppState, action: Action): AppState {
       localStorage.setItem('cartItems', JSON.stringify(cartItems)) // Panier: Définir le panier dans la mémoire locale
       return { ...state, cart: { ...state.cart, cartItems } } // Retourner: Nouveau panier
     }
+    case 'USER_SIGNIN':
+      return { ...state, userInfo: action.payload } // Retourner: Nouvel utilisateur
 
     default:
       return state
+    case 'USER_SIGNOUT':
+      return {
+        mode:
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'dark'
+            : 'light',
+        cart: {
+          cartItems: [],
+          paymentMethod: 'Card',
+          shippingAddress: {
+            fullName: '',
+            address: '',
+            city: '',
+            postalCode: '',
+            country: '',
+          },
+          itemsPrice: 0,
+          shippingPrice: 0,
+          taxPrice: 0,
+          totalPrice: 0,
+        },
+      }
   }
 }
 
