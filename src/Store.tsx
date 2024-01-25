@@ -1,5 +1,5 @@
 import React from 'react'
-import { Cart, CartItem } from './types/Cart'
+import { Cart, CartItem, ShippingAddress } from './types/Cart'
 import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
 
 // Définition du type pour l'état de l'application
@@ -42,13 +42,17 @@ type Action =
   | { type: 'SWITCH_MODE' }
   | { type: 'CART_ADD_ITEM'; payload: CartItem }
   | { type: 'CART_REMOVE_ITEM'; payload: CartItem }
-  | { type: 'USER_SIGNIN'; payload: UserInfo } // Type: Action
-  | { type: 'USER_SIGNOUT' } // Type: Action
+  | { type: 'CART_CLEAR' }
+  | { type: 'USER_SIGNIN'; payload: UserInfo }
+  | { type: 'USER_SIGNOUT' }
+  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress }
+  | { type: 'SAVE_PAYMENT_METHOD'; payload: string }
 
 // Fonction réducteur pour gérer les actions
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SWITCH_MODE':
+      localStorage.setItem('mode', state.mode === 'light' ? 'dark' : 'light')
       return { ...state, mode: state.mode === 'light' ? 'dark' : 'light' }
     case 'CART_ADD_ITEM':
       const newItem = action.payload
@@ -70,11 +74,13 @@ function reducer(state: AppState, action: Action): AppState {
       localStorage.setItem('cartItems', JSON.stringify(cartItems)) // Panier: Définir le panier dans la mémoire locale
       return { ...state, cart: { ...state.cart, cartItems } } // Retourner: Nouveau panier
     }
+    case 'CART_CLEAR':
+      return {
+        ...state,
+        cart: { ...state.cart, cartItems: [] },
+      }
     case 'USER_SIGNIN':
       return { ...state, userInfo: action.payload } // Retourner: Nouvel utilisateur
-
-    default:
-      return state
     case 'USER_SIGNOUT':
       return {
         mode:
@@ -98,6 +104,18 @@ function reducer(state: AppState, action: Action): AppState {
           totalPrice: 0,
         },
       }
+    case 'SAVE_SHIPPING_ADDRESS':
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      }
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        cart: { ...state.cart, paymentMethod: action.payload },
+      }
+    default:
+      return state
   }
 }
 
