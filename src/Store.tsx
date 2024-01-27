@@ -14,12 +14,7 @@ const initialState: AppState = {
   userInfo: localStorage.getItem('userInfo') // Utilisateur: Obtenir de la mémoire locale
     ? JSON.parse(localStorage.getItem('userInfo')!) // Si existe: Obtenir de la mémoire locale
     : null, // Sinon: Indéfini
-  mode: localStorage.getItem('mode')
-    ? localStorage.getItem('mode')
-    : window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: light)').matches
-    ? 'dark'
-    : 'light',
+  mode: localStorage.getItem('mode') ?? 'light',
   cart: {
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems')!)

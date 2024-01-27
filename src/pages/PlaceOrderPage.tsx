@@ -3,7 +3,7 @@ import { Store } from '../Store'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useCreateOrderMutation } from '../hooks/orderHooks'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Helmet } from 'react-helmet-async'
@@ -14,7 +14,7 @@ export default function PlaceOrderPage() {
   const navigate = useNavigate()
 
   const { state, dispatch } = useContext(Store)
-  const { cart, userInfo } = state
+  const { cart } = state
 
   const round2 = (num: number) => Math.round(num * 100 + Number.EPSILON) / 100
 
@@ -25,10 +25,12 @@ export default function PlaceOrderPage() {
   cart.taxPrice = round2(0.2 * cart.itemsPrice)
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
-  const { mutateAsync: createOrder, isLoading } = useCreateOrderMutation()
+  const { mutateAsync: createOrder } = useCreateOrderMutation()
+  const [isLoading, setIsLoading] = useState(false)
 
   const placeOrderHandler = async () => {
     try {
+      setIsLoading(true)
       const data = await createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
@@ -43,6 +45,8 @@ export default function PlaceOrderPage() {
       navigate(`/order/${data.order._id}`)
     } catch (err) {
       toast.error(getError(err as ApiError))
+    } finally {
+      setIsLoading(false)
     }
   }
 

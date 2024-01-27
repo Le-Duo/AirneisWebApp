@@ -28,7 +28,7 @@ export default function PaymentMethodPage() {
   }
   return (
     <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
+      <CheckoutSteps step1 step2 step3 step4={false}></CheckoutSteps>
       <div className="container small-container">
         <Helmet>
           <title>Payment Method</title>
@@ -58,7 +58,9 @@ export default function PaymentMethodPage() {
             />
           </div>
           <div className="mb-3">
-            <Button type="submit">Continue</Button>
+            <Button type="submit" style={{ borderRadius: '100px' }}>
+              Continue
+            </Button>
           </div>
         </Form>
       </div>

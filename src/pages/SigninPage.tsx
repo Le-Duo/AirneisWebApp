@@ -17,15 +17,17 @@ export default function SigninPage() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
 
-  const { mutateAsync: signin, isLoading } = userSigninMutation()
+  const { mutateAsync: signin } = userSigninMutation()
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
+      setIsLoading(true)
       const data = await signin({ email, password })
       dispatch({ type: 'USER_SIGNIN', payload: data })
       localStorage.setItem('userInfo', JSON.stringify(data))
@@ -33,6 +35,8 @@ export default function SigninPage() {
     } catch (err) {
       console.log(err)
       toast.error(getError(err as ApiError))
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -67,7 +71,14 @@ export default function SigninPage() {
           />
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit" disabled={isLoading}>
+          <Link to="/password-reset-request">Forgot Password?</Link>
+        </div>
+        <div className="mb-3">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            style={{ borderRadius: '100px' }}
+          >
             Sign In
           </Button>
           {isLoading && <LoadingBox />}

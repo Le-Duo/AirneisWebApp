@@ -7,6 +7,7 @@ import { getError } from '../utils'
 import { toast } from 'react-toastify'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
+import LoadingBox from '../components/LoadingBox'
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -18,6 +19,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
@@ -28,7 +30,7 @@ export default function SignupPage() {
     }
   }, [userInfo, redirect, navigate])
 
-  const { mutateAsync: signup, isLoading } = userSignupMutation()
+  const { mutateAsync: signup } = userSignupMutation()
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -37,11 +39,14 @@ export default function SignupPage() {
       return
     }
     try {
+      setIsLoading(true)
       const data = await signup({ name, email, password })
       dispatch({ type: 'USER_SIGNIN', payload: data })
       navigate(redirect)
     } catch (err) {
       toast.error(getError(err as ApiError))
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -85,7 +90,14 @@ export default function SignupPage() {
         </Form.Group>
 
         <div className="mb-3">
-          <Button type="submit">Sign Up</Button>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            style={{ borderRadius: '100px' }}
+          >
+            Sign Up
+          </Button>
+          {isLoading && <LoadingBox />}
         </div>
 
         <div className="mb-3">

@@ -48,7 +48,7 @@ export default function ShippingAdressPage() {
       <Helmet>
         <title>Shipping Adress</title>
       </Helmet>
-      <CheckoutSteps step1 step2></CheckoutSteps>
+      <CheckoutSteps step1 step2 step3={false} step4={false}></CheckoutSteps>
       <div className="container small-container">
         <h1 className="my-3">Shipping Adress</h1>
         <Form onSubmit={submitHandler}>
@@ -94,7 +94,11 @@ export default function ShippingAdressPage() {
             />
           </Form.Group>
           <div className="mb-3">
-            <Button type="submit" variant="primary">
+            <Button
+              type="submit"
+              variant="primary"
+              style={{ borderRadius: '100px' }}
+            >
               Continue
             </Button>
           </div>
