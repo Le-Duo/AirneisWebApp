@@ -36,3 +36,28 @@ export const userSignupMutation = () =>
         })
       ).data,
   })
+export const usePasswordResetRequestMutation = () => {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      return (
+        await apiClient.post('api/users/password-reset-request', { email })
+      ).data
+    },
+  })
+}
+
+export const usePasswordResetMutation = () => {
+  return useMutation({
+    mutationFn: async ({
+      token,
+      newPassword,
+    }: {
+      token: string
+      newPassword: string
+    }) => {
+      return (
+        await apiClient.post('api/users/password-reset', { token, newPassword })
+      ).data
+    },
+  })
+}
