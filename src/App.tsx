@@ -43,7 +43,7 @@ function App() {
     localStorage.removeItem('cartItems')
     localStorage.removeItem('shippingAddress')
     localStorage.removeItem('paymentMethod')
-    window.location.href = '/signin'
+    window.location.href = '/'
   }
 
   return (
@@ -51,7 +51,7 @@ function App() {
       <div className="d-flex flex-column vh-100">
         <ToastContainer position="bottom-center" limit={1} />
         <header>
-          <Navbar expand={false}>
+          <Navbar expand={false} className="justify-content-between">
             <Container>
               <LinkContainer to="/">
                 <NavbarBrand>
@@ -62,31 +62,40 @@ function App() {
                   />
                 </NavbarBrand>
               </LinkContainer>
-              <Nav>
-                <NavLink href="/search">
-                  <i className="fa-sharp fa-solid fa-search"></i>
-                </NavLink>
-              </Nav>
-              <Nav>
-                <NavLink href="/cart">
-                  <i className="fa-sharp fa-solid fa-cart-shopping"></i>
-                  {cart.cartItems.length > 0 && (
-                    <Badge pill bg="danger">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </Badge>
-                  )}
-                </NavLink>
-              </Nav>
-              <Button variant={mode} onClick={switchModeHandler}>
-                <i
-                  className={
-                    mode === 'light'
-                      ? 'fa-sharp fa-solid fa-sun'
-                      : 'fa-sharp fa-solid fa-moon'
-                  }
-                ></i>
-              </Button>
-              <Navbar.Toggle aria-controls="offcanvasNavbar" />
+              <div className="d-flex align-items-center">
+                <Nav className="me-auto">
+                  <NavLink href="/search">
+                    <i className="fa-sharp fa-solid fa-search"></i>
+                  </NavLink>
+                </Nav>
+                <Nav>
+                  <NavLink href="/cart">
+                    <i className="fa-sharp fa-solid fa-cart-shopping"></i>
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg="danger">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
+                  </NavLink>
+                </Nav>
+                <Button
+                  variant={mode}
+                  onClick={switchModeHandler}
+                  className="ms-2"
+                >
+                  <i
+                    className={
+                      mode === 'light'
+                        ? 'fa-sharp fa-solid fa-sun'
+                        : 'fa-sharp fa-solid fa-moon'
+                    }
+                  ></i>
+                </Button>
+                <Navbar.Toggle
+                  aria-controls="offcanvasNavbar"
+                  className="ms-2"
+                />
+              </div>
               <Navbar.Offcanvas
                 id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel"
@@ -103,27 +112,52 @@ function App() {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <LinkContainer to="/signin">
-                      <Nav.Link>Sign In</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/register">
-                      <Nav.Link>Register</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/tos">
-                      <Nav.Link>Terms of Service</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/legal-notice">
-                      <Nav.Link>Legal Notice</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/contact">
-                      <Nav.Link>Contact</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/about">
-                      <Nav.Link>About AIRNEIS</Nav.Link>
-                    </LinkContainer>
+                    {userInfo ? (
+                      <>
+                        <LinkContainer to="/profile">
+                          <Nav.Link>My Settings</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/orderhistory">
+                          <Nav.Link>My Orders</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/tos">
+                          <Nav.Link>Terms of Service</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/legal-notice">
+                          <Nav.Link>Legal Notice</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/contact">
+                          <Nav.Link>Contact</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/about">
+                          <Nav.Link>About AIRNEIS</Nav.Link>
+                        </LinkContainer>
+                        <Nav.Link onClick={signoutHandler}>Sign Out</Nav.Link>
+                      </>
+                    ) : (
+                      <>
+                        <LinkContainer to="/signin">
+                          <Nav.Link>Sign In</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/register">
+                          <Nav.Link>Register</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/tos">
+                          <Nav.Link>Terms of Service</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/legal-notice">
+                          <Nav.Link>Legal Notice</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/contact">
+                          <Nav.Link>Contact</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/about">
+                          <Nav.Link>About AIRNEIS</Nav.Link>
+                        </LinkContainer>
+                      </>
+                    )}
                   </Nav>
                 </Offcanvas.Body>
-                {/* TODO: changer le contenu du menu si l'utilisateur est connecté */}
               </Navbar.Offcanvas>
             </Container>
           </Navbar>

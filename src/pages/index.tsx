@@ -1,4 +1,3 @@
-import React from 'react'
 import { useGetCategoriesQuery } from '../hooks/categoryHook'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
@@ -9,10 +8,10 @@ export default function HomePage() {
 
   if (isLoading) return <LoadingBox />
   if (error)
+    return <MessageBox variant="danger">Error loading categories</MessageBox>
+  if (!Array.isArray(categories))
     return (
-      <MessageBox variant="danger">
-        Error loading categories
-      </MessageBox>
+      <MessageBox variant="warning">Categories data is not valid</MessageBox>
     )
 
   return (
@@ -21,7 +20,7 @@ export default function HomePage() {
       <p>FROM THE HIGHLANDS OF SCOTLAND</p>
       <p>OUR FURNITURE IS IMMORTAL</p>
       <div className="category-grid">
-        {categories?.map((category) => (
+        {categories.map((category) => (
           <div key={category._id} className="category-item">
             <img src={category.urlImage} alt={category.name} />
             <h3>{category.name}</h3>

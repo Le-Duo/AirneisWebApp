@@ -1,6 +1,5 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
+import { Container } from 'react-bootstrap'
+import { Helmet } from 'react-helmet-async'
 
 const TOSPage = () => {
   return (
@@ -13,11 +12,14 @@ const TOSPage = () => {
       <ul>
         <li>You must not use our site in an illegal or malicious manner.</li>
         <li>You must not attempt to gain unauthorized access to our site.</li>
-        <li>You must not use our site to transmit viruses or other malicious software.</li>
+        <li>
+          You must not use our site to transmit viruses or other malicious
+          software.
+        </li>
         <li>You must not use our site to harass, insult, or harm others.</li>
       </ul>
     </Container>
-  );
-};
+  )
+}
 
-export default TOSPage;
+export default TOSPage

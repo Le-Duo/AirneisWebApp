@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import Carousel from 'react-bootstrap/Carousel'
 import { Store } from '../Store'
 
