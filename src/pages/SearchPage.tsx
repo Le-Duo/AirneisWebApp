@@ -1,39 +1,36 @@
-// Importations nécessaires
-import { useState } from 'react';
-import { useGetProductsQuery } from '../hooks/productHook';
-import Fuse from 'fuse.js';
-import ProductItem from '../components/ProductItem';
-import { Row, Col } from 'react-bootstrap';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Form, Button, FormControl, Row, Col } from 'react-bootstrap'
 
-export default function SearchPage() {
-  const { data: products } = useGetProductsQuery();
-  const [searchResults, setSearchResults] = useState([]);
+const SearchBar = () => {
+  const [search, setSearch] = useState('')
+  const navigate = useNavigate()
 
-  // Fonction pour gérer la recherche
-  const handleSearch = (searchCriteria) => {
-    // Utilisez Fuse.js pour la recherche textuelle
-    const fuse = new Fuse(products, {
-      keys: ['name'],
-    });
-
-    const results = fuse.search(searchCriteria.text);
-    // Appliquez les autres filtres et le tri sur les résultats
-    // ...
-
-    setSearchResults(results.map(result => result.item));
-  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    navigate(`/search?query=${search}`)
+  }
 
   return (
-    <div>
-      {/* Formulaire de recherche */}
-      {/* ... */}
-      <Row>
-        {searchResults.map((product) => (
-          <Col key={product.slug} sm={6} md={4} lg={3}>
-            <ProductItem product={product} />
-          </Col>
-        ))}
+    <Form onSubmit={handleSubmit}>
+      <Row noGutters>
+        <Col md={10} className="p-0">
+          <FormControl
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Col>
+        <Col md={2} className="p-0">
+          <Button type="submit" className="ml-md-0">
+            Search
+          </Button>
+        </Col>
       </Row>
-    </div>
-  );
+    </Form>
+  )
 }
+
+export default SearchBar

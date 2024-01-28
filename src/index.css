@@ -1,9 +1,11 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
 
-#root { /* Assurez-vous que l'ID correspond à l'élément racine de votre application React */
+#root {
+  /* Assurez-vous que l'ID correspond à l'élément racine de votre application React */
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -136,7 +138,8 @@ footer .desktop-footer .text-links {
 
 footer .desktop-footer .icon-links {
   order: 2;
-  
+}
+
 .small-container {
   max-width: 600px;
 }

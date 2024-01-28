@@ -17,6 +17,12 @@ import TOSPage from './pages/TOSPage'
 import SearchPage from './pages/SearchPage'
 import SigninPage from './pages/SigninPage'
 import SignupPage from './pages/SignupPage'
+import ShippingAdressPage from './pages/ShippingAdressPage.tsx'
+import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import PlaceOrderPage from './pages/PlaceOrderPage.tsx'
+import OrderPage from './pages/OrderPage.tsx'
+import OrderHistoryPage from './pages/OrderHistoryPage'
 import Index from './pages/index.tsx'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
@@ -37,6 +43,14 @@ const router = createBrowserRouter(
       <Route path="*" element={<h1>Not Found</h1>} />
       <Route path="signin" element={<SigninPage />} />
       <Route path="signup" element={<SignupPage />} />
+      {/*// ajout de routes secrètes invisibles à l'utilisateur */}
+      <Route path="" element={<ProtectedRoute />}>
+        <Route path="shipping" element={<ShippingAdressPage />} />
+        <Route path="payment" element={<PaymentMethodPage />} />
+        <Route path="placeorder" element={<PlaceOrderPage />} />
+        <Route path="order/:id" element={<OrderPage />} />
+        <Route path="/orderhistory" element={<OrderHistoryPage />} />
+      </Route>
     </Route>
   )
 )
