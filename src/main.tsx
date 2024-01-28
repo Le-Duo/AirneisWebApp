@@ -24,6 +24,8 @@ import PlaceOrderPage from './pages/PlaceOrderPage.tsx'
 import OrderPage from './pages/OrderPage.tsx'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import Index from './pages/index.tsx'
+import PasswordResetRequest from './components/PasswordResetRequest'
+import PasswordReset from './components/PasswordReset'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -42,8 +44,12 @@ const router = createBrowserRouter(
       <Route path="/tos" element={<TOSPage />} />
       <Route path="*" element={<h1>Not Found</h1>} />
       <Route path="signin" element={<SigninPage />} />
-      <Route path="signup" element={<SignupPage />} />
-      {/*// ajout de routes secrètes invisibles à l'utilisateur */}
+      <Route path="signup" element={<SignupPage />} />{' '}
+      <Route
+        path="/password-reset-request"
+        element={<PasswordResetRequest />}
+      />
+      <Route path="/password-reset/:token" element={<PasswordReset />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="shipping" element={<ShippingAdressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
