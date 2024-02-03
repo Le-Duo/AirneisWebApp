@@ -18,6 +18,7 @@ export default function SigninPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
@@ -65,9 +66,16 @@ export default function SigninPage() {
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             required
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="show-password">
+          <Form.Check
+            type="checkbox"
+            label="Show Password"
+            onChange={(e) => setShowPassword(e.target.checked)}
           />
         </Form.Group>
         <div className="mb-3">

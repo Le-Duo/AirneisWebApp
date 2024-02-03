@@ -3,20 +3,22 @@ import { usePasswordResetMutation } from '../hooks/userHook'
 import { Button, Form, Alert } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 
-interface PasswordResetProps {
-  token: string
-}
-
 const PasswordReset: React.FC = () => {
   const { token } = useParams<{ token: string }>()
   const [newPassword, setNewPassword] = useState<string>('')
-  const { mutate, isLoading, isError, isSuccess } = usePasswordResetMutation()
+  const { mutate, status, isError, isSuccess } = usePasswordResetMutation()
+
+  const isLoading = status === 'pending' // Adjusted to check the status correctly
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('Token: ', token)
     console.log('New Password: ', newPassword)
-    mutate({ token, newPassword })
+    if (token) {
+      mutate({ token, newPassword })
+    } else {
+      console.error('Token is undefined.')
+    }
   }
 
   return (

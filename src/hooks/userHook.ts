@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, UseMutationResult } from '@tanstack/react-query'
 import apiClient from '../apiClient'
 import { UserInfo } from '../types/UserInfo'
 
@@ -46,7 +46,12 @@ export const usePasswordResetRequestMutation = () => {
   })
 }
 
-export const usePasswordResetMutation = () => {
+export const usePasswordResetMutation = (): UseMutationResult<
+  any,
+  Error,
+  { token: string; newPassword: string },
+  unknown
+> => {
   return useMutation({
     mutationFn: async ({
       token,
