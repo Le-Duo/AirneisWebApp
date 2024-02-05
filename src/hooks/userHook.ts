@@ -1,4 +1,9 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query'
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query'
 import apiClient from '../apiClient'
 import { UserInfo } from '../types/UserInfo'
 
@@ -63,6 +68,15 @@ export const usePasswordResetMutation = (): UseMutationResult<
       return (
         await apiClient.post('api/users/password-reset', { token, newPassword })
       ).data
+    },
+  })
+}
+
+export const useGetUsersQuery = (): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ['getUsers'],
+    queryFn: async () => {
+      return (await apiClient.get('api/users')).data
     },
   })
 }

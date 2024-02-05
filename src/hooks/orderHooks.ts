@@ -34,3 +34,11 @@ export const useGetOrderHistoryQuery = () =>
     queryFn: async () =>
       (await apiClient.get<Order[]>(`/api/orders/mine`)).data,
   })
+
+export const useGetOrdersQuery = () => {
+  useMutation({
+    mutationFn: async () => {
+      return (await apiClient.get('api/orders')).data
+    },
+  })
+}

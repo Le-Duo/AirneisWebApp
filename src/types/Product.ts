@@ -4,8 +4,7 @@ export type Product = {
   slug: string
   URLimage: string
   category: string
-  brand: string
   price: number
-  countInStock: number
   description: string
+  stock?: number
 }

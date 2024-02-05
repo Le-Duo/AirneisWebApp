@@ -10,17 +10,17 @@ const HomeCarousel = () => {
   // Pour l'instant, nous utilisons des données factices pour le placeholder
   const carouselItems = [
     {
-      src: 'https://i.postimg.cc/wjptd2bH/image-8-topaz-enhance-3-4x-exposure-color.png',
+      src: '../../public/images/livingroom.png',
       alt: 'Salon',
       caption: 'Salon',
     },
     {
-      src: 'https://i.postimg.cc/j5FKdqxP/image-4-topaz-enhance-3-4x-exposure-color.png',
+      src: '../../public/images/bedroom.png',
       alt: 'Chambre',
       caption: 'Chambre',
     },
     {
-      src: 'https://i.postimg.cc/yY9J5tjv/image-2-topaz-enhance-3-4x-exposure-color.png',
+      src: '../../public/images/garden.png',
       alt: 'Extérieur',
       caption: 'Extérieur',
     },
