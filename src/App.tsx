@@ -1,11 +1,4 @@
-import {
-  Container,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  Badge,
-  NavLink,
-} from 'react-bootstrap'
+import { Container, Navbar, NavbarBrand, Nav, Badge } from 'react-bootstrap'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -63,21 +56,25 @@ function App() {
                 </NavbarBrand>
               </LinkContainer>
               <div className="d-flex align-items-center">
-                <Nav className="me-auto">
-                  <NavLink href="/search">
-                    <i className="fa-sharp fa-solid fa-search"></i>
-                  </NavLink>
-                </Nav>
-                <Nav>
-                  <NavLink href="/cart">
-                    <i className="fa-sharp fa-solid fa-cart-shopping"></i>
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </NavLink>
-                </Nav>
+                <Button
+                  variant={mode}
+                  onClick={() => (window.location.href = '/search')}
+                  className="me-auto"
+                >
+                  <i className="fa-sharp fa-solid fa-search"></i>
+                </Button>
+                <Button
+                  variant={mode}
+                  onClick={() => (window.location.href = '/cart')}
+                  className="ms-2"
+                >
+                  <i className="fa-sharp fa-solid fa-cart-shopping"></i>
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </Badge>
+                  )}
+                </Button>
                 <Button
                   variant={mode}
                   onClick={switchModeHandler}

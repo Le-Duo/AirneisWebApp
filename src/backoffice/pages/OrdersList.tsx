@@ -1,6 +1,17 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Table } from 'react-bootstrap'
-import { useGetOrdersQuery } from '../../hooks/orderHooks' // Supposons que ce hook existe
+import { useQuery } from '@tanstack/react-query'
+import apiClient from '../../apiClient'
+
+export const useGetOrdersQuery = () => {
+  return useQuery({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      const response = await apiClient.get('/api/orders')
+      return response.data
+    },
+  })
+}
 
 const OrdersList = () => {
   const { data: orders, error, isLoading } = useGetOrdersQuery()
@@ -9,7 +20,7 @@ const OrdersList = () => {
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error fetching orders</div>
 
-  const handleSelectOrder = (orderId) => {
+  const handleSelectOrder = (orderId: string) => {
     if (selectedOrders.includes(orderId)) {
       setSelectedOrders(selectedOrders.filter((id) => id !== orderId))
     } else {
@@ -32,7 +43,7 @@ const OrdersList = () => {
           </tr>
         </thead>
         <tbody>
-          {orders?.map((order) => (
+          {orders?.map((order: any) => (
             <tr key={order._id} onClick={() => handleSelectOrder(order._id)}>
               <td>
                 <input

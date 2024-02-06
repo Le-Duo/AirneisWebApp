@@ -20,7 +20,7 @@ export default function ProductsPage() {
       <Helmet>
         <title>Airneis | Home</title>
       </Helmet>
-      {products!.map((product) => (
+      {products!.map((product: any) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
           <ProductItem product={product} />
         </Col>

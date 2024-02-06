@@ -1,4 +1,3 @@
-import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -12,13 +11,13 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const SalesHistogram = ({ salesData }) => {
+const SalesHistogram = ({ salesData }: { salesData: any }) => {
   const data = {
-    labels: salesData.map((data) => data.date),
+    labels: salesData.map((data: any) => data.date),
     datasets: [
       {
         label: 'Ventes Totales',
-        data: salesData.map((data) => data.totalSales),
+        data: salesData.map((data: any) => data.totalSales),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],

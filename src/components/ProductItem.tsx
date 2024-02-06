@@ -16,7 +16,7 @@ function ProductItem({ product }: { product: Product }) {
   const addToCartHandler = async (item: CartItem) => {
     const existItem = cartItems.find((x) => x._id === item._id)
     const quantity = existItem ? existItem.quantity + 1 : 1
-    if (product.countInStock < quantity) {
+    if (product.stock && product.stock < quantity) {
       alert('Sorry, product is out of stock')
       return
     }
@@ -39,7 +39,7 @@ function ProductItem({ product }: { product: Product }) {
           </Card.Title>
         </Link>
         <Card.Text>£{product.price}</Card.Text>
-        {product.countInStock === 0 ? (
+        {product.stock === 0 ? (
           <Button variant="light" disabled>
             Out of Stock
           </Button>

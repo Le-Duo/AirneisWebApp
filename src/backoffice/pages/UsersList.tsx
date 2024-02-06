@@ -33,7 +33,7 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => (
+          {users?.map((user: any) => (
             <tr key={user._id} onClick={() => handleSelectUser(user._id)}>
               <td>
                 <input

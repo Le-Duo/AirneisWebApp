@@ -1,6 +1,5 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import apiClient from '../apiClient'
-import { Stock } from '../types/Stock'
 
 export const useGetStockQuery = (): UseQueryResult<any, Error> => {
   console.log('Fetching stock data using useGetStockQuery')

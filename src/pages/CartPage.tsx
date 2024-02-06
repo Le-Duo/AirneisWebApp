@@ -20,7 +20,7 @@ export default function CartPage() {
   } = useContext(Store)
 
   const updateCartHandler = (item: CartItem, quantity: number) => {
-    if (item.CountInStock < quantity) {
+    if (item.stock < quantity) {
       toast.warn('Sorry. Product is out of stock')
       return
     }
@@ -75,7 +75,7 @@ export default function CartPage() {
                         onClick={() =>
                           updateCartHandler(item, item.quantity + 1)
                         }
-                        disabled={item.quantity === item.CountInStock}
+                        disabled={item.quantity === item.stock}
                       >
                         <i className="fa-solid fa-plus-circle"></i>
                       </Button>

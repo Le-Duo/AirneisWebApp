@@ -1,7 +1,7 @@
+import { Product } from '../../types/Product'
 import { useState } from 'react'
 import { Table } from 'react-bootstrap'
 import { useGetProductsQuery } from '../../hooks/productHook'
-import { useGetStockQuery } from '../../hooks/StockHook' // Corrected casing to match file system
 
 const ProductsList = () => {
   const { data: products, error, isLoading } = useGetProductsQuery()

@@ -1,5 +1,5 @@
 export type Stock = {
   _id: string
-  product: string
+  product: { _id: string }
   quantity: number
 }
