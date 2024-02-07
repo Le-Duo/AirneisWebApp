@@ -49,7 +49,7 @@ function App() {
               <LinkContainer to="/">
                 <NavbarBrand>
                   <img
-                    src="../public/images/airneis.svg"
+                    src="/images/airneis.svg"
                     alt="logo"
                     style={{ maxWidth: '40px', height: 'auto', padding: '4px' }}
                   />

@@ -4,7 +4,7 @@ import apiClient from '../apiClient'
 import { Product } from '../types/Product'
 import { Stock } from '../types/Stock'
 
-export const useGetProductsQuery = (): UseQueryResult<any, Error> => {
+export const useGetProductsQuery = (): UseQueryResult<Product[], Error> => {
   return useQuery({
     queryKey: ['getProducts'],
     queryFn: async () => {

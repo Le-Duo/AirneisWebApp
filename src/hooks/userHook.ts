@@ -52,7 +52,7 @@ export const usePasswordResetRequestMutation = () => {
 }
 
 export const usePasswordResetMutation = (): UseMutationResult<
-  any,
+  unknown,
   Error,
   { token: string; newPassword: string },
   unknown
@@ -72,11 +72,17 @@ export const usePasswordResetMutation = (): UseMutationResult<
   })
 }
 
-export const useGetUsersQuery = (): UseQueryResult<any, Error> => {
+export const useGetUsersQuery = (): UseQueryResult<UserInfo[], Error> => {
   return useQuery({
     queryKey: ['getUsers'],
     queryFn: async () => {
-      return (await apiClient.get('api/users')).data
+      try {
+        const response = await apiClient.get('api/users')
+        return response.data
+      } catch (error) {
+        // Handle or throw the error appropriately
+        throw new Error('Failed to fetch users')
+      }
     },
   })
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Table } from 'react-bootstrap'
 import { useGetUsersQuery } from '../../hooks/userHook'
+import { UserInfo } from '../../types/UserInfo'
 
 const UsersList = () => {
   const { data: users, error, isLoading } = useGetUsersQuery()
@@ -33,33 +34,38 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user: any) => (
-            <tr key={user._id} onClick={() => handleSelectUser(user._id)}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedUsers.includes(user._id)}
-                  onChange={() => {}}
-                />
-              </td>
-              <td>{user._id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>
-                {user.isAdmin ? (
-                  <i
-                    className="fas fa-check-circle"
-                    style={{ color: 'green' }}
-                  ></i>
-                ) : (
-                  <i
-                    className="fas fa-times-circle"
-                    style={{ color: 'red' }}
-                  ></i>
-                )}
-              </td>
-            </tr>
-          ))}
+          {users?.map((user: UserInfo) => {
+            if (typeof user._id === 'string') {
+              return (
+                <tr key={user._id} onClick={() => handleSelectUser(user._id!)}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedUsers.includes(user._id)}
+                      onChange={() => {}}
+                    />
+                  </td>
+                  <td>{user._id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    {user.isAdmin ? (
+                      <i
+                        className="fas fa-check-circle"
+                        style={{ color: 'green' }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fas fa-times-circle"
+                        style={{ color: 'red' }}
+                      ></i>
+                    )}
+                  </td>
+                </tr>
+              )
+            }
+            return null
+          })}
         </tbody>
       </Table>
     </div>

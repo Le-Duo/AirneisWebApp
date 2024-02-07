@@ -10,17 +10,17 @@ const HomeCarousel = () => {
   // Pour l'instant, nous utilisons des données factices pour le placeholder
   const carouselItems = [
     {
-      src: '../../public/images/livingroom.png',
+      src: '/images/livingroom.png',
       alt: 'Salon',
       caption: 'Salon',
     },
     {
-      src: '../../public/images/bedroom.png',
+      src: '/images/bedroom.png',
       alt: 'Chambre',
       caption: 'Chambre',
     },
     {
-      src: '../../public/images/garden.png',
+      src: '/images/garden.png',
       alt: 'Extérieur',
       caption: 'Extérieur',
     },

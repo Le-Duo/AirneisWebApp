@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Table } from 'react-bootstrap'
 import { useQuery } from '@tanstack/react-query'
 import apiClient from '../../apiClient'
+import { Order } from '../../types/Order'
 
 export const useGetOrdersQuery = () => {
   return useQuery({
@@ -39,11 +40,10 @@ const OrdersList = () => {
             <th>Date</th>
             <th>Client</th>
             <th>Total</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {orders?.map((order: any) => (
+          {orders?.map((order: Order) => (
             <tr key={order._id} onClick={() => handleSelectOrder(order._id)}>
               <td>
                 <input
@@ -53,10 +53,9 @@ const OrdersList = () => {
                 />
               </td>
               <td>{order._id}</td>
-              <td>{order.date}</td>
-              <td>{order.client}</td>
-              <td>{order.total}</td>
-              <td>{order.status}</td>
+              <td>{order.createdAt}</td>
+              <td>{order.user.name}</td>
+              <td>{order.totalPrice}</td>
             </tr>
           ))}
         </tbody>

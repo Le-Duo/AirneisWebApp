@@ -6,6 +6,7 @@ import ProductItem from '../components/ProductItem'
 import { useGetProductsQuery } from '../hooks/productHook'
 import { getError } from '../utils'
 import { ApiError } from '../types/APIError'
+import { Product } from '../types/Product'
 
 export default function ProductsPage() {
   const { data: products, error, isLoading } = useGetProductsQuery()
@@ -20,7 +21,7 @@ export default function ProductsPage() {
       <Helmet>
         <title>Airneis | Home</title>
       </Helmet>
-      {products!.map((product: any) => (
+      {products!.map((product: Product) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
           <ProductItem product={product} />
         </Col>

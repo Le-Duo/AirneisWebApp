@@ -1,18 +1,73 @@
-import { Product } from '../../types/Product'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Table } from 'react-bootstrap'
 import { useGetProductsQuery } from '../../hooks/productHook'
+import { useSortBy, useTable } from 'react-table'
+import { Product } from '../../types/Product'
+import { Row } from 'react-table'
 
 const ProductsList = () => {
   const { data: products, error, isLoading } = useGetProductsQuery()
 
   const [selectedProducts, setSelectedProducts] = useState<string[]>([])
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Select',
+        accessor: 'select',
+        Cell: ({ row }: { row: Row<Product> }) => (
+          <input
+            type="checkbox"
+            checked={selectedProducts.includes(row.original._id)}
+            onChange={() => handleSelectProduct(row.original._id)}
+          />
+        ),
+      },
+      {
+        Header: 'ID',
+        accessor: '_id',
+      },
+      {
+        Header: 'Nom',
+        accessor: 'name',
+      },
+      {
+        Header: 'Slug',
+        accessor: 'slug',
+      },
+      {
+        Header: 'URLimage',
+        accessor: 'URLimage',
+      },
+      {
+        Header: 'Catégorie',
+        accessor: 'category.name',
+      },
+      {
+        Header: 'Prix',
+        accessor: 'price',
+      },
+      {
+        Header: 'Stock',
+        accessor: 'stock',
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
+      },
+    ],
+    [selectedProducts]
+  )
+
+  const data = useMemo(() => products || [], [products])
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data }, useSortBy)
+
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error fetching products</div>
 
   const handleSelectProduct = (productId: string) => {
-    // Added type annotation
     if (selectedProducts.includes(productId)) {
       setSelectedProducts(selectedProducts.filter((id) => id !== productId))
     } else {
@@ -23,48 +78,36 @@ const ProductsList = () => {
   return (
     <div>
       <h2>Liste des Produits</h2>
-      <Table striped bordered hover>
+      <Table striped bordered hover {...getTableProps()}>
         <thead>
-          <tr>
-            <th>Select</th>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Slug</th>
-            <th>URLimage</th>
-            <th>Catégorie</th>
-            <th>Prix</th>
-            <th>Stock</th>
-            <th>Description</th>
-          </tr>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
-        <tbody>
-          {products?.map(
-            (
-              product: Product // Added type annotation
-            ) => (
-              <tr
-                key={product._id}
-                onClick={() => handleSelectProduct(product._id)}
-              >
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedProducts.includes(product._id)}
-                    onChange={() => {}}
-                  />
-                </td>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.slug}</td>
-                <td>{product.URLimage}</td>
-                <td>{product.category.name}</td>{' '}
-                {/* Adjusted to match Product type */}
-                <td>{product.price}</td>
-                <td>{product.stock}</td>
-                <td>{product.description}</td>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
               </tr>
             )
-          )}
+          })}
         </tbody>
       </Table>
     </div>
