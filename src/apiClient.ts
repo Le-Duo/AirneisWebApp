@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const apiClient = axios.create({
   // Explicitly set baseURL for testing purposes. Remember to adjust this before deploying to production.
-  baseURL: 'http://localhost:4000/',
+  baseURL: 'https://airneisservices.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },

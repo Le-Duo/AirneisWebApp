@@ -48,6 +48,17 @@ export const useGetProductDetailsBySlugQuery = (slug: string) =>
         `Product details fetched successfully for slug: ${slug}:`,
         productDetails
       )
-      return productDetails
+
+      // Récupération des données de stock pour le produit
+      const stocks = (await apiClient.get('api/stocks')).data
+      const productStock = stocks.find(
+        (stock: Stock) => stock.product._id === productDetails._id
+      )?.quantity
+
+      // Ajout de la quantité de stock aux détails du produit
+      return {
+        ...productDetails,
+        stock: productStock, // Assurez-vous que le type Product dans Product.ts accepte stock comme propriété optionnelle
+      }
     },
   })

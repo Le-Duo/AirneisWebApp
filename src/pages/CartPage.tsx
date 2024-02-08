@@ -80,7 +80,7 @@ export default function CartPage() {
                         <i className="fa-solid fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>${item.price}</Col>
+                    <Col md={3}>£{item.price}</Col>
                     <Col md={2}>
                       <Button
                         onClick={() => removeItemHandler(item)}
@@ -102,7 +102,7 @@ export default function CartPage() {
                 <ListGroup.Item>
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
+                    items) : £
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </h3>
                 </ListGroup.Item>
