@@ -36,9 +36,11 @@ export const useGetOrderHistoryQuery = () =>
   })
 
 export const useGetOrdersQuery = () => {
-  useMutation({
-    mutationFn: async () => {
-      return (await apiClient.get('api/orders')).data
+  return useQuery({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      const response = await apiClient.get('/api/orders')
+      return response.data
     },
   })
 }

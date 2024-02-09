@@ -1,18 +1,7 @@
 import { useState } from 'react'
 import { Table } from 'react-bootstrap'
-import { useQuery } from '@tanstack/react-query'
-import apiClient from '../../apiClient'
 import { Order } from '../../types/Order'
-
-export const useGetOrdersQuery = () => {
-  return useQuery({
-    queryKey: ['orders'],
-    queryFn: async () => {
-      const response = await apiClient.get('/api/orders')
-      return response.data
-    },
-  })
-}
+import { useGetOrdersQuery } from '../../hooks/orderHooks'
 
 const OrdersList = () => {
   const { data: orders, error, isLoading } = useGetOrdersQuery()
@@ -39,6 +28,8 @@ const OrdersList = () => {
             <th>ID</th>
             <th>Date</th>
             <th>Client</th>
+            <th>Status</th>
+            <th>Items</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -54,7 +45,9 @@ const OrdersList = () => {
               </td>
               <td>{order._id}</td>
               <td>{order.createdAt}</td>
-              <td>{order.user.name}</td>
+              <td>{typeof order.user === 'object' ? order.user.name : 'Nom utilisateur non disponible'}</td>
+              <td>{order.status}</td>
+              <td>{order.orderItems.map(item => item.name).join(', ')}</td>
               <td>{order.totalPrice}</td>
             </tr>
           ))}

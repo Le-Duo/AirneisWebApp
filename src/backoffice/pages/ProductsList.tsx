@@ -1,115 +1,75 @@
 import { useState, useMemo } from 'react'
-import { Table } from 'react-bootstrap'
+import Table from '../components/Table'
 import { useGetProductsQuery } from '../../hooks/productHook'
-import { useSortBy, useTable } from 'react-table'
-import { Product } from '../../types/Product'
-import { Row } from 'react-table'
+import Popup from '../components/Popup'
 
 const ProductsList = () => {
   const { data: products, error, isLoading } = useGetProductsQuery()
-
   const [selectedProducts, setSelectedProducts] = useState<string[]>([])
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupContent, setPopupContent] = useState<JSX.Element | string>('')
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Select',
-        accessor: 'select',
-        Cell: ({ row }: { row: Row<Product> }) => (
-          <input
-            type="checkbox"
-            checked={selectedProducts.includes(row.original._id)}
-            onChange={() => handleSelectProduct(row.original._id)}
-          />
-        ),
-      },
-      {
-        Header: 'ID',
-        accessor: '_id',
-      },
-      {
-        Header: 'Nom',
-        accessor: 'name',
-      },
-      {
-        Header: 'Slug',
-        accessor: 'slug',
-      },
-      {
-        Header: 'URLimage',
-        accessor: 'URLimage',
-      },
-      {
-        Header: 'Catégorie',
-        accessor: 'category.name',
-      },
-      {
-        Header: 'Prix',
-        accessor: 'price',
-      },
-      {
-        Header: 'Stock',
-        accessor: 'stock',
-      },
-      {
-        Header: 'Description',
-        accessor: 'description',
-      },
-    ],
-    [selectedProducts]
-  )
+  const columns = useMemo(() => [
+    { key: '_id', label: 'ID' },
+    { key: 'name', label: 'Name' },
+    { key: 'slug', label: 'Slug' },
+    { key: 'URLimage', label: 'Image URL' },
+    { key: 'category.name', label: 'Category' },
+    { key: 'price', label: 'Price' },
+    { key: 'stock', label: 'Stock' },
+    { key: 'description', label: 'Description' },
+  ], [])
 
-  const data = useMemo(() => products || [], [products])
+  const handleSelectionChange = (selectedItems: { _id: string }[]) => {
+    setSelectedProducts(selectedItems.map(item => item._id))
+  }
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy)
+  const handleEdit = (product: any) => {
+    const content = (
+      <div>
+        <h3>{product.name}</h3>
+        <img src={product.URLimage} alt={product.name} style={{ width: '50vh', marginBottom: '20px' }} />
+        <div>
+          <label>Slug: <input type="text" value={product.slug} readOnly /></label>
+        </div>
+        <div>
+          <label>Category: <input type="text" value={product.category.name} readOnly /></label>
+        </div>
+        <div>
+          <label>Price: <input type="text" value={`$${product.price}`} readOnly /></label>
+        </div>
+        <div>
+          <label>Stock: <input type="number" value={product.stock} readOnly /></label>
+        </div>
+        <div>
+          <label>Description: <textarea value={product.description} readOnly /></label>
+        </div>
+        {/* TODO: Add more fields and make them editable */}
+      </div>
+    );
+
+    setPopupContent(content);
+    setShowPopup(true);
+  };
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error fetching products</div>
 
-  const handleSelectProduct = (productId: string) => {
-    if (selectedProducts.includes(productId)) {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId))
-    } else {
-      setSelectedProducts([...selectedProducts, productId])
-    }
-  }
-
   return (
     <div>
-      <h2>Liste des Produits</h2>
-      <Table striped bordered hover {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </Table>
+      <h2>Products List</h2>
+      <Table
+        data={products || []}
+        columns={columns}
+        onSelectionChange={handleSelectionChange}
+        onEdit={handleEdit}
+      />
+      <Popup
+        show={showPopup}
+        onHide={() => setShowPopup(false)}
+        title="Product Details"
+        content={popupContent}
+      />
     </div>
   )
 }
