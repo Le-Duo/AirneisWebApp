@@ -1,30 +1,23 @@
 import { useContext } from 'react'
 import Carousel from 'react-bootstrap/Carousel'
 import { Store } from '../Store'
+import useCarousel from '../hooks/carouselHook'
 
 const HomeCarousel = () => {
   const { state } = useContext(Store)
   const { mode } = state
+  const { items, loading, error } = useCarousel()
 
-  // Les données du carrousel seront récupérées et gérées ici
-  // Pour l'instant, nous utilisons des données factices pour le placeholder
-  const carouselItems = [
-    {
-      src: '/images/livingroom.png',
-      alt: 'Salon',
-      caption: 'Salon',
-    },
-    {
-      src: '/images/bedroom.png',
-      alt: 'Chambre',
-      caption: 'Chambre',
-    },
-    {
-      src: '/images/garden.png',
-      alt: 'Extérieur',
-      caption: 'Extérieur',
-    },
-  ]
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
+
+  // Ensure items is always treated as an array
+  const carouselItems = Array.isArray(items) ? items : []
+
+  console.log(carouselItems) // Log the carousel items
+  if (carouselItems.length === 0) {
+    return <div>No images available</div>
+  }
 
   return (
     <Carousel>

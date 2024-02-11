@@ -7,8 +7,6 @@ const AdminRoute = () => {
     state: { userInfo },
   } = useContext(Store)
 
-  // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
-  // ou n'est pas un administrateur
   if (!userInfo || !userInfo.isAdmin) {
     return <Navigate to="/signin" />
   }

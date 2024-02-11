@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Table } from 'react-bootstrap'
+import { Helmet } from 'react-helmet-async'
 import { useGetUsersQuery } from '../../hooks/userHook'
 import { UserInfo } from '../../types/UserInfo'
 
@@ -22,6 +23,9 @@ const UsersList = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Users List</title>
+      </Helmet>
       <h2>Liste des Utilisateurs</h2>
       <Table striped bordered hover>
         <thead>

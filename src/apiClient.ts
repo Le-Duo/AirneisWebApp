@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  // Explicitly set baseURL for testing purposes. Remember to adjust this before deploying to production.
-  baseURL: 'https://airneisservices.onrender.com/',
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL ||
+    'https://airneisservices.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },

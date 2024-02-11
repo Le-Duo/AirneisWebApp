@@ -39,6 +39,7 @@ export default function PlaceOrderPage() {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+        user: state.userInfo?._id || '',
       })
       dispatch({ type: 'CART_CLEAR' })
       localStorage.removeItem('cartItems')

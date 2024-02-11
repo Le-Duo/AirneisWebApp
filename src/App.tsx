@@ -136,8 +136,8 @@ function App() {
                         <LinkContainer to="/signin">
                           <Nav.Link>Sign In</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="/register">
-                          <Nav.Link>Register</Nav.Link>
+                        <LinkContainer to="/signup">
+                          <Nav.Link>Sign Up</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to="/tos">
                           <Nav.Link>Terms of Service</Nav.Link>

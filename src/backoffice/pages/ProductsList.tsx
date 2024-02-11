@@ -1,69 +1,90 @@
 import { useState, useMemo } from 'react'
+import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
-import { useGetProductsQuery } from '../../hooks/productHook'
+import {
+  useGetProductsQuery,
+  useUpdateProductMutation,
+} from '../../hooks/productHook'
+import { useGetCategoriesQuery } from '../../hooks/categoryHook'
 import Popup from '../components/Popup'
+import EditProductForm from '../components/EditProductForm'
 
 const ProductsList = () => {
-  const { data: products, error, isLoading } = useGetProductsQuery()
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([])
+  const {
+    data: products,
+    isLoading: productsLoading,
+    error: productsError,
+    refetch,
+  } = useGetProductsQuery(null)
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+    error: categoriesError,
+  } = useGetCategoriesQuery()
   const [showPopup, setShowPopup] = useState(false)
   const [popupContent, setPopupContent] = useState<JSX.Element | string>('')
+  const updateProductMutation = useUpdateProductMutation()
 
-  const columns = useMemo(() => [
-    { key: '_id', label: 'ID' },
-    { key: 'name', label: 'Name' },
-    { key: 'slug', label: 'Slug' },
-    { key: 'URLimage', label: 'Image URL' },
-    { key: 'category.name', label: 'Category' },
-    { key: 'price', label: 'Price' },
-    { key: 'stock', label: 'Stock' },
-    { key: 'description', label: 'Description' },
-  ], [])
+  const adjustedProducts = useMemo(
+    () =>
+      products?.map((product) => ({
+        ...product,
+        categoryName: product.category?.name,
+        URLimage: (
+          <img
+            src={product.URLimage}
+            alt={product.name}
+            style={{ width: '100px' }}
+          />
+        ),
+      })) || [],
+    [products]
+  )
 
-  const handleSelectionChange = (selectedItems: { _id: string }[]) => {
-    setSelectedProducts(selectedItems.map(item => item._id))
-  }
+  const columns = useMemo(
+    () => [
+      // { key: '_id', label: 'ID' }, // This line is commented out to hide the ID column
+      { key: 'URLimage', label: 'Image' },
+      { key: 'name', label: 'Name' },
+      { key: 'slug', label: 'URL' },
+      { key: 'categoryName', label: 'Category' },
+      { key: 'price', label: 'Price' },
+      { key: 'stock', label: 'Stock' },
+      { key: 'description', label: 'Description' },
+    ],
+    []
+  )
 
   const handleEdit = (product: any) => {
-    const content = (
-      <div>
-        <h3>{product.name}</h3>
-        <img src={product.URLimage} alt={product.name} style={{ width: '50vh', marginBottom: '20px' }} />
-        <div>
-          <label>Slug: <input type="text" value={product.slug} readOnly /></label>
-        </div>
-        <div>
-          <label>Category: <input type="text" value={product.category.name} readOnly /></label>
-        </div>
-        <div>
-          <label>Price: <input type="text" value={`$${product.price}`} readOnly /></label>
-        </div>
-        <div>
-          <label>Stock: <input type="number" value={product.stock} readOnly /></label>
-        </div>
-        <div>
-          <label>Description: <textarea value={product.description} readOnly /></label>
-        </div>
-        {/* TODO: Add more fields and make them editable */}
-      </div>
-    );
+    setPopupContent(
+      <EditProductForm
+        product={product}
+        onSave={handleSaveProduct}
+        categories={categories || []}
+      />
+    )
+    setShowPopup(true)
+  }
 
-    setPopupContent(content);
-    setShowPopup(true);
-  };
+  const handleSaveProduct = async (editedProduct) => {
+    await updateProductMutation.mutateAsync(editedProduct, {
+      onSuccess: () => {
+        setShowPopup(false)
+        refetch()
+      },
+    })
+  }
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error fetching products</div>
+  if (productsLoading || categoriesLoading) return <div>Loading...</div>
+  if (productsError || categoriesError) return <div>Error fetching data</div>
 
   return (
     <div>
+      <Helmet>
+        <title>Products List</title>
+      </Helmet>
       <h2>Products List</h2>
-      <Table
-        data={products || []}
-        columns={columns}
-        onSelectionChange={handleSelectionChange}
-        onEdit={handleEdit}
-      />
+      <Table data={adjustedProducts} columns={columns} onEdit={handleEdit} />
       <Popup
         show={showPopup}
         onHide={() => setShowPopup(false)}

@@ -2,8 +2,12 @@ import { useGetCategoriesQuery } from '../hooks/categoryHook'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
 import HomeCarousel from '../components/HomeCarousel'
+import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
+import { Container, Row, Col } from 'react-bootstrap'
 
 export default function HomePage() {
+  const navigate = useNavigate()
   const { data: categories, isLoading, error } = useGetCategoriesQuery()
 
   if (isLoading) return <LoadingBox />
@@ -15,22 +19,39 @@ export default function HomePage() {
     )
 
   return (
-    <div className="home-page">
-      <HomeCarousel />
-      <p>FROM THE HIGHLANDS OF SCOTLAND</p>
-      <p>OUR FURNITURE IS IMMORTAL</p>
-      <div className="category-grid">
-        {categories.map((category) => (
-          <div key={category._id} className="category-item">
-            <img src={category.urlImage} alt={category.name} />
-            <h3>{category.name}</h3>
-          </div>
-        ))}
+    <>
+      <Helmet>
+        <title>Home | Airneis</title>
+      </Helmet>
+      <div className="home-page">
+        <HomeCarousel />
+        <Container>
+          <Row className="justify-content-md-center pt-3">
+            <Col md="auto" style={{ fontSize: '24px', fontWeight: 'bold' }}>
+              FROM THE HIGHLANDS OF SCOTLAND
+            </Col>
+          </Row>
+          <Row className="justify-content-md-center pb-3">
+            <Col md="auto" style={{ fontSize: '24px', fontWeight: 'bold' }}>
+              OUR FURNITURE IS IMMORTAL
+            </Col>
+          </Row>
+        </Container>
+        <div className="category-grid">
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className="category-item"
+              onClick={() => navigate(`/products?category=${category.name}`)}
+            >
+              <img src={category.urlImage} alt={category.name} />
+              <h3>{category.name}</h3>
+            </div>
+          ))}
+        </div>
+        <h2>The Highlanders of the moment</h2>
+        <div className="product-grid"></div>
       </div>
-      <h2>The Highlanders of the moment</h2>
-      <div className="product-grid">
-        {/* Product grid will be filled with data from the backoffice */}
-      </div>
-    </div>
+    </>
   )
 }

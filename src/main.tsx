@@ -35,6 +35,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
+import { NavigationSystem } from './backoffice/index.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,10 +63,12 @@ const router = createBrowserRouter(
         <Route path="/orderhistory" element={<OrderHistoryPage />} />
       </Route>
       <Route path="" element={<AdminRoute />}>
-        <Route path="/backoffice" element={<Dashboard />} />
-        <Route path="/backoffice/orders" element={<OrdersList />} />
-        <Route path="/backoffice/users" element={<UsersList />} />
-        <Route path="/backoffice/products" element={<ProductsList />} />
+        <Route element={<NavigationSystem />}>
+          <Route path="/backoffice" element={<Dashboard />} />
+          <Route path="/backoffice/orders" element={<OrdersList />} />
+          <Route path="/backoffice/users" element={<UsersList />} />
+          <Route path="/backoffice/products" element={<ProductsList />} />
+        </Route>
       </Route>
     </Route>
   )
