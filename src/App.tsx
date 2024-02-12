@@ -160,7 +160,7 @@ function App() {
           </Navbar>
         </header>
         <main>
-          <Container className="mt-3">
+          <Container fluid className="mt-3">
             <Outlet />
           </Container>
         </main>

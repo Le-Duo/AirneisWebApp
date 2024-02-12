@@ -38,16 +38,23 @@ export default function HomePage() {
           </Row>
         </Container>
         <div className="category-grid">
-          {categories.map((category) => (
-            <div
-              key={category._id}
-              className="category-item"
-              onClick={() => navigate(`/products?category=${category.name}`)}
-            >
-              <img src={category.urlImage} alt={category.name} />
-              <h3>{category.name}</h3>
-            </div>
-          ))}
+          <Container>
+            <Row md={3} xs={1} className="g-4">
+              {categories.map((category) => (
+                <Col key={category._id}>
+                  <div
+                    className="category-item"
+                    onClick={() =>
+                      navigate(`/products?category=${category.name}`)
+                    }
+                  >
+                    <img src={category.urlImage} alt={category.name} />
+                    <h3>{category.name}</h3>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </Container>
         </div>
         <h2>The Highlanders of the moment</h2>
         <div className="product-grid"></div>

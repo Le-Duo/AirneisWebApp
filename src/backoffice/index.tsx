@@ -10,6 +10,9 @@ export const NavigationSystem = () => {
         <title>Backoffice Navigation</title>
       </Helmet>
       <Nav variant="tabs" defaultActiveKey="/backoffice">
+        <LinkContainer to="/backoffice">
+          <Nav.Link>Tableau de Bord</Nav.Link>
+        </LinkContainer>
         <LinkContainer to="/backoffice/orders">
           <Nav.Link>Liste des Commandes</Nav.Link>
         </LinkContainer>
