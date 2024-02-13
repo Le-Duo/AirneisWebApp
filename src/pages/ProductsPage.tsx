@@ -6,9 +6,15 @@ import ProductItem from '../components/ProductItem'
 import { useGetProductsQuery } from '../hooks/productHook'
 import { getError } from '../utils'
 import { ApiError } from '../types/APIError'
+import { Product } from '../types/Product'
+import { useLocation } from 'react-router-dom'
 
 export default function ProductsPage() {
-  const { data: products, error, isLoading } = useGetProductsQuery()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const category = queryParams.get('category')
+
+  const { data: products, error, isLoading } = useGetProductsQuery(category)
   return isLoading ? (
     <LoadingBox />
   ) : error ? (
@@ -18,9 +24,9 @@ export default function ProductsPage() {
   ) : (
     <Row>
       <Helmet>
-        <title>Airneis | Home</title>
+        <title>Products</title>
       </Helmet>
-      {products!.map((product) => (
+      {products!.map((product: Product) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
           <ProductItem product={product} />
         </Col>

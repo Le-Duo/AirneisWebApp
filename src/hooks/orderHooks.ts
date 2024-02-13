@@ -19,6 +19,7 @@ export const useCreateOrderMutation = () =>
       shippingPrice: number
       taxPrice: number
       totalPrice: number
+      user: string
     }) =>
       (
         await apiClient.post<{ message: string; order: Order }>(
@@ -28,9 +29,38 @@ export const useCreateOrderMutation = () =>
       ).data,
   })
 
+export const useUpdateOrderMutation = () =>
+  useMutation({
+    mutationFn: async (order: Partial<Order> & { _id: string }) =>
+      (
+        await apiClient.put<{ message: string; order: Order }>(
+          `api/orders/${order._id}`,
+          order
+        )
+      ).data,
+  })
+
+export const useDeleteOrderMutation = () => {
+  return useMutation({
+    mutationFn: async (orderId: string) => {
+      await apiClient.delete(`/api/orders/${orderId}`)
+    },
+  })
+}
+
 export const useGetOrderHistoryQuery = () =>
   useQuery({
     queryKey: ['order-history'],
     queryFn: async () =>
       (await apiClient.get<Order[]>(`/api/orders/mine`)).data,
   })
+
+export const useGetOrdersQuery = () => {
+  return useQuery({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      const response = await apiClient.get('/api/orders')
+      return response.data
+    },
+  })
+}

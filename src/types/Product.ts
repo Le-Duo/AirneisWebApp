@@ -3,9 +3,8 @@ export type Product = {
   name: string
   slug: string
   URLimage: string
-  category: string
-  brand: string
+  category: { name: string }
   price: number
-  countInStock: number
   description: string
+  stock?: number
 }

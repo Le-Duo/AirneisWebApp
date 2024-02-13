@@ -1,11 +1,9 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  // baseURL sera préfixé à toute URL relative qui suit cette requête axios.get()
-  // Si on est en mode développement, on fera des requêtes à 'http://localhost:4000/'
-  // Sinon, on fera des requêtes au domaine actuel
   baseURL:
-    process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/',
+    import.meta.env.VITE_API_BASE_URL ||
+    'https://airneisservices.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -20,7 +18,7 @@ apiClient.interceptors.request.use(
     return config
   },
   (error) => {
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 

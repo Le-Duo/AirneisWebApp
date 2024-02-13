@@ -21,18 +21,23 @@ import SignupPage from './pages/SignupPage'
 import ShippingAdressPage from './pages/ShippingAdressPage.tsx'
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
+import AdminRoute from './components/AdminRoute.tsx'
 import PlaceOrderPage from './pages/PlaceOrderPage.tsx'
 import OrderPage from './pages/OrderPage.tsx'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import Index from './pages/index.tsx'
+import OrdersList from './backoffice/pages/OrdersList.tsx'
+import UsersList from './backoffice/pages/UsersList.tsx'
+import ProductsList from './backoffice/pages/ProductsList.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
 import PasswordReset from './components/PasswordReset'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
+import Dashboard from './backoffice/pages/Dashboard.tsx'
+import { NavigationSystem } from './backoffice/index.tsx'
 
-// Création du routeur avec les routes de l'application
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -59,14 +64,20 @@ const router = createBrowserRouter(
         <Route path="order/:id" element={<OrderPage />} />
         <Route path="/orderhistory" element={<OrderHistoryPage />} />
       </Route>
+      <Route path="" element={<AdminRoute />}>
+        <Route element={<NavigationSystem />}>
+          <Route path="/backoffice" element={<Dashboard />} />
+          <Route path="/backoffice/orders" element={<OrdersList />} />
+          <Route path="/backoffice/users" element={<UsersList />} />
+          <Route path="/backoffice/products" element={<ProductsList />} />
+        </Route>
+      </Route>
     </Route>
   )
 )
 
-// Initialisation du client de requête
 const queryClient = new QueryClient()
 
-// Rendu de l'application dans le DOM
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <StoreProvider>

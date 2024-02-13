@@ -1,11 +1,4 @@
-import {
-  Container,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  Badge,
-  NavLink,
-} from 'react-bootstrap'
+import { Container, Navbar, NavbarBrand, Nav, Badge } from 'react-bootstrap'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -56,28 +49,32 @@ function App() {
               <LinkContainer to="/">
                 <NavbarBrand>
                   <img
-                    src="../public/images/airneis.svg"
+                    src="/images/airneis.svg"
                     alt="logo"
                     style={{ maxWidth: '40px', height: 'auto', padding: '4px' }}
                   />
                 </NavbarBrand>
               </LinkContainer>
               <div className="d-flex align-items-center">
-                <Nav className="me-auto">
-                  <NavLink href="/search">
-                    <i className="fa-sharp fa-solid fa-search"></i>
-                  </NavLink>
-                </Nav>
-                <Nav>
-                  <NavLink href="/cart">
-                    <i className="fa-sharp fa-solid fa-cart-shopping"></i>
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </NavLink>
-                </Nav>
+                <Button
+                  variant={mode}
+                  onClick={() => (window.location.href = '/search')}
+                  className="me-auto"
+                >
+                  <i className="fa-sharp fa-solid fa-search"></i>
+                </Button>
+                <Button
+                  variant={mode}
+                  onClick={() => (window.location.href = '/cart')}
+                  className="ms-2"
+                >
+                  <i className="fa-sharp fa-solid fa-cart-shopping"></i>
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </Badge>
+                  )}
+                </Button>
                 <Button
                   variant={mode}
                   onClick={switchModeHandler}
@@ -139,8 +136,8 @@ function App() {
                         <LinkContainer to="/signin">
                           <Nav.Link>Sign In</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="/register">
-                          <Nav.Link>Register</Nav.Link>
+                        <LinkContainer to="/signup">
+                          <Nav.Link>Sign Up</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to="/tos">
                           <Nav.Link>Terms of Service</Nav.Link>
@@ -163,7 +160,7 @@ function App() {
           </Navbar>
         </header>
         <main>
-          <Container className="mt-3">
+          <Container fluid className="mt-3">
             <Outlet />
           </Container>
         </main>

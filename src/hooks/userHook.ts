@@ -1,4 +1,9 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query'
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query'
 import apiClient from '../apiClient'
 import { UserInfo } from '../types/UserInfo'
 
@@ -47,7 +52,7 @@ export const usePasswordResetRequestMutation = () => {
 }
 
 export const usePasswordResetMutation = (): UseMutationResult<
-  any,
+  unknown,
   Error,
   { token: string; newPassword: string },
   unknown
@@ -63,6 +68,21 @@ export const usePasswordResetMutation = (): UseMutationResult<
       return (
         await apiClient.post('api/users/password-reset', { token, newPassword })
       ).data
+    },
+  })
+}
+
+export const useGetUsersQuery = (): UseQueryResult<UserInfo[], Error> => {
+  return useQuery({
+    queryKey: ['getUsers'],
+    queryFn: async () => {
+      try {
+        const response = await apiClient.get('api/users')
+        return response.data
+      } catch (error) {
+        // Handle or throw the error appropriately
+        throw new Error('Failed to fetch users')
+      }
     },
   })
 }

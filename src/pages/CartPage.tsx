@@ -20,7 +20,7 @@ export default function CartPage() {
   } = useContext(Store)
 
   const updateCartHandler = (item: CartItem, quantity: number) => {
-    if (item.CountInStock < quantity) {
+    if (item.stock < quantity) {
       toast.warn('Sorry. Product is out of stock')
       return
     }
@@ -75,12 +75,12 @@ export default function CartPage() {
                         onClick={() =>
                           updateCartHandler(item, item.quantity + 1)
                         }
-                        disabled={item.quantity === item.CountInStock}
+                        disabled={item.quantity === item.stock}
                       >
                         <i className="fa-solid fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>${item.price}</Col>
+                    <Col md={3}>£{item.price}</Col>
                     <Col md={2}>
                       <Button
                         onClick={() => removeItemHandler(item)}
@@ -102,7 +102,7 @@ export default function CartPage() {
                 <ListGroup.Item>
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
+                    items) : £
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </h3>
                 </ListGroup.Item>
