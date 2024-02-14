@@ -65,16 +65,11 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
     }
   }
 
-  const getImageSrc = (URLimage: any) => {
-    if (
-      URLimage &&
-      typeof URLimage === 'object' &&
-      URLimage.props &&
-      URLimage.props.src
-    ) {
-      return URLimage.props.src
+  const getImageSrc = (URLimage: { props: { src: string } } | string): string => {
+    if (typeof URLimage === 'object' && URLimage.props && typeof URLimage.props.src === 'string') {
+      return URLimage.props.src;
     }
-    return URLimage // Assuming URLimage is a string if not an object
+    return URLimage as string;
   }
 
   return (
@@ -121,7 +116,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
               }
             >
               {categories.map((category, index) => (
-                <option key={index} value={category.id}>
+                <option key={index} value={category._id}>
                   {category.name}
                 </option>
               ))}

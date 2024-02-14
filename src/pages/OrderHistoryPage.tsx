@@ -47,15 +47,15 @@ export default function OrderHistoryPage() {
                 <td>
                   {order.isPaid
                     ? order.paidAt
-                      ? order.paidAt.substring(0, 10)
+                    ? (order.paidAt instanceof Date ? order.paidAt.toISOString() : order.paidAt).substring(0, 10)
                       : 'N/A'
                     : 'No'}
                 </td>
                 <td>
                   {order.isDelivered
                     ? order.deliveredAt
-                      ? order.deliveredAt.substring(0, 10)
-                      : 'N/A'
+                    ? (order.deliveredAt instanceof Date ? order.deliveredAt.toISOString() : order.deliveredAt).substring(0, 10)
+                    : 'N/A'
                     : 'No'}
                 </td>
                 <td>

@@ -40,7 +40,7 @@ export default function OrderPage() {
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
-                  Delivered at {order.deliveredAt}
+                  Delivered at {order.deliveredAt instanceof Date ? order.deliveredAt.toLocaleString() : order.deliveredAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="warning">Not Delivered</MessageBox>
@@ -56,7 +56,7 @@ export default function OrderPage() {
               </Card.Text>
               {order.isPaid ? (
                 <MessageBox variant="success">
-                  Paid at {order.paidAt}
+                  Paid at {order.paidAt instanceof Date ? order.paidAt.toLocaleString() : order.paidAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="warning">Not Paid</MessageBox>

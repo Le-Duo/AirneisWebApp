@@ -41,9 +41,14 @@ export default function PlaceOrderPage() {
         totalPrice: cart.totalPrice,
         user: state.userInfo?._id || '',
       })
-      dispatch({ type: 'CART_CLEAR' })
-      localStorage.removeItem('cartItems')
-      navigate(`/order/${data.order._id}`)
+      console.log(data); // Added to log the response
+      if (data && data._id) {
+        dispatch({ type: 'CART_CLEAR' })
+        localStorage.removeItem('cartItems')
+        navigate(`/order/${data._id}`)
+      } else {
+        toast.error("Unexpected response structure from order creation API.");
+      }
     } catch (err) {
       toast.error(getError(err as ApiError))
     } finally {

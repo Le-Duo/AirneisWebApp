@@ -9,12 +9,15 @@ interface TableProps<T> {
   data: T[]
   columns: { key: keyof T; label: string }[]
   onSelectionChange?: (selectedItems: T[]) => void
+  onEdit?: (item: T) => void
+  children?: React.ReactNode
 }
 
 const CustomTable: React.FC<TableProps<any>> = ({
   data,
   columns,
   onSelectionChange,
+  onEdit, // Destructure onEdit here
   children,
 }) => {
   const [selectedItems, setSelectedItems] = useState<any[]>([])
@@ -64,7 +67,7 @@ const CustomTable: React.FC<TableProps<any>> = ({
               <tr>
                 <th>Select</th>
                 {columns.map((column) => (
-                  <th key={column.key}>{column.label}</th>
+                  <th key={column.key as string}>{column.label}</th>
                 ))}
                 <th>Action</th>
               </tr>
@@ -80,9 +83,14 @@ const CustomTable: React.FC<TableProps<any>> = ({
                     />
                   </td>
                   {columns.map((column) => (
-                    <td key={column.key}>{item[column.key]}</td>
+                    <td key={column.key as string}>{item[column.key]}</td>
                   ))}
-                  <td>{children}</td>
+                  <td>
+                    {children}
+                    {onEdit && (
+                      <Button onClick={() => onEdit(item)}>Edit</Button> // Add an Edit button
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

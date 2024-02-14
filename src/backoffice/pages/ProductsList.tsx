@@ -8,6 +8,7 @@ import {
 import { useGetCategoriesQuery } from '../../hooks/categoryHook'
 import Popup from '../components/Popup'
 import EditProductForm from '../components/EditProductForm'
+import { Product } from '../../types/Product'
 
 const ProductsList = () => {
   const {
@@ -43,7 +44,6 @@ const ProductsList = () => {
 
   const columns = useMemo(
     () => [
-      // { key: '_id', label: 'ID' }, // This line is commented out to hide the ID column
       { key: 'URLimage', label: 'Image' },
       { key: 'name', label: 'Name' },
       { key: 'slug', label: 'URL' },
@@ -55,7 +55,7 @@ const ProductsList = () => {
     []
   )
 
-  const handleEdit = (product: any) => {
+  const handleEdit = (product: Product) => {
     setPopupContent(
       <EditProductForm
         product={product}
@@ -66,7 +66,7 @@ const ProductsList = () => {
     setShowPopup(true)
   }
 
-  const handleSaveProduct = async (editedProduct) => {
+  const handleSaveProduct = async (editedProduct: Product) => {
     await updateProductMutation.mutateAsync(editedProduct, {
       onSuccess: () => {
         setShowPopup(false)

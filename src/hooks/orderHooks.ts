@@ -20,13 +20,12 @@ export const useCreateOrderMutation = () =>
       taxPrice: number
       totalPrice: number
       user: string
-    }) =>
-      (
-        await apiClient.post<{ message: string; order: Order }>(
-          'api/orders',
-          order
-        )
-      ).data,
+    }) => (
+      await apiClient.post<Order>(
+        'api/orders',
+        order
+      )
+    ).data,
   })
 
 export const useUpdateOrderMutation = () =>

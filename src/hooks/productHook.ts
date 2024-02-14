@@ -44,7 +44,7 @@ export const useGetProductsQuery = (
       const products = (await apiClient.get(endpoint)).data
       console.log(
         'Fetched products with URLimage:',
-        products.map((p) => p.URLimage)
+        products.map((p: Product) => p.URLimage)
       )
       const stocks = (await apiClient.get('api/stocks')).data
       console.log('Stocks data fetched successfully:', stocks)
