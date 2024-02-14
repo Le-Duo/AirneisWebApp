@@ -21,7 +21,12 @@ export default function PlaceOrderPage() {
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   )
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10)
+  cart.shippingPrice =
+    cart.itemsPrice < 400
+      ? round2(39)
+      : cart.itemsPrice <= 1000
+      ? round2(59)
+      : round2(109)
   cart.taxPrice = round2(0.2 * cart.itemsPrice)
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
@@ -36,18 +41,18 @@ export default function PlaceOrderPage() {
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
+        shippingPrice: cart.shippingPrice, // Ensure this is the correctly calculated value
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
         user: state.userInfo?._id || '',
       })
-      console.log(data); // Added to log the response
+      console.log(data) // Added to log the response
       if (data && data._id) {
         dispatch({ type: 'CART_CLEAR' })
         localStorage.removeItem('cartItems')
         navigate(`/order/${data._id}`)
       } else {
-        toast.error("Unexpected response structure from order creation API.");
+        toast.error('Unexpected response structure from order creation API.')
       }
     } catch (err) {
       toast.error(getError(err as ApiError))
