@@ -51,6 +51,7 @@ const ProductsList = () => {
       { key: 'price', label: 'Price' },
       { key: 'stock', label: 'Stock' },
       { key: 'description', label: 'Description' },
+      { key: 'priority', label: 'Priority' },
     ],
     []
   )
