@@ -6,22 +6,30 @@ import { Stock } from '../types/Stock'
 export const useUpdateProductMutation = () => {
   return useMutation<Product, Error, Product>({
     mutationFn: async (product: Product) => {
-      const payload = {
+      const payload: any = {
         _id: product._id,
         name: product.name,
         slug: product.slug,
         URLimage: product.URLimage,
-        category: { name: product.category.name },
         price: product.price,
         description: product.description,
         stock: product.stock,
         priority: product.priority,
       }
+
+      // Conditionally add category if it exists
+      if (product.category) {
+        payload.category = { name: product.category.name }
+      }
+
       const response = await apiClient.put<Product>(
         `api/products/${product._id}`,
         payload
       )
       return response.data
+    },
+    onSuccess: () => {
+      // This can be overridden by the component using this hook
     },
   })
 }
@@ -51,7 +59,6 @@ export const useGetProductsQuery = (
         const stock = stocks.find(
           (stock: Stock) => stock.product._id === product._id
         )?.quantity
-        console.log(`Mapping stock: ${stock} to product ID: ${product._id}`)
         return {
           ...product,
           stock: stock,

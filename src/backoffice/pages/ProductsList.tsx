@@ -1,13 +1,9 @@
 import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
-import {
-  useGetProductsQuery,
-  useUpdateProductMutation,
-} from '../../hooks/productHook'
+import EditProductModal from '../../components/EditProductModal'
+import { useGetProductsQuery } from '../../hooks/productHook'
 import { useGetCategoriesQuery } from '../../hooks/categoryHook'
-import Popup from '../components/Popup'
-import EditProductForm from '../components/EditProductForm'
 import { Product } from '../../types/Product'
 
 const ProductsList = () => {
@@ -22,58 +18,37 @@ const ProductsList = () => {
     isLoading: categoriesLoading,
     error: categoriesError,
   } = useGetCategoriesQuery()
-  const [showPopup, setShowPopup] = useState(false)
-  const [popupContent, setPopupContent] = useState<JSX.Element | string>('')
-  const updateProductMutation = useUpdateProductMutation()
+
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
 
   const adjustedProducts = useMemo(
     () =>
       products?.map((product) => ({
         ...product,
         categoryName: product.category?.name,
-        URLimage: (
-          <img
-            src={product.URLimage}
-            alt={product.name}
-            style={{ width: '100px' }}
-          />
-        ),
+        URLimage: product.URLimage,
       })) || [],
     [products]
   )
 
   const columns = useMemo(
     () => [
-      { key: 'URLimage', label: 'Image' },
-      { key: 'name', label: 'Name' },
-      { key: 'slug', label: 'URL' },
-      { key: 'categoryName', label: 'Category' },
-      { key: 'price', label: 'Price' },
-      { key: 'stock', label: 'Stock' },
-      { key: 'description', label: 'Description' },
-      { key: 'priority', label: 'Priority' },
+      { key: 'URLimage' as const, label: 'Image' },
+      { key: 'name' as const, label: 'Name' },
+      { key: 'slug' as const, label: 'URL' },
+      { key: 'categoryName' as const, label: 'Category' },
+      { key: 'price' as const, label: 'Price' },
+      { key: 'stock' as const, label: 'Stock' },
+      { key: 'description' as const, label: 'Description' },
+      { key: 'priority' as const, label: 'Priority' },
     ],
     []
   )
 
-  const handleEdit = (product: Product) => {
-    setPopupContent(
-      <EditProductForm
-        product={product}
-        onSave={handleSaveProduct}
-        categories={categories || []}
-      />
-    )
-    setShowPopup(true)
-  }
-
-  const handleSaveProduct = async (editedProduct: Product) => {
-    await updateProductMutation.mutateAsync(editedProduct, {
-      onSuccess: () => {
-        setShowPopup(false)
-        refetch()
-      },
-    })
+  const handleEdit = async (product: Product) => {
+    setCurrentProduct(product)
+    setShowEditModal(true)
   }
 
   if (productsLoading || categoriesLoading) return <div>Loading...</div>
@@ -86,12 +61,15 @@ const ProductsList = () => {
       </Helmet>
       <h2>Products List</h2>
       <Table data={adjustedProducts} columns={columns} onEdit={handleEdit} />
-      <Popup
-        show={showPopup}
-        onHide={() => setShowPopup(false)}
-        title="Product Details"
-        content={popupContent}
-      />
+      {currentProduct && categories && (
+        <EditProductModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          product={currentProduct}
+          categories={categories}
+          onProductUpdate={() => refetch()}
+        />
+      )}
     </div>
   )
 }

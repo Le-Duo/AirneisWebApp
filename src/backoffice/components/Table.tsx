@@ -1,30 +1,35 @@
 import React, { useState } from 'react'
-import Table from 'react-bootstrap/Table' // Import Table from react-bootstrap
-import Button from 'react-bootstrap/Button' // Import Button from react-bootstrap
+import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+interface Column<T> {
+  key: keyof T
+  label: string
+}
+
 interface TableProps<T> {
   data: T[]
-  columns: { key: keyof T; label: string }[]
+  columns: Column<T>[]
   onSelectionChange?: (selectedItems: T[]) => void
   onEdit?: (item: T) => void
   children?: React.ReactNode
 }
 
-const CustomTable: React.FC<TableProps<any>> = ({
+function CustomTable<T>({
   data,
   columns,
   onSelectionChange,
-  onEdit, // Destructure onEdit here
+  onEdit,
   children,
-}) => {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+}: TableProps<T>) {
+  const [selectedItems, setSelectedItems] = useState<T[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
-  const handleSelectItem = (item: any, isChecked: boolean) => {
+  const handleSelectItem = (item: T, isChecked: boolean) => {
     setSelectedItems((prev) =>
       isChecked
         ? [...prev, item]
@@ -67,7 +72,7 @@ const CustomTable: React.FC<TableProps<any>> = ({
               <tr>
                 <th>Select</th>
                 {columns.map((column) => (
-                  <th key={column.key as string}>{column.label}</th>
+                  <th key={String(column.key)}>{column.label}</th>
                 ))}
                 <th>Action</th>
               </tr>
@@ -83,12 +88,22 @@ const CustomTable: React.FC<TableProps<any>> = ({
                     />
                   </td>
                   {columns.map((column) => (
-                    <td key={column.key as string}>{item[column.key]}</td>
+                    <td key={String(column.key)}>
+                      {column.key === 'URLimage' ? (
+                        <img
+                          src={String(item[column.key])}
+                          alt=""
+                          style={{ width: '100px' }}
+                        />
+                      ) : (
+                        String(item[column.key])
+                      )}
+                    </td>
                   ))}
                   <td>
                     {children}
                     {onEdit && (
-                      <Button onClick={() => onEdit(item)}>Edit</Button> // Add an Edit button
+                      <Button onClick={() => onEdit(item)}>Edit</Button>
                     )}
                   </td>
                 </tr>

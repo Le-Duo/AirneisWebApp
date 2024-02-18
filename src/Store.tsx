@@ -21,7 +21,7 @@ const initialState: AppState = {
       : [],
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
-      : {},
+      : ({} as Record<string, never>),
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')!
       : 'Card',
@@ -46,10 +46,11 @@ type Action =
 // Fonction réducteur pour gérer les actions
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case 'SWITCH_MODE':
+    case 'SWITCH_MODE': {
       localStorage.setItem('mode', state.mode === 'light' ? 'dark' : 'light')
       return { ...state, mode: state.mode === 'light' ? 'dark' : 'light' }
-    case 'CART_ADD_ITEM':
+    }
+    case 'CART_ADD_ITEM': {
       const newItem = action.payload
       const existItem = state.cart.cartItems.find(
         (item: CartItem) => item._id === newItem._id
@@ -62,12 +63,13 @@ function reducer(state: AppState, action: Action): AppState {
 
       localStorage.setItem('cartItems', JSON.stringify(cartItems))
       return { ...state, cart: { ...state.cart, cartItems } }
+    }
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item: CartItem) => item._id !== action.payload._id
-      ) // Articles du panier: Filtrer les articles du panier
-      localStorage.setItem('cartItems', JSON.stringify(cartItems)) // Panier: Définir le panier dans la mémoire locale
-      return { ...state, cart: { ...state.cart, cartItems } } // Retourner: Nouveau panier
+      )
+      localStorage.setItem('cartItems', JSON.stringify(cartItems))
+      return { ...state, cart: { ...state.cart, cartItems } }
     }
     case 'CART_CLEAR':
       return {
@@ -75,7 +77,7 @@ function reducer(state: AppState, action: Action): AppState {
         cart: { ...state.cart, cartItems: [] },
       }
     case 'USER_SIGNIN':
-      return { ...state, userInfo: action.payload } // Retourner: Nouvel utilisateur
+      return { ...state, userInfo: action.payload }
     case 'USER_SIGNOUT':
       return {
         mode:

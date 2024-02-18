@@ -1,42 +1,59 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Form, Button, FormControl, Row, Col } from 'react-bootstrap'
+import { Row, Col, Card, Button } from 'react-bootstrap'
+import useSearch from '../hooks/searchHook'
+import { Product } from '../types/Product'
 
-const SearchBar = () => {
-  const [search, setSearch] = useState('')
-  const navigate = useNavigate()
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search)
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    navigate(`/search?query=${search}`)
+const SearchPage = () => {
+  const query = useQuery()
+  const searchQuery = query.get('query') || ''
+
+  // Prepare search parameters
+  const searchParams = {
+    searchText: searchQuery,
+    // Add other parameters as needed
   }
+
+  // Use the custom search hook
+  const {
+    data: searchResults,
+    isLoading: loading,
+    error,
+  } = useSearch(searchParams)
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
       <Helmet>
-        <title>Search</title>
+        <title>Search Results</title>
       </Helmet>
-      <Form onSubmit={handleSubmit}>
-        <Row noGutters>
-          <Col md={10} className="p-0">
-            <FormControl
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Col>
-          <Col md={2} className="p-0">
-            <Button type="submit" className="ml-md-0">
-              Search
-            </Button>
-          </Col>
+      <h2>Search Results</h2>
+      {searchResults && searchResults.length > 0 ? (
+        <Row>
+          {searchResults.map((product: Product) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Card>
+                <Card.Img variant="top" src={product.URLimage} />
+                <Card.Body>
+                  <Card.Title>{product.name}</Card.Title>
+                  <Card.Text>{product.description}</Card.Text>
+                  <Button variant="primary">View Product</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
         </Row>
-      </Form>
+      ) : (
+        <p>No results found</p>
+      )}
     </>
   )
 }
 
-export default SearchBar
+export default SearchPage
