@@ -29,6 +29,7 @@ import Index from './pages/index.tsx'
 import OrdersList from './backoffice/pages/OrdersList.tsx'
 import UsersList from './backoffice/pages/UsersList.tsx'
 import ProductsList from './backoffice/pages/ProductsList.tsx'
+import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
 import PasswordReset from './components/PasswordReset'
 import { HelmetProvider } from 'react-helmet-async'
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/tos" element={<TOSPage />} />
       <Route path="*" element={<h1>Not Found</h1>} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="signin" element={<SigninPage />} />
       <Route path="signup" element={<SignupPage />} />{' '}
       <Route
