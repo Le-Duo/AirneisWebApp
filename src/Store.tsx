@@ -1,12 +1,14 @@
 import React from 'react'
-import { Cart, CartItem, ShippingAddress } from './types/Cart'
+import { Cart, CartItem } from './types/Cart'
 import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
+import { ShippingAddress } from './types/shippingAdress' // Updated import to match the structure
 
 // Définition du type pour l'état de l'application
 type AppState = {
   mode: string
   cart: Cart
-  userInfo?: UserInfo
+  userInfo: UserInfo | null
+  existingAddresses: ShippingAddress[]; // Updated to match the structure from shippingAdress.ts
 }
 
 // Initialisation de l'état de l'application
@@ -21,7 +23,7 @@ const initialState: AppState = {
       : [],
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
-      : ({} as Record<string, never>),
+      : {} as ShippingAddress, // Updated to match the structure from shippingAdress.ts
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')!
       : 'Card',
@@ -30,6 +32,9 @@ const initialState: AppState = {
     taxPrice: 0,
     totalPrice: 0,
   },
+  existingAddresses: localStorage.getItem('existingAddresses') // Add this line
+    ? JSON.parse(localStorage.getItem('existingAddresses')!) // Ensure JSON structure matches ShippingAddress[]
+    : [], // Initialize as empty array if not found
 }
 
 // Définition des actions possibles
@@ -40,7 +45,7 @@ type Action =
   | { type: 'CART_CLEAR' }
   | { type: 'USER_SIGNIN'; payload: UserInfo }
   | { type: 'USER_SIGNOUT' }
-  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress }
+  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress } // Updated payload to match the structure
   | { type: 'SAVE_PAYMENT_METHOD'; payload: string }
 
 // Fonction réducteur pour gérer les actions
@@ -88,23 +93,20 @@ function reducer(state: AppState, action: Action): AppState {
         cart: {
           cartItems: [],
           paymentMethod: 'Card',
-          shippingAddress: {
-            fullName: '',
-            address: '',
-            city: '',
-            postalCode: '',
-            country: '',
-          },
+          shippingAddress: {} as ShippingAddress,
           itemsPrice: 0,
           shippingPrice: 0,
           taxPrice: 0,
           totalPrice: 0,
         },
+        existingAddresses: [],
+        userInfo: null, // Set userInfo to null on sign out
       }
     case 'SAVE_SHIPPING_ADDRESS':
+      const { payload } = action;
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: action.payload },
+        cart: { ...state.cart, shippingAddress: payload }, // Updated to directly use the payload
       }
     case 'SAVE_PAYMENT_METHOD':
       return {

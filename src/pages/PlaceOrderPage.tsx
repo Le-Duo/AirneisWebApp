@@ -38,7 +38,17 @@ export default function PlaceOrderPage() {
       setIsLoading(true)
       const data = await createOrder({
         orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
+        shippingAddress: {
+          user: state.userInfo?._id || '', // Add this line
+          firstName: cart.shippingAddress.firstName,
+          lastName: cart.shippingAddress.lastName,
+          street: cart.shippingAddress.street,
+          street2: cart.shippingAddress.street2,
+          city: cart.shippingAddress.city,
+          postalCode: cart.shippingAddress.postalCode,
+          country: cart.shippingAddress.country,
+          phone: cart.shippingAddress.phone,
+        },
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice, // Ensure this is the correctly calculated value
@@ -80,9 +90,9 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Address:</strong> {cart.shippingAddress.address},
-                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
+                <strong>Name:</strong> {cart.shippingAddress.firstName} {cart.shippingAddress.lastName} <br />
+                <strong>Address:</strong> {cart.shippingAddress.street},
+                {cart.shippingAddress.street2 ? `${cart.shippingAddress.street2}, ` : ''}{cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
                 {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
