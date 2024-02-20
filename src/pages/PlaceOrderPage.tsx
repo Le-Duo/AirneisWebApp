@@ -90,10 +90,13 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.firstName} {cart.shippingAddress.lastName} <br />
-                <strong>Address:</strong> {cart.shippingAddress.street},
-                {cart.shippingAddress.street2 ? `${cart.shippingAddress.street2}, ` : ''}{cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
-                {cart.shippingAddress.country}
+                <strong>Full Name:</strong> {cart.shippingAddress.firstName} {cart.shippingAddress.lastName} <br />
+                <strong>Address Line 1:</strong> {cart.shippingAddress.street} <br />
+                {cart.shippingAddress.street2 && <><strong>Address Line 2:</strong> {cart.shippingAddress.street2} <br /></>}
+                <strong>City:</strong> {cart.shippingAddress.city} <br />
+                <strong>Postal Code:</strong> {cart.shippingAddress.postalCode} <br />
+                <strong>Country:</strong> {cart.shippingAddress.country} <br />
+                <strong>Phone Number:</strong> {cart.shippingAddress.phone}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
             </Card.Body>

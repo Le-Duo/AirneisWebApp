@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import apiClient from '../apiClient'
 
 interface SearchParams {
   searchText: string
@@ -24,7 +24,7 @@ interface SearchResult {
 }
 
 const fetchSearchResults = async (params: SearchParams) => {
-  const response = await axios.post<SearchResult[]>(
+  const response = await apiClient.post<SearchResult[]>(
     '/api/products/search',
     params
   )
@@ -33,9 +33,9 @@ const fetchSearchResults = async (params: SearchParams) => {
 
 const useSearch = (params: SearchParams) => {
   return useQuery<SearchResult[]>(
-    ['searchResults', params],
-    () => fetchSearchResults(params),
     {
+      queryKey: ['searchResults', params],
+      queryFn: () => fetchSearchResults(params),
       enabled: !!params.searchText,
     }
   )

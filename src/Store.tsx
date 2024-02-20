@@ -1,14 +1,14 @@
 import React from 'react'
 import { Cart, CartItem } from './types/Cart'
 import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
-import { ShippingAddress } from './types/shippingAdress' // Updated import to match the structure
+import { ShippingAddress } from './types/shippingAddress' // Updated import to match the structure
 
 // Définition du type pour l'état de l'application
 type AppState = {
   mode: string
   cart: Cart
   userInfo: UserInfo | null
-  existingAddresses: ShippingAddress[]; // Updated to match the structure from shippingAdress.ts
+  existingAddresses: ShippingAddress[]; // Updated to match the structure from shippingAddress.ts
 }
 
 // Initialisation de l'état de l'application
@@ -23,7 +23,7 @@ const initialState: AppState = {
       : [],
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
-      : {} as ShippingAddress, // Updated to match the structure from shippingAdress.ts
+      : {} as ShippingAddress, // Updated to match the structure from shippingAddress.ts
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')!
       : 'Card',

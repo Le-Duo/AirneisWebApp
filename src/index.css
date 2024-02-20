@@ -98,9 +98,11 @@ img.thumbnail {
 }
 
 .category-item img {
-  width: 100%; /* L'image remplit la largeur de .category-item */
+  display: block; /* Makes the image a block element */
+  margin: 0 auto; /* Centers the image horizontally */
+  width: auto; /* Adjust width as needed */
+  max-width: 100%; /* Ensures the image is not wider than its container */
   height: auto; /* Maintient le ratio de l'image */
-  max-width: none; /* Supprimez la restriction de la largeur maximale */
 }
 
 img.thumbnail {
@@ -142,4 +144,25 @@ footer .desktop-footer .icon-links {
 
 .small-container {
   max-width: 600px;
+}
+@media (min-width: 992px) { /* Bootstrap's large breakpoint */
+  #filter-collapse {
+    display: block !important; /* Always show filters on desktop */
+  }
+  .filter-sidebar {
+    /* Styles for the filter sidebar */
+  }
+
+  .search-form {
+    display: flex;
+    justify-content: space-between;
+    /* Additional styles */
+  }
+  /* Additional desktop-specific styles */
+}
+
+@media (max-width: 768px) {
+  .filter-sidebar {
+    /* Styles to make the filter sidebar collapsible */
+  }
 }

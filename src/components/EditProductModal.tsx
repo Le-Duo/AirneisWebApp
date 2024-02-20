@@ -67,7 +67,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     e.preventDefault()
     const stockUpdatePayload = {
       productId: editedProduct._id,
-      quantity: editedProduct.stock,
+      quantity: editedProduct.stock || 0,
     }
     try {
       if (stockData) {
@@ -76,7 +76,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         await createStock.mutateAsync(stockUpdatePayload)
       }
       await updateProduct.mutateAsync(editedProduct)
-      onProductUpdate() // Call onProductUpdate here after successful update
+      onProductUpdate()
     } catch (error) {
       console.error('Error updating product or stock:', error)
     }

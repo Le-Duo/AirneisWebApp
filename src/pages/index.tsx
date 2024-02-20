@@ -39,9 +39,9 @@ export default function HomePage() {
         </Container>
         <div className="category-grid">
           <Container>
-            <Row md={3} xs={1} className="g-4">
+            <Row className="justify-content-md-center">
               {categories.map((category) => (
-                <Col key={category._id}>
+                <Col xs={12} md={4} key={category._id} className="d-flex justify-content-center">
                   <div
                     className="category-item"
                     onClick={() =>
@@ -62,3 +62,4 @@ export default function HomePage() {
     </>
   )
 }
+
