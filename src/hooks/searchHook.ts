@@ -1,5 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useGetProductsQuery } from './productHook' // Step 1: Import useGetProductsQuery
 import apiClient from '../apiClient'
+import { useEffect, useState } from 'react'
 
 interface SearchParams {
   searchText: string
@@ -31,14 +33,40 @@ const fetchSearchResults = async (params: SearchParams) => {
   return response.data
 }
 
+const useDebounce = (value: any, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay)
+    return () => clearTimeout(handler)
+  }, [value, delay])
+  return debouncedValue
+}
+
 const useSearch = (params: SearchParams) => {
-  return useQuery<SearchResult[]>(
-    {
-      queryKey: ['searchResults', params],
-      queryFn: () => fetchSearchResults(params),
-      enabled: !!params.searchText,
+  const queryClient = useQueryClient()
+  const debouncedParams = useDebounce(params, 500)
+
+  useEffect(() => {
+    const prefetchSearchResults = async () => {
+      await queryClient.prefetchQuery({
+        queryKey: ['searchResults', debouncedParams],
+        queryFn: () => fetchSearchResults(debouncedParams),
+      })
     }
-  )
+    if (debouncedParams.searchText) {
+      prefetchSearchResults()
+    }
+  }, [debouncedParams, queryClient])
+
+  if (!params.searchText) {
+    return useGetProductsQuery(null)
+  }
+
+  return useQuery<SearchResult[]>({
+    queryKey: ['searchResults', debouncedParams],
+    queryFn: () => fetchSearchResults(debouncedParams),
+    enabled: !!debouncedParams.searchText,
+  })
 }
 
 export default useSearch
