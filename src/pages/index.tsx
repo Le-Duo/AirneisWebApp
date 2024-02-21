@@ -39,16 +39,26 @@ export default function HomePage() {
         </Container>
         <div className="category-grid">
           <Container>
-            <Row className="justify-content-md-center">
+            <Row>
               {categories.map((category) => (
-                <Col xs={12} md={4} key={category._id} className="d-flex justify-content-center">
+                <Col
+                  xs={12}
+                  lg={4}
+                  key={category._id}
+                  className="d-flex justify-content-center mb-3"
+                >
                   <div
                     className="category-item"
                     onClick={() =>
                       navigate(`/products?category=${category.name}`)
                     }
+                    style={{ width: '100%', maxWidth: '300px' }}
                   >
-                    <img src={category.urlImage} alt={category.name} />
+                    <img
+                      src={category.urlImage}
+                      alt={category.name}
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                     <h3>{category.name}</h3>
                   </div>
                 </Col>
@@ -62,4 +72,3 @@ export default function HomePage() {
     </>
   )
 }
-

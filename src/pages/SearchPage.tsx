@@ -133,40 +133,37 @@ const SearchPage = () => {
           </Row>
           {loading && <p>Loading...</p>}
           {error && <p>Error: {error.message}</p>}
-          {displayResults && displayResults.length > 0 ? (
-            <Row>
-              {displayResults.map((product: Product) => (
-                <Col
-                  key={product._id}
-                  sm={12}
-                  md={6}
-                  lg={4}
-                  xl={3}
-                  onClick={() => goToProductPage(product.slug)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <Card>
-                    <Card.Img variant="top" src={product.URLimage} />
-                    <Card.Body>
-                      <Card.Title>{product.name}</Card.Title>
-                      <Card.Text>{product.description}</Card.Text>
-                      <Button
-                        variant="primary"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          addToCartHandler(product)
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          ) : (
-            !loading && <p>No results found</p>
-          )}
+          <Row>
+            {displayResults && displayResults.length > 0
+              ? displayResults.map((product: Product) => (
+                  <Col
+                    key={product._id}
+                    xs={12}
+                    md={4}
+                    className="mb-3"
+                    onClick={() => goToProductPage(product.slug)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <Card>
+                      <Card.Img variant="top" src={product.URLimage} />
+                      <Card.Body>
+                        <Card.Title>{product.name}</Card.Title>
+                        <Card.Text>{product.description}</Card.Text>
+                        <Button
+                          variant="primary"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            addToCartHandler(product)
+                          }}
+                        >
+                          Add to Cart
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))
+              : !loading && <p>No results found</p>}
+          </Row>
         </Col>
         <Col md={3} className="filter-sidebar">
           <Collapse in={open}>

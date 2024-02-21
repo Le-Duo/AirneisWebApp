@@ -91,12 +91,6 @@ img.thumbnail {
   width: 20dvw; /* Prend toute la largeur sur les petits écrans */
 }
 
-@media only screen and (max-width: 780px) {
-  .category-grid .category-item {
-    width: 100%; /* Affiche un seul élément par ligne sur les petits écrans */
-  }
-}
-
 .category-item img {
   display: block; /* Makes the image a block element */
   margin: 0 auto; /* Centers the image horizontally */
@@ -107,12 +101,6 @@ img.thumbnail {
 
 img.thumbnail {
   height: 80px;
-}
-
-@media (max-width: 1223px) {
-  .desktop-footer {
-    display: none;
-  }
 }
 
 footer .desktop-footer {
@@ -145,24 +133,18 @@ footer .desktop-footer .icon-links {
 .small-container {
   max-width: 600px;
 }
-@media (min-width: 992px) { /* Bootstrap's large breakpoint */
+
+@media (min-width: 992px) and (max-width: 1223px) {
   #filter-collapse {
-    display: block !important; /* Always show filters on desktop */
-  }
-  .filter-sidebar {
-    /* Styles for the filter sidebar */
+    display: block !important;
   }
 
   .search-form {
     display: flex;
     justify-content: space-between;
-    /* Additional styles */
   }
-  /* Additional desktop-specific styles */
-}
 
-@media (max-width: 768px) {
-  .filter-sidebar {
-    /* Styles to make the filter sidebar collapsible */
+  .desktop-footer {
+    display: none;
   }
 }
