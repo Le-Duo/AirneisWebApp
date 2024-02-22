@@ -8,7 +8,7 @@ import {
   Form,
   InputGroup,
   FormControl,
-  Collapse,
+  Placeholder,
 } from 'react-bootstrap'
 import useSearch from '../hooks/searchHook'
 import { Product } from '../types/Product'
@@ -18,6 +18,7 @@ import { ConvertProductToCartItem } from '../utils'
 import { useContext } from 'react'
 import { Store } from '../Store'
 import { CartItem } from '../types/Cart'
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa6'
 
 const SearchPage = () => {
   const location = useLocation()
@@ -29,6 +30,7 @@ const SearchPage = () => {
   const [maxPrice, setMaxPrice] = useState('')
   const [open, setOpen] = useState(false)
   const [displayResults, setDisplayResults] = useState<Product[]>([])
+  const [isSortedByPrice, setIsSortedByPrice] = useState(false)
   const lastSearchParams = useRef<{
     searchText: string
     minPrice: number | undefined
@@ -40,7 +42,7 @@ const SearchPage = () => {
   })
 
   useEffect(() => {
-    setOpen(false) // Ensure filters are initially offscreen
+    setOpen(false)
     const queryText = query.get('query')
     if (queryText) {
       setSearchQuery(queryText)
@@ -64,14 +66,18 @@ const SearchPage = () => {
 
   useEffect(() => {
     if (!loading && searchResults) {
-      setDisplayResults(searchResults)
+      let results = searchResults
+      if (isSortedByPrice) {
+        results = [...results].sort((a, b) => Number(a.price) - Number(b.price))
+      }
+      setDisplayResults(results)
       lastSearchParams.current = searchParams
     }
   }, [searchResults, loading, searchParams])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    setOpen(false) // Close filters on search
+    setOpen(false)
   }
 
   const goToProductPage = (slug: string) => {
@@ -94,6 +100,14 @@ const SearchPage = () => {
     toast.success('Product added to cart')
   }
 
+  const handleSortByPrice = () => {
+    setIsSortedByPrice(!isSortedByPrice)
+  }
+
+  const sortedOrUnsortedResults = isSortedByPrice
+    ? [...displayResults].sort((a, b) => Number(a.price) - Number(b.price))
+    : displayResults
+
   return (
     <>
       <Helmet>
@@ -104,8 +118,8 @@ const SearchPage = () => {
           <h1>Search</h1>
         </Col>
       </Row>
-      <Row>
-        <Col>
+      <Row className="justify-content-center">
+        <Col md={6} className="search-area">
           <Button
             onClick={() => setOpen(!open)}
             aria-controls="filter-collapse"
@@ -114,7 +128,7 @@ const SearchPage = () => {
             Filter
           </Button>
           <Form onSubmit={handleSearch} className="search-form">
-            <InputGroup className="mb-3">
+            <InputGroup>
               <FormControl
                 placeholder="Search..."
                 aria-label="Search"
@@ -126,16 +140,32 @@ const SearchPage = () => {
               </Button>
             </InputGroup>
           </Form>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Row className="justify-content-md-center">
             <Col md="auto">
               <h2>Results</h2>
             </Col>
           </Row>
-          {loading && <p>Loading...</p>}
+          <Row className="justify-content-center">
+            <Col xs="auto">
+              <Button size="sm" variant="secondary" onClick={handleSortByPrice}>
+                {isSortedByPrice ? <FaArrowUp /> : <FaArrowDown />}
+                Sort by: price ({isSortedByPrice ? 'asc' : 'des'})
+              </Button>
+            </Col>
+          </Row>
+          {loading && (
+            <Placeholder as="p" animation="glow">
+              <Placeholder xs={12} />
+            </Placeholder>
+          )}
           {error && <p>Error: {error.message}</p>}
           <Row>
-            {displayResults && displayResults.length > 0
-              ? displayResults.map((product: Product) => (
+            {sortedOrUnsortedResults && sortedOrUnsortedResults.length > 0
+              ? sortedOrUnsortedResults.map((product: Product) => (
                   <Col
                     key={product._id}
                     xs={12}
@@ -148,7 +178,12 @@ const SearchPage = () => {
                       <Card.Img variant="top" src={product.URLimage} />
                       <Card.Body>
                         <Card.Title>{product.name}</Card.Title>
-                        <Card.Text>{product.description}</Card.Text>
+                        <Card.Text>
+                          {product.description.length > 100
+                            ? `${product.description.substring(0, 100)}...`
+                            : product.description}
+                        </Card.Text>
+                        <Card.Text>£ {product.price}</Card.Text>
                         <Button
                           variant="primary"
                           onClick={(e) => {
@@ -164,30 +199,6 @@ const SearchPage = () => {
                 ))
               : !loading && <p>No results found</p>}
           </Row>
-        </Col>
-        <Col md={3} className="filter-sidebar">
-          <Collapse in={open}>
-            <div id="filter-collapse">
-              <Form.Group className="mb-3">
-                <Form.Label>Minimum Price</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Min Price"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Maximum Price</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Max Price"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                />
-              </Form.Group>
-            </div>
-          </Collapse>
         </Col>
       </Row>
     </>

@@ -37,6 +37,11 @@ function CustomTable<T>({
     onSelectionChange?.(selectedItems)
   }
 
+  const handleDeleteSelected = () => {
+    selectedItems.forEach((item) => onDelete?.(item))
+    setSelectedItems([])
+  }
+
   const paginatedItems = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -62,6 +67,15 @@ function CustomTable<T>({
           >
             Next
           </Button>
+          {onDelete && (
+            <Button
+              variant="danger"
+              className="m-1"
+              onClick={handleDeleteSelected}
+            >
+              Delete Selected
+            </Button>
+          )}
         </Col>
       </Row>
       <Row>
@@ -88,16 +102,15 @@ function CustomTable<T>({
                   </td>
                   {columns.map((column) => (
                     <td key={String(column.key)}>
-                      {column.renderer ? column.renderer(item) : String(item[column.key])}
+                      {column.renderer
+                        ? column.renderer(item)
+                        : String(item[column.key])}
                     </td>
                   ))}
                   <td>
                     {children}
                     {onEdit && (
                       <Button onClick={() => onEdit(item)}>Edit</Button>
-                    )}
-                    {onDelete && (
-                      <Button variant="danger" onClick={() => onDelete(item)}>Delete</Button>
                     )}
                   </td>
                 </tr>
@@ -131,4 +144,3 @@ function CustomTable<T>({
 }
 
 export default CustomTable
-

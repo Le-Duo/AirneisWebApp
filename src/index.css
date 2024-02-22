@@ -148,3 +148,66 @@ footer .desktop-footer .icon-links {
     display: none;
   }
 }
+@media (max-width: 991px) {
+  .search-form {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+  }
+
+  .search-form .input-group {
+    width: auto;
+    flex-grow: 1;
+  }
+
+  .search-form button {
+    margin-left: 10px;
+  }
+}
+.search-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.search-form button {
+  flex-grow: 0;
+  margin-right: 10px;
+}
+
+.search-form .input-group {
+  flex-grow: 1;
+  width: auto;
+}
+
+@media (max-width: 991px) {
+  .search-area {
+    flex-direction: column;
+  }
+
+  .search-form {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-form {
+    width: auto;
+  }
+}
