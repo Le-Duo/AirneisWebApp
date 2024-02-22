@@ -1,25 +1,48 @@
-import { useState, useEffect } from 'react'
-import { Table } from 'react-bootstrap'
-import { Helmet } from 'react-helmet-async'
-import { useGetUsersQuery } from '../../hooks/userHook'
-import { UserInfo } from '../../types/UserInfo'
+import { useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
+import Table from "../components/Table";
+import EditUserModal from "../components/EditUserModal";
+import { useGetUsersQuery } from "../../hooks/userHook";
+import { UserInfo } from "../../types/UserInfo";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UsersList = () => {
-  const { data: users, error, isLoading } = useGetUsersQuery()
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
+  const { data: users, isLoading, error } = useGetUsersQuery();
+  const [selectedUsers] = useState<string[]>([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {}, [])
+  const openEditModal = (user: UserInfo) => {
+    setCurrentUser(user);
+    setShowEditModal(true);
+  };
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error fetching users</div>
+  const handleUserUpdate = () => {
+    queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+  };
 
-  const handleSelectUser = (userId: string) => {
-    if (selectedUsers.includes(userId)) {
-      setSelectedUsers(selectedUsers.filter((id) => id !== userId))
-    } else {
-      setSelectedUsers([...selectedUsers, userId])
-    }
-  }
+  const usersWithSelection = useMemo(
+    () =>
+      users?.map((user) => ({
+        ...user,
+        isSelected: selectedUsers.includes(user._id),
+      })) || [],
+    [users, selectedUsers]
+  );
+
+  const columns = useMemo(
+    () => [
+      { key: "_id" as const, label: "ID" },
+      { key: "name" as const, label: "Name" },
+      { key: "email" as const, label: "Email" },
+      { key: "isAdmin" as const, label: "Admin" },
+    ],
+    []
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching users</div>;
 
   return (
     <div>
@@ -27,53 +50,21 @@ const UsersList = () => {
         <title>Users List</title>
       </Helmet>
       <h2>Liste des Utilisateurs</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Select</th>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Admin</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users?.map((user: UserInfo) => {
-            if (typeof user._id === 'string') {
-              return (
-                <tr key={user._id} onClick={() => handleSelectUser(user._id!)}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedUsers.includes(user._id)}
-                      onChange={() => {}}
-                    />
-                  </td>
-                  <td>{user._id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    {user.isAdmin ? (
-                      <i
-                        className="fas fa-check-circle"
-                        style={{ color: 'green' }}
-                      ></i>
-                    ) : (
-                      <i
-                        className="fas fa-times-circle"
-                        style={{ color: 'red' }}
-                      ></i>
-                    )}
-                  </td>
-                </tr>
-              )
-            }
-            return null
-          })}
-        </tbody>
-      </Table>
+      <Table
+        data={usersWithSelection}
+        columns={columns}
+        onEdit={openEditModal}
+      />
+      {currentUser && (
+        <EditUserModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          user={currentUser}
+          onUserUpdate={handleUserUpdate}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default UsersList
+export default UsersList;

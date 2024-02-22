@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
-import { Product } from '../types/Product'
-import { useUpdateProductMutation } from '../hooks/productHook'
+import { Product } from '../../types/Product'
+import { useUpdateProductMutation } from '../../hooks/productHook'
 import {
   useGetStockByProductIdQuery,
   useUpdateStockMutation,
   useCreateStockMutation,
-} from '../hooks/stockHook'
-import { useGetCategoriesQuery } from '../hooks/categoryHook'
-import { Category } from '../types/Category'
+} from '../../hooks/stockHook'
+import { useGetCategoriesQuery } from '../../hooks/categoryHook'
+import { Category } from '../../types/Category'
 
 interface EditProductModalProps {
   show: boolean

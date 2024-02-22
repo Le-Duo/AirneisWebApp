@@ -1,15 +1,15 @@
 import { useContext } from 'react'
 import Carousel from 'react-bootstrap/Carousel'
 import { Store } from '../Store'
-import useCarousel from '../hooks/carouselHook'
+import { useGetCarouselItemsQuery } from '../hooks/carouselHook'
 
 const HomeCarousel = () => {
   const { state } = useContext(Store)
   const { mode } = state
-  const { items, loading, error } = useCarousel()
+  const { data: items, isLoading: loading, error } = useGetCarouselItemsQuery()
 
   if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  if (error) return <div>Error: {error.message}</div> // Convert error to string
 
   // Ensure items is always treated as an array
   const carouselItems = Array.isArray(items) ? items : []

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
-import EditProductModal from '../../components/EditProductModal'
+import EditProductModal from '../components/EditProductModal'
 import { useGetProductsQuery } from '../../hooks/productHook'
 import { useGetCategoriesQuery } from '../../hooks/categoryHook'
 import { Product } from '../../types/Product'

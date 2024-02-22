@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import Table from 'react-bootstrap/Table'
-import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import { Table, Button, Container, Row, Col } from 'react-bootstrap'
 
 interface Column<T> {
   key: keyof T
   label: string
+  renderer?: (item: T) => React.ReactNode
 }
 
 interface TableProps<T> {
@@ -15,6 +12,7 @@ interface TableProps<T> {
   columns: Column<T>[]
   onSelectionChange?: (selectedItems: T[]) => void
   onEdit?: (item: T) => void
+  onDelete?: (item: T) => void
   children?: React.ReactNode
 }
 
@@ -23,6 +21,7 @@ function CustomTable<T>({
   columns,
   onSelectionChange,
   onEdit,
+  onDelete,
   children,
 }: TableProps<T>) {
   const [selectedItems, setSelectedItems] = useState<T[]>([])
@@ -89,21 +88,16 @@ function CustomTable<T>({
                   </td>
                   {columns.map((column) => (
                     <td key={String(column.key)}>
-                      {column.key === 'URLimage' ? (
-                        <img
-                          src={String(item[column.key])}
-                          alt=""
-                          style={{ width: '100px' }}
-                        />
-                      ) : (
-                        String(item[column.key])
-                      )}
+                      {column.renderer ? column.renderer(item) : String(item[column.key])}
                     </td>
                   ))}
                   <td>
                     {children}
                     {onEdit && (
                       <Button onClick={() => onEdit(item)}>Edit</Button>
+                    )}
+                    {onDelete && (
+                      <Button variant="danger" onClick={() => onDelete(item)}>Delete</Button>
                     )}
                   </td>
                 </tr>
@@ -137,3 +131,4 @@ function CustomTable<T>({
 }
 
 export default CustomTable
+
