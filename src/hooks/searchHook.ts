@@ -4,7 +4,7 @@ import apiClient from '../apiClient'
 import { useEffect, useState } from 'react'
 
 interface SearchParams {
-  searchText: string
+  searchText?: string
   minPrice?: number
   maxPrice?: number
   categories?: string[]
