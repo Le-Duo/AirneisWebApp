@@ -37,6 +37,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
+import ContactList from './backoffice/pages/MessagesContactList.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
           <Route path="/backoffice/orders" element={<OrdersList />} />
           <Route path="/backoffice/users" element={<UsersList />} />
           <Route path="/backoffice/products" element={<ProductsList />} />
+          <Route path="/backoffice/contacts" element={<ContactList />} />
         </Route>
       </Route>
     </Route>

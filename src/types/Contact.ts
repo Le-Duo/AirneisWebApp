@@ -1,5 +1,6 @@
 export type Contact = {
-    mail: string
-    subject: string
-    message: string
+  _id: string    
+  mail: string
+  subject: string
+  message: string
   }
