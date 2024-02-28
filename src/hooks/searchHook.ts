@@ -26,9 +26,16 @@ interface SearchResult {
 }
 
 const fetchSearchResults = async (params: SearchParams) => {
+  // Adjust parameters before sending
+  const adjustedParams = {
+    ...params,
+    categories: params.categories?.join(','), // Convert array to comma-separated string
+    inStock: params.inStock, // Ensure inStock is correctly interpreted
+  }
+
   const response = await apiClient.post<SearchResult[]>(
     '/api/products/search',
-    params
+    adjustedParams
   )
   return response.data
 }

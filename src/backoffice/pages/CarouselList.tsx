@@ -2,10 +2,7 @@ import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
 import EditCarouselModal from '../components/EditCarouselModal'
-import {
-  useGetCarouselItemsQuery,
-  useDeleteCarouselItemMutation,
-} from '../../hooks/carouselHook' // Step 1: Import useDeleteCarouselItemMutation
+import { useGetCarouselItemsQuery, useDeleteCarouselItemMutation } from '../../hooks/carouselHook' // Step 1: Import useDeleteCarouselItemMutation
 import { CarouselItem } from '../../types/Carousel'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -13,8 +10,7 @@ const CarouselList = () => {
   const { data: carouselItems, isLoading, error } = useGetCarouselItemsQuery()
   const [selectedCarouselItems] = useState<string[]>([])
   const [showEditModal, setShowEditModal] = useState(false)
-  const [currentCarouselItem, setCurrentCarouselItem] =
-    useState<CarouselItem | null>(null)
+  const [currentCarouselItem, setCurrentCarouselItem] = useState<CarouselItem | null>(null)
   const queryClient = useQueryClient()
   const { mutate: deleteCarouselItem } = useDeleteCarouselItemMutation() // Step 2: Get the mutation function
 
@@ -24,7 +20,7 @@ const CarouselList = () => {
   }
 
   const handleCarouselUpdate = () => {
-    queryClient.invalidateQueries({ queryKey: ['getCarouselItems'] })
+    queryClient.refetchQueries({ queryKey: ['getCarouselItems'] })
   }
 
   const handleDeleteCarouselItem = (item: CarouselItem) => {
@@ -36,7 +32,7 @@ const CarouselList = () => {
   }
 
   const handleDeleteSelectedCarouselItems = () => {
-    selectedCarouselItems.forEach((id) => {
+    selectedCarouselItems.forEach(id => {
       deleteCarouselItem(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['getCarouselItems'] })
@@ -47,7 +43,7 @@ const CarouselList = () => {
 
   const carouselItemsWithSelection = useMemo(
     () =>
-      carouselItems?.map((carouselItem) => ({
+      carouselItems?.map(carouselItem => ({
         ...carouselItem,
         isSelected: selectedCarouselItems.includes(carouselItem._id),
       })) || [],
@@ -61,11 +57,7 @@ const CarouselList = () => {
         key: 'src' as const,
         label: 'Image',
         renderer: (item: CarouselItem) => (
-          <img
-            src={item.src}
-            alt={item.alt}
-            style={{ width: '500px', height: 'auto' }}
-          />
+          <img src={item.src} alt={item.alt} style={{ width: '500px', height: 'auto' }} />
         ),
       },
       { key: 'alt' as const, label: 'Alt Text' },
