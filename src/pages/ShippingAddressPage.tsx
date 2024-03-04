@@ -71,7 +71,7 @@ export default function ShippingAddressPage() {
   };
 
   const saveAddressHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent form submission when clicking "Save Address"
+    e.preventDefault(); // Prevent form submission when clicking "Save Address and Continue"
     const newAddress = {
       firstName,
       lastName,
@@ -82,10 +82,21 @@ export default function ShippingAddressPage() {
       phone,
       user: userInfo?._id || "",
     };
+
+    // Dispatch the new address to the global state if needed
+    dispatch({
+      type: "SAVE_SHIPPING_ADDRESS",
+      payload: newAddress,
+    });
+
+    // Optionally, save the address to local storage
+    localStorage.setItem("shippingAddress", JSON.stringify(newAddress));
+
+    // Use the createShippingAddress hook to save the address, then navigate on success
     createShippingAddress(newAddress, {
       onSuccess: () => {
-        // Handle success, e.g., show a success message or refresh the list of addresses
-        console.log("Address saved successfully");
+        // Navigate to the payment page after successful save
+        navigate("/payment");
       },
       onError: (error) => {
         // Handle error, e.g., show an error message
@@ -109,9 +120,9 @@ export default function ShippingAddressPage() {
             <Form.Select onChange={handleAddressChange}>
               <option value="">Select...</option>
               {isLoading ? (
-                <option>Loading addresses...</option>
+                <option disabled>Loading addresses...</option>
               ) : error ? (
-                <option>Error fetching addresses</option>
+                <option disabled>Error fetching addresses</option>
               ) : (
                 addresses?.map((address: ShippingAddress) => (
                   <option key={address._id} value={address._id}>
@@ -200,7 +211,7 @@ export default function ShippingAddressPage() {
               onClick={saveAddressHandler}
               style={{ borderRadius: "100px" }}
             >
-              {isSaving ? "Saving..." : "Save Address"}
+              {isSaving ? "Saving..." : "Save Address and Continue"}
             </Button>
           </div>
           {/* Optionally display saveError if needed */}

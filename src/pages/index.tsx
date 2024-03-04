@@ -2,6 +2,7 @@ import { useGetCategoriesQuery } from '../hooks/categoryHook'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
 import HomeCarousel from '../components/HomeCarousel'
+import CookieConsent from '../components/CookieConsent'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Container, Row, Col } from 'react-bootstrap'
@@ -20,6 +21,7 @@ export default function HomePage() {
 
   return (
     <>
+      <CookieConsent />
       <Helmet>
         <title>Home | Airneis</title>
       </Helmet>

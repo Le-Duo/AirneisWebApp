@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Row, Col, Card, Button, Form, InputGroup, FormControl, Placeholder } from 'react-bootstrap'
-import useSearch from '../hooks/searchHook'
 import { Product } from '../types/Product'
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
@@ -9,7 +8,8 @@ import { ConvertProductToCartItem } from '../utils'
 import { useContext } from 'react'
 import { Store } from '../Store'
 import { CartItem } from '../types/Cart'
-import { FaArrowUp, FaArrowDown, FaMagnifyingGlass, FaArrowDownUpAcrossLine } from 'react-icons/fa6'
+import { FaMagnifyingGlass } from 'react-icons/fa6'
+import { useSearchProducts } from '../hooks/searchHook' // Importing the custom search hook
 
 const SearchPage = () => {
   const location = useLocation()
@@ -17,41 +17,28 @@ const SearchPage = () => {
   const query = new URLSearchParams(location.search)
 
   const [searchQuery, setSearchQuery] = useState('')
-  const [displayResults, setDisplayResults] = useState<Product[]>([])
-  const [sortOrder, setSortOrder] = useState<'recommended' | 'price (asc)' | 'price (desc)'>(
-    'recommended'
-  )
+  // Using the custom search hook
+  const { data: displayResults, isLoading, isError } = useSearchProducts({
+    searchText: query.get('query') || '',
+    price: query.get('price'),
+    categories: query.get('categories'),
+    inStock: query.get('inStock'),
+    materials: query.get('materials'),
+    sortBy: query.get('sortBy'),
+    sortOrder: query.get('sortOrder'),
+  })
 
   useEffect(() => {
     const queryText = query.get('query')
     setSearchQuery(queryText || '')
   }, [query])
 
-  const searchParams = {
-    searchText: searchQuery,
-  }
-
-  const { data: searchResults, isLoading: loading, error } = useSearch(searchParams)
-
   const { state, dispatch } = useContext(Store)
   const { cart } = state
 
-  useEffect(() => {
-    if (!loading && searchResults) {
-      let results = searchResults
-      if (sortOrder !== 'recommended') {
-        results = [...results].sort((a, b) =>
-          sortOrder === 'price (asc)'
-            ? Number(a.price) - Number(b.price)
-            : Number(b.price) - Number(a.price)
-        )
-      }
-      setDisplayResults(results)
-    }
-  }, [searchResults, loading, searchParams, sortOrder])
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
+    navigate(`/search?query=${searchQuery}`);
   }
 
   const goToProductPage = (slug: string) => {
@@ -73,14 +60,6 @@ const SearchPage = () => {
       },
     })
     toast.success('Product added to cart')
-  }
-
-  const handleSortByPrice = () => {
-    setSortOrder(prevOrder => {
-      if (prevOrder === 'recommended') return 'price (asc)'
-      if (prevOrder === 'price (asc)') return 'price (desc)'
-      return 'recommended'
-    })
   }
 
   return (
@@ -117,63 +96,43 @@ const SearchPage = () => {
               <h2>Results</h2>
             </Col>
           </Row>
-          <Row className='justify-content-center'>
-            <Col xs='auto'>
-              <Button
-                size='sm'
-                variant='secondary'
-                onClick={handleSortByPrice}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : isError ? (
+            <p>Error fetching results.</p>
+          ) : displayResults && displayResults.length > 0 ? (
+            displayResults.map((product: Product) => (
+              <Col
+                key={product._id}
+                xs={12}
+                md={4}
+                className='mb-3'
+                onClick={() => goToProductPage(product.slug)}
                 style={{
-                  backgroundColor: 'transparent',
-                  borderColor: 'transparent',
+                  cursor: 'pointer',
                 }}
               >
-                {sortOrder === 'price (asc)' && <FaArrowUp />}
-                {sortOrder === 'price (desc)' && <FaArrowDown />}
-                {sortOrder === 'recommended' && <FaArrowDownUpAcrossLine />}
-                Sort by: {sortOrder}
-              </Button>
-            </Col>
-          </Row>
-          {loading && (
-            <Placeholder as='p' animation='glow'>
-              <Placeholder xs={12} />
-            </Placeholder>
+                <Card>
+                  <Card.Img variant='top' src={product.URLimage} />
+                  <Card.Body>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Text>£ {product.price}</Card.Text>
+                    <Button
+                      variant='primary'
+                      onClick={e => {
+                        e.stopPropagation()
+                        addToCartHandler(product)
+                      }}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))
+          ) : (
+            <p>No results found</p>
           )}
-          {error && <p>Error: {error.message}</p>}
-          <Row className='mt-3'>
-            {displayResults && displayResults.length > 0
-              ? displayResults.map((product: Product) => (
-                  <Col
-                    key={product._id}
-                    xs={12}
-                    md={4}
-                    className='mb-3'
-                    onClick={() => goToProductPage(product.slug)}
-                    style={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <Card>
-                      <Card.Img variant='top' src={product.URLimage} />
-                      <Card.Body>
-                        <Card.Title>{product.name}</Card.Title>
-                        <Card.Text>£ {product.price}</Card.Text>
-                        <Button
-                          variant='primary'
-                          onClick={e => {
-                            e.stopPropagation()
-                            addToCartHandler(product)
-                          }}
-                        >
-                          Add to Cart
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))
-              : !loading && <p>No results found</p>}
-          </Row>
         </Col>
       </Row>
     </>
@@ -181,3 +140,4 @@ const SearchPage = () => {
 }
 
 export default SearchPage
+
