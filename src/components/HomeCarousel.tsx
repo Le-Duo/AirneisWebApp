@@ -23,9 +23,9 @@ const HomeCarousel = () => {
     <Carousel>
       {carouselItems.map((item, index) => (
         <Carousel.Item key={index}>
-          <img className="d-block w-100" src={item.src} alt={item.alt} />
+          <img className='d-block w-100' src={item.src} alt={item.alt} />
           <Carousel.Caption className={mode === 'dark' ? 'dark-mode' : ''}>
-            <h3 style={{ textShadow: '1px 1px 2px black' }}>{item.caption}</h3>
+            <h3 style={{ textShadow: '0px 0px 10px black' }}>{item.caption}</h3>
           </Carousel.Caption>
         </Carousel.Item>
       ))}
