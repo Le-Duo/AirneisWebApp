@@ -17,7 +17,7 @@ interface TableProps<T> {
 }
 
 function CustomTable<T>({
-  data,
+  data = [],
   columns,
   onSelectionChange,
   onEdit,

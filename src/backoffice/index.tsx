@@ -25,6 +25,9 @@ export const NavigationSystem = () => {
         <LinkContainer to="/backoffice/carousel">
           <Nav.Link>Carousel</Nav.Link>
         </LinkContainer>
+        <LinkContainer to="/backoffice/contact">
+          <Nav.Link>Contact</Nav.Link>
+        </LinkContainer>
       </Nav>
       <Outlet />
     </>

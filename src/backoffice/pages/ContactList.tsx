@@ -1,27 +1,38 @@
-import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Table, Button, Form } from 'react-bootstrap'
+import { useContactsQuery } from '../../hooks/contactHook'
+import Table from '../components/Table'
 import { Contact } from '../../types/Contact'
-import {
-    useCreateContactMutation
-} from '../../hooks/contactHook'
 
 const ContactList = () => {
-    const createContactMutation = useCreateContactMutation()
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
+    const { data, isSuccess, isError, error, isLoading } = useContactsQuery()
 
-    const handleCreateContact = async () => {
-        await createContactMutation.mutateAsync({
-            name: name,
-            email: email,
-            message: message
-        })
-        setName('')
-        setEmail('')
-        setMessage('')
+    console.log('Fetching contacts:', isSuccess ? 'Success' : 'Failed', data);
+
+    if (isLoading) {
+        console.log('Fetching contacts: Loading');
+    } else {
+        console.log('Fetching contacts:', isSuccess ? 'Success' : 'Failed', data);
     }
+
+    if (isError) {
+        console.error('Error fetching contacts:', error);
+        return <div>Error loading contacts.</div>;
+    }
+
+    if (!isSuccess || !data) {
+        return <div>Loading...</div>;
+    }
+
+    const contacts = data.contacts;
+
+    const columns: Array<{ key: keyof Contact; label: string }> = [
+        { key: 'mail', label: 'Email' },
+        { key: 'subject', label: 'Subject' },
+        { key: 'message', label: 'Message' },
+        { key: 'user', label: 'User' },
+    ]
+
+    console.log('Columns for table:', columns);
 
     return (
         <div>
@@ -29,38 +40,12 @@ const ContactList = () => {
                 <title>Contact List | Airneis</title>
             </Helmet>
             <h1>Contact List</h1>
-            <Form>
-                <Form.Group controlId="name">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group controlId="message">
-                    <Form.Label>Message</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        placeholder="Enter message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    />
-                </Form.Group>
-                <Button variant="primary" onClick={handleCreateContact}>
-                    Create
-                </Button>
-            </Form>
+            <Table
+                data={contacts}
+                columns={columns}
+            />
         </div>
     )
 }
+
+export default ContactList

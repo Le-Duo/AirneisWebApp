@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Row, Col, Card, Button, Form, InputGroup, FormControl, Placeholder } from 'react-bootstrap'
+import { Row, Col, Card, Button, Form, InputGroup, FormControl } from 'react-bootstrap'
 import { Product } from '../types/Product'
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
@@ -19,13 +19,13 @@ const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   // Using the custom search hook
   const { data: displayResults, isLoading, isError } = useSearchProducts({
-    searchText: query.get('query') || '',
-    price: query.get('price'),
-    categories: query.get('categories'),
-    inStock: query.get('inStock'),
-    materials: query.get('materials'),
-    sortBy: query.get('sortBy'),
-    sortOrder: query.get('sortOrder'),
+    searchText: query.get('query') ?? undefined,
+    price: query.get('price') ?? undefined,
+    categories: query.get('categories')?.split(',') ?? undefined,
+    inStock: query.get('inStock') === 'true',
+    materials: query.get('materials')?.split(',') ?? undefined,
+    sortBy: query.get('sortBy') as 'asc' | 'desc' | undefined,
+    sortOrder: query.get('sortOrder') as 'asc' | 'desc' | undefined,
   })
 
   useEffect(() => {
@@ -140,4 +140,3 @@ const SearchPage = () => {
 }
 
 export default SearchPage
-

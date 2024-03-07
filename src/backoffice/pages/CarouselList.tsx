@@ -31,16 +31,6 @@ const CarouselList = () => {
     })
   }
 
-  const handleDeleteSelectedCarouselItems = () => {
-    selectedCarouselItems.forEach(id => {
-      deleteCarouselItem(id, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['getCarouselItems'] })
-        },
-      })
-    })
-  }
-
   const carouselItemsWithSelection = useMemo(
     () =>
       carouselItems?.map(carouselItem => ({
