@@ -34,9 +34,19 @@ const ProductsList = () => {
 
   const columns = useMemo(
     () => [
-      { key: 'URLimage' as const, label: 'Image' },
+      {
+        key: 'URLimage' as const,
+        label: 'Image',
+        renderer: (item: Product) => (
+          <img src={item.URLimage} alt={item.name} style={{ width: '100px', height: 'auto' }} />
+        ),
+      },
       { key: 'name' as const, label: 'Name' },
-      { key: 'slug' as const, label: 'URL' },
+      {
+        key: 'slug' as const,
+        label: 'URL',
+        renderer: (item: Product) => `.../product/${item.slug}`,
+      },
       { key: 'categoryName' as const, label: 'Category' },
       { key: 'price' as const, label: 'Price' },
       { key: 'stock' as const, label: 'Stock' },

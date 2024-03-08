@@ -8,19 +8,28 @@ export enum OrderStatus {
   Cancelled = 'cancelled',
 }
 
+export type PaymentResult = {
+  paymentId: string
+  status: string
+  update_time: string
+  email_address: string
+}
+
 export type Order = {
   status: OrderStatus
   _id: string
-  orderItems: CartItem[] // Consider aligning with the Item model in order.ts if needed
+  orderNumber: string
+  orderItems: CartItem[]
   shippingAddress: ShippingAddress
   paymentMethod: string
-  user: User | string // Adjust based on whether you receive a complete User object or just the ID
+  paymentResult?: PaymentResult
+  user: User | string 
   createdAt: string
   updatedAt: string
   isPaid: boolean
-  paidAt: string | Date // Align with order.ts using Date
+  paidAt?: string | Date
   isDelivered: boolean
-  deliveredAt: string | Date // Align with order.ts using Date
+  deliveredAt?: string | Date
   itemsPrice: number
   shippingPrice: number
   taxPrice: number

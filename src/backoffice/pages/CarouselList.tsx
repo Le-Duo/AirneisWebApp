@@ -1,63 +1,85 @@
-import { useState, useMemo } from 'react'
-import { Helmet } from 'react-helmet-async'
-import Table from '../components/Table'
-import EditCarouselModal from '../components/EditCarouselModal'
-import { useGetCarouselItemsQuery, useDeleteCarouselItemMutation } from '../../hooks/carouselHook' // Step 1: Import useDeleteCarouselItemMutation
-import { CarouselItem } from '../../types/Carousel'
-import { useQueryClient } from '@tanstack/react-query'
+import { useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
+import Table from "../components/Table";
+import EditCarouselModal from "../components/EditCarouselModal";
+import {
+  useGetCarouselItemsQuery,
+  useDeleteCarouselItemMutation,
+} from "../../hooks/carouselHook";
+import { CarouselItem } from "../../types/Carousel";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CarouselList = () => {
-  const { data: carouselItems, isLoading, error } = useGetCarouselItemsQuery()
-  const [selectedCarouselItems] = useState<string[]>([])
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [currentCarouselItem, setCurrentCarouselItem] = useState<CarouselItem | null>(null)
-  const queryClient = useQueryClient()
-  const { mutate: deleteCarouselItem } = useDeleteCarouselItemMutation() // Step 2: Get the mutation function
+  const {
+    data: carouselItems,
+    isLoading,
+    error,
+    refetch: refetchCarouselItems,
+  } = useGetCarouselItemsQuery();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentCarouselItem, setCurrentCarouselItem] =
+    useState<CarouselItem | null>(null);
+  const queryClient = useQueryClient();
+  const { mutate: deleteCarouselItem } = useDeleteCarouselItemMutation();
 
   const openEditModal = (carouselItem: CarouselItem) => {
-    setCurrentCarouselItem(carouselItem)
-    setShowEditModal(true)
-  }
+    setCurrentCarouselItem(carouselItem);
+    setShowEditModal(true);
+  };
 
   const handleCarouselUpdate = () => {
-    queryClient.refetchQueries({ queryKey: ['getCarouselItems'] })
-  }
+    queryClient.refetchQueries({ queryKey: ["getCarouselItems"] });
+  };
 
-  const handleDeleteCarouselItem = (item: CarouselItem) => {
+  const handleDelete = (item: { _id: string; src: string; alt: string; caption: string; }) => {
     deleteCarouselItem(item._id, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['getCarouselItems'] })
+        refetchCarouselItems();
       },
-    })
-  }
+      onError: (error) => {
+        console.error("Error deleting carousel item:", error);
+      },
+    });
+  };
 
-  const carouselItemsWithSelection = useMemo(
+  const carouselItemsProcessed = useMemo(
     () =>
-      carouselItems?.map(carouselItem => ({
+      carouselItems?.map(( carouselItem) => ({
         ...carouselItem,
-        isSelected: selectedCarouselItems.includes(carouselItem._id),
       })) || [],
-    [carouselItems, selectedCarouselItems]
-  )
+    [carouselItems]
+  );
 
   const columns = useMemo(
     () => [
-      { key: '_id' as const, label: 'ID' },
       {
-        key: 'src' as const,
-        label: 'Image',
+        _id: "srcColumn", // Add an _id property
+        key: "src" as const,
+        label: "Image",
         renderer: (item: CarouselItem) => (
-          <img src={item.src} alt={item.alt} style={{ width: '500px', height: 'auto' }} />
+          <img
+            src={item.src}
+            alt={item.alt}
+            style={{ width: "500px", height: "auto" }}
+          />
         ),
       },
-      { key: 'alt' as const, label: 'Alt Text' },
-      { key: 'caption' as const, label: 'Caption' },
+      {
+        _id: "altColumn", // Add an _id property
+        key: "alt" as const,
+        label: "Alt Text",
+      },
+      {
+        _id: "captionColumn", // Add an _id property
+        key: "caption" as const,
+        label: "Caption",
+      },
     ],
     []
-  )
+  );
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error fetching carousel items</div>
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching carousel items</div>;
 
   return (
     <div>
@@ -66,10 +88,10 @@ const CarouselList = () => {
       </Helmet>
       <h2>Carousel List</h2>
       <Table
-        data={carouselItemsWithSelection}
+        data={carouselItemsProcessed}
         columns={columns}
         onEdit={openEditModal}
-        onDelete={handleDeleteCarouselItem}
+        onDelete={handleDelete}
       />
       {currentCarouselItem && (
         <EditCarouselModal
@@ -80,7 +102,7 @@ const CarouselList = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CarouselList
+export default CarouselList;

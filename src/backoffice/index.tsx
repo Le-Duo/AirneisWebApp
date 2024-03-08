@@ -9,7 +9,7 @@ export const NavigationSystem = () => {
       <Helmet>
         <title>Backoffice Navigation</title>
       </Helmet>
-      <Nav variant="tabs" defaultActiveKey="/backoffice">
+      <Nav variant="tabs">
         <LinkContainer to="/backoffice">
           <Nav.Link>Tableau de Bord</Nav.Link>
         </LinkContainer>

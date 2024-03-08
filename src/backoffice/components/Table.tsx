@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Table, Button, Container, Row, Col } from 'react-bootstrap'
 
 interface Column<T> {
+  _id: string
   key: keyof T
   label: string
   renderer?: (item: T) => React.ReactNode
@@ -10,37 +11,20 @@ interface Column<T> {
 interface TableProps<T> {
   data: T[]
   columns: Column<T>[]
-  onSelectionChange?: (selectedItems: T[]) => void
   onEdit?: (item: T) => void
-  onDelete?: (item: T) => void
+  onDelete?: (item: T) => void;
   children?: React.ReactNode
 }
 
 function CustomTable<T>({
   data = [],
   columns,
-  onSelectionChange,
   onEdit,
   onDelete,
   children,
 }: TableProps<T>) {
-  const [selectedItems, setSelectedItems] = useState<T[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
-
-  const handleSelectItem = (item: T, isChecked: boolean) => {
-    setSelectedItems((prev) =>
-      isChecked
-        ? [...prev, item]
-        : prev.filter((selectedItem) => selectedItem !== item)
-    )
-    onSelectionChange?.(selectedItems)
-  }
-
-  const handleDeleteSelected = () => {
-    selectedItems.forEach((item) => onDelete?.(item))
-    setSelectedItems([])
-  }
 
   const paginatedItems = data.slice(
     (currentPage - 1) * itemsPerPage,
@@ -67,15 +51,6 @@ function CustomTable<T>({
           >
             Next
           </Button>
-          {onDelete && (
-            <Button
-              variant="danger"
-              className="m-1"
-              onClick={handleDeleteSelected}
-            >
-              Delete Selected
-            </Button>
-          )}
         </Col>
       </Row>
       <Row>
@@ -83,7 +58,6 @@ function CustomTable<T>({
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Select</th>
                 {columns.map((column) => (
                   <th key={String(column.key)}>{column.label}</th>
                 ))}
@@ -93,13 +67,6 @@ function CustomTable<T>({
             <tbody>
               {paginatedItems.map((item, index) => (
                 <tr key={index}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(item)}
-                      onChange={(e) => handleSelectItem(item, e.target.checked)}
-                    />
-                  </td>
                   {columns.map((column) => (
                     <td key={String(column.key)}>
                       {column.renderer
@@ -111,6 +78,9 @@ function CustomTable<T>({
                     {children}
                     {onEdit && (
                       <Button onClick={() => onEdit(item)}>Edit</Button>
+                    )}
+                    {onDelete && (
+                      <Button variant="danger" onClick={() => onDelete(item)}>Delete</Button>
                     )}
                   </td>
                 </tr>

@@ -1,51 +1,78 @@
-import { Helmet } from 'react-helmet-async'
-import { useContactsQuery } from '../../hooks/contactHook'
-import Table from '../components/Table'
-import { Contact } from '../../types/Contact'
+import { useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
+import Table from "../components/Table";
+import {
+  useContactsQuery,
+  useDeleteContactMutation,
+} from "../../hooks/contactHook";
+import { Contact } from "../../types/Contact";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ContactList = () => {
-    const { data, isSuccess, isError, error, isLoading } = useContactsQuery()
+  const {
+    data: contacts,
+    isLoading,
+    error,
+    refetch: refetchContacts,
+  } = useContactsQuery();
+  const queryClient = useQueryClient();
+  const { mutate: deleteContact } = useDeleteContactMutation();
 
-    console.log('Fetching contacts:', isSuccess ? 'Success' : 'Failed', data);
+  const handleDelete = (contactId: string) => {
+    deleteContact(contactId, {
+      onSuccess: () => {
+        refetchContacts();
+      },
+      onError: (error) => {
+        console.error("Error deleting contact:", error);
+      },
+    });
+  };
 
-    if (isLoading) {
-        console.log('Fetching contacts: Loading');
-    } else {
-        console.log('Fetching contacts:', isSuccess ? 'Success' : 'Failed', data);
-    }
+  const contactsProcessed = useMemo(
+    () => contacts?.map((contact: Contact) => ({
+        ...contact,
+      })) || [],
+    [contacts]
+  );
 
-    if (isError) {
-        console.error('Error fetching contacts:', error);
-        return <div>Error loading contacts.</div>;
-    }
+  const columns = useMemo(
+    () => [
+      {
+        _id: "mailColumn",
+        key: "mail",
+        label: "Email",
+      },
+      {
+        _id: "subjectColumn",
+        key: "subject",
+        label: "Subject",
+      },
+      {
+        _id: "messageColumn",
+        key: "message",
+        label: "Message",
+      },
+    ],
+    []
+  );
 
-    if (!isSuccess || !data) {
-        return <div>Loading...</div>;
-    }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching contacts</div>;
 
-    const contacts = data.contacts;
+  return (
+    <div>
+      <Helmet>
+        <title>Contact List</title>
+      </Helmet>
+      <h2>Contact List</h2>
+      <Table
+        data={contactsProcessed}
+        columns={columns}
+        onDelete={(contact) => handleDelete(contact._id)}
+      />
+    </div>
+  );
+};
 
-    const columns: Array<{ key: keyof Contact; label: string }> = [
-        { key: 'mail', label: 'Email' },
-        { key: 'subject', label: 'Subject' },
-        { key: 'message', label: 'Message' },
-        { key: 'user', label: 'User' },
-    ]
-
-    console.log('Columns for table:', columns);
-
-    return (
-        <div>
-            <Helmet>
-                <title>Contact List | Airneis</title>
-            </Helmet>
-            <h1>Contact List</h1>
-            <Table
-                data={contacts}
-                columns={columns}
-            />
-        </div>
-    )
-}
-
-export default ContactList
+export default ContactList;
