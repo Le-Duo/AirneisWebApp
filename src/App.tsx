@@ -112,7 +112,7 @@ function App() {
                     {userInfo ? (
                       <>
                         <LinkContainer to="/profile">
-                          <Nav.Link>My Settings</Nav.Link>
+                          <Nav.Link>My Profile</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to="/orderhistory">
                           <Nav.Link>My Orders</Nav.Link>
