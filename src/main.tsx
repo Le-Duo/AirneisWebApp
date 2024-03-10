@@ -17,6 +17,7 @@ import ContactPage from './pages/ContactPage.tsx'
 import TOSPage from './pages/TOSPage'
 import SearchPage from './pages/SearchPage'
 import SigninPage from './pages/SigninPage'
+import ProfilePage from './pages/ProfilePage.tsx'
 import SignupPage from './pages/SignupPage'
 import ShippingAdressPage from './pages/ShippingAdressPage.tsx'
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
       />
       <Route path="/password-reset/:token" element={<PasswordReset />} />
       <Route path="" element={<ProtectedRoute />}>
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="shipping" element={<ShippingAdressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />
