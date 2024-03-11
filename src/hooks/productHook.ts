@@ -19,13 +19,10 @@ export const useUpdateProductMutation = () => {
 
       // Conditionally add category if it exists
       if (product.category) {
-        payload.category = { name: product.category.name }
+        payload.category = { ...product.category }
       }
 
-      const response = await apiClient.put<Product>(
-        `api/products/${product._id}`,
-        payload
-      )
+      const response = await apiClient.put<Product>(`api/products/${product._id}`, payload)
       return response.data
     },
     onSuccess: () => {
@@ -34,19 +31,12 @@ export const useUpdateProductMutation = () => {
   })
 }
 
-export const useGetProductsQuery = (
-  category: string | null
-): UseQueryResult<Product[], Error> => {
+export const useGetProductsQuery = (category: string | null): UseQueryResult<Product[], Error> => {
   return useQuery({
     queryKey: ['getProducts', category],
     queryFn: async () => {
-      console.log(
-        'Fetching products data using useGetProductsQuery for category:',
-        category
-      )
-      const endpoint = category
-        ? `api/products?category=${category}`
-        : 'api/products'
+      console.log('Fetching products data using useGetProductsQuery for category:', category)
+      const endpoint = category ? `api/products?category=${category}` : 'api/products'
       const products = (await apiClient.get(endpoint)).data
       console.log(
         'Fetched products with URLimage:',
@@ -56,9 +46,7 @@ export const useGetProductsQuery = (
       console.log('Stocks data fetched successfully:', stocks)
 
       const productsWithStock = products.map((product: Product) => {
-        const stock = stocks.find(
-          (stock: Stock) => stock.product._id === product._id
-        )?.quantity
+        const stock = stocks.find((stock: Stock) => stock.product._id === product._id)?.quantity
         return {
           ...product,
           stock: stock,
@@ -77,17 +65,12 @@ export const useGetProductDetailsBySlugQuery = (slug: string) =>
       console.log(
         `Fetching product details for slug: ${slug} using useGetProductDetailsBySlugQuery`
       )
-      const productDetails = (
-        await apiClient.get<Product>(`api/products/slug/${slug}`)
-      ).data
+      const productDetails = (await apiClient.get<Product>(`api/products/slug/${slug}`)).data
       console.log(
         `Fetched product details for slug: ${slug} with URLimage:`,
         productDetails.URLimage
       )
-      console.log(
-        `Product details fetched successfully for slug: ${slug}:`,
-        productDetails
-      )
+      console.log(`Product details fetched successfully for slug: ${slug}:`, productDetails)
 
       const stocks = (await apiClient.get('api/stocks')).data
       const productStock = stocks.find(

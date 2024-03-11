@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 export const useGetOrderDetailsQuery = (id: string) =>
   useQuery({
     queryKey: ['orders', id],
-    queryFn: async () => (await apiClient.get<Order>(`api/orders/${id}`)).data,
+    queryFn: async () => (await apiClient.get<Order>(`/api/orders/${id}`)).data,
   })
 
 export const useCreateOrderMutation = () =>
@@ -20,20 +20,17 @@ export const useCreateOrderMutation = () =>
       taxPrice: number
       totalPrice: number
       user: string
-    }) => (
-      await apiClient.post<Order>(
-        'api/orders',
-        order
-      )
-    ).data,
+      isPaid: boolean
+      isDelivered: boolean
+    }) => (await apiClient.post<Order>('/api/orders', order)).data,
   })
 
 export const useUpdateOrderMutation = () =>
   useMutation({
-    mutationFn: async (order: Partial<Order> & { _id: string }) =>
+    mutationFn: async (order: Partial<Order> & { orderNumber: string }) =>
       (
         await apiClient.put<{ message: string; order: Order }>(
-          `api/orders/${order._id}`,
+          `/api/orders/${order.orderNumber}`,
           order
         )
       ).data,
@@ -50,8 +47,7 @@ export const useDeleteOrderMutation = () => {
 export const useGetOrderHistoryQuery = () =>
   useQuery({
     queryKey: ['order-history'],
-    queryFn: async () =>
-      (await apiClient.get<Order[]>(`/api/orders/mine`)).data,
+    queryFn: async () => (await apiClient.get<Order[]>(`/api/orders/mine`)).data,
   })
 
 export const useGetOrdersQuery = () => {

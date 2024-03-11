@@ -30,8 +30,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   const updateStock = useUpdateStockMutation()
   const createStock = useCreateStockMutation()
   const { data: stockData } = useGetStockByProductIdQuery(product._id)
-  const { data: categoriesData, isLoading: isLoadingCategories } =
-    useGetCategoriesQuery()
+  const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery()
 
   useEffect(() => {
     setEditedProduct(product)
@@ -39,27 +38,26 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 
   useEffect(() => {
     if (stockData) {
-      setEditedProduct((prev) => ({ ...prev, stock: stockData.quantity }))
+      setEditedProduct(prev => ({ ...prev, stock: stockData.quantity }))
     }
   }, [stockData])
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
     if (name === 'category') {
-      if (categories && categories.length > 0) {
-        const selectedCategory = categories.find(
-          (category) => category.name === value
-        )
+      if (categoriesData && categoriesData.length > 0) {
+        const selectedCategory = categoriesData.find(category => category.name === value)
         if (selectedCategory) {
-          setEditedProduct((prev) => ({ ...prev, category: selectedCategory }))
+          setEditedProduct(prev => ({
+            ...prev,
+            category: selectedCategory,
+          }))
         }
       }
     } else {
-      setEditedProduct((prev) => ({ ...prev, [name]: value }))
+      setEditedProduct(prev => ({ ...prev, [name]: value }))
     }
   }
 
@@ -84,96 +82,96 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   }
 
   return (
-    <Modal show={show} onHide={onHide} size="lg">
+    <Modal show={show} onHide={onHide} size='lg'>
       <Modal.Header closeButton>
         <Modal.Title>Edit Product</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              type="text"
-              name="name"
+              type='text'
+              name='name'
               value={editedProduct.name}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Slug</Form.Label>
             <Form.Control
-              type="text"
-              name="slug"
+              type='text'
+              name='slug'
               value={editedProduct.slug || ''}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>URL Image</Form.Label>
             <Form.Control
-              type="text"
-              name="URLimage"
+              type='text'
+              name='URLimage'
               value={editedProduct.URLimage}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Category</Form.Label>
             <Form.Select
-              name="category"
+              name='category'
               value={editedProduct.category?.name || ''}
               onChange={handleChange}
               disabled={isLoadingCategories}
             >
-              {categoriesData?.map((category) => (
+              {categoriesData?.map(category => (
                 <option key={category._id} value={category.name}>
                   {category.name}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Price</Form.Label>
             <Form.Control
-              type="number"
-              name="price"
+              type='number'
+              name='price'
               value={editedProduct.price}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Description</Form.Label>
             <Form.Control
-              as="textarea"
-              name="description"
+              as='textarea'
+              name='description'
               value={editedProduct.description}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Stock</Form.Label>
             <Form.Control
-              type="number"
-              name="stock"
+              type='number'
+              name='stock'
               value={editedProduct.stock || ''}
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Check
-              type="checkbox"
-              label="Priority"
-              name="priority"
+              type='checkbox'
+              label='Priority'
+              name='priority'
               checked={editedProduct.priority || false}
-              onChange={(e) =>
-                setEditedProduct((prev) => ({
+              onChange={e =>
+                setEditedProduct(prev => ({
                   ...prev,
                   priority: e.target.checked,
                 }))
               }
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant='primary' type='submit'>
             Save Changes
           </Button>
         </Form>

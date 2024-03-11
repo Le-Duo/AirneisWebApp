@@ -216,3 +216,9 @@ footer .desktop-footer .icon-links {
     width: auto;
   }
 }
+
+.card-img-top {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
