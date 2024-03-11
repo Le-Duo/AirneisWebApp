@@ -4,7 +4,8 @@ import { Product } from '../types/Product'
 
 interface SearchParams {
   searchText?: string;
-  price?: string;
+  minPrice?: number; 
+  maxPrice?: number;
   categories?: string[];
   inStock?: boolean;
   materials?: string[];
@@ -14,7 +15,8 @@ interface SearchParams {
 
 export const useSearchProducts = ({
   searchText,
-  price,
+  minPrice,
+  maxPrice,
   categories,
   inStock,
   materials,
@@ -22,11 +24,12 @@ export const useSearchProducts = ({
   sortOrder,
 }: SearchParams) => {
   return useQuery<Product[], Error>({
-    queryKey: ['searchProducts', { searchText, price, categories, inStock, materials, sortBy, sortOrder }],
+    queryKey: ['searchProducts', { searchText, minPrice, maxPrice, categories, inStock, materials, sortBy, sortOrder }],
     queryFn: () => apiClient.get('/api/products/search', {
       params: {
         searchText,
-        price,
+        minPrice,
+        maxPrice,
         categories: categories?.join(','),
         inStock,
         materials: materials?.join(','),

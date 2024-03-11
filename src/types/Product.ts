@@ -6,6 +6,7 @@ export type Product = {
   category?: { name: string }
   price: number
   description: string
+  materials: string[]
   stock?: number
   priority?: boolean
 }
