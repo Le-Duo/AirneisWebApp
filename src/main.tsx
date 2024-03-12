@@ -31,6 +31,7 @@ import UsersList from './backoffice/pages/UsersList.tsx'
 import ProductsList from './backoffice/pages/ProductsList.tsx'
 import CarouselList from './backoffice/pages/CarouselList.tsx'
 import ContactList from './backoffice/pages/ContactList.tsx'
+import FeaturedProductList from './backoffice/pages/FeaturedProductList.tsx'
 import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
 import PasswordReset from './components/PasswordReset'
@@ -76,6 +77,7 @@ const router = createBrowserRouter(
           <Route path="/backoffice/products" element={<ProductsList />} />
           <Route path="/backoffice/carousel" element={<CarouselList />} />
           <Route path="/backoffice/contact" element={<ContactList />} />
+          <Route path="/backoffice/featured-products" element={<FeaturedProductList />} />
         </Route>
       </Route>
     </Route>

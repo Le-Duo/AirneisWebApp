@@ -222,3 +222,33 @@ footer .desktop-footer .icon-links {
   height: 30vh;
   object-fit: cover;
 }
+
+.product-grid-item {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.product-grid-item:hover {
+  transform: scale(1.05);
+}
+
+.product-grid-item.selected {
+  border: 2px solid #007bff;
+  border-radius: 0.25rem;
+}
+
+.product-card {
+  text-align: center;
+  padding: 10px;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+}
+
+.product-name {
+  margin-top: 10px;
+  font-weight: bold;
+}

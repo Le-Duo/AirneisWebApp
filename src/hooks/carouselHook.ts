@@ -18,6 +18,7 @@ export const useGetCarouselItemsQuery = (): UseQueryResult<CarouselItem[], Error
         throw new Error('Failed to fetch carousel items');
       }
     },
+    staleTime: 5 * 60 * 1000, // Adding stale while revalidate strategy
   });
 };
 

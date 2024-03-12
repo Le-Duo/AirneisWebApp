@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Button, Container, Row, Col } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Table, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
 import { FaAnglesLeft, FaAngleLeft, FaAngleRight, FaAnglesRight } from 'react-icons/fa6'
 
 export interface Column<T> {
@@ -17,56 +17,13 @@ interface TableProps<T> {
   children?: React.ReactNode
 }
 
-interface PaginationProps {
-  currentPage: number
-  itemsPerPage: number
-  totalItems: number
-  onPageChange: (page: number) => void
-}
-
-function Pagination({ currentPage, itemsPerPage, totalItems, onPageChange }: PaginationProps) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1)
-
-  return (
-    <div>
-      <Button onClick={() => onPageChange(1)} disabled={currentPage === 1}>
-        <FaAnglesLeft />
-      </Button>
-      <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-        <FaAngleLeft />
-      </Button>
-      {pageNumbers.map(page => (
-        <Button key={page} onClick={() => onPageChange(page)} active={currentPage === page}>
-          {page}
-        </Button>
-      ))}
-      <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        <FaAngleRight />
-      </Button>
-      <Button onClick={() => onPageChange(totalPages)} disabled={currentPage === totalPages}>
-        <FaAnglesRight />
-      </Button>
-    </div>
-  )
-}
-
 function CustomTable<T>({ data = [], columns, onEdit, onDelete, children }: TableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filteredData, setFilteredData] = useState(data)
   const itemsPerPage = 10
+  const totalItems = data.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
 
-  useEffect(() => {
-    const search = searchTerm.toLowerCase()
-    const filtered = data.filter(item =>
-      columns.some(column => String(item[column.key]).toLowerCase().includes(search))
-    )
-    setFilteredData(filtered)
-    setCurrentPage(1) // Reset to first page on new search
-  }, [searchTerm, data, columns])
-
-  const paginatedItems = filteredData.slice(
+  const paginatedItems = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
@@ -77,26 +34,23 @@ function CustomTable<T>({ data = [], columns, onEdit, onDelete, children }: Tabl
 
   return (
     <Container fluid>
-      <Row className='mb-2'>
-        <Col>
-          <input
-            type='text'
-            placeholder='Search...'
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-          />
-        </Col>
-      </Row>
-      <Row className='mb-2'>
-        <Col>
-          <Pagination
-            currentPage={currentPage}
-            itemsPerPage={itemsPerPage}
-            totalItems={filteredData.length}
-            onPageChange={handlePageChange}
-          />
-        </Col>
-      </Row>
+      {data.length > 0 && (
+        <Row className='mb-2'>
+          <Col>
+            <Pagination>
+              <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+              <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+              {[...Array(totalPages).keys()].map(page => (
+                <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => handlePageChange(page + 1)}>
+                  {page + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+              <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+            </Pagination>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col>
           <Table striped bordered hover>

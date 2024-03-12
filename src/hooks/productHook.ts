@@ -35,7 +35,6 @@ export const useGetProductsQuery = (category: string | null): UseQueryResult<Pro
   return useQuery({
     queryKey: ['getProducts', category],
     queryFn: async () => {
-      console.log('Fetching products data using useGetProductsQuery for category:', category)
       const endpoint = category ? `api/products?category=${category}` : 'api/products'
       const products = (await apiClient.get(endpoint)).data
       console.log(
@@ -83,3 +82,14 @@ export const useGetProductDetailsBySlugQuery = (slug: string) =>
       }
     },
   })
+export const useGetUniqueMaterialsQuery = (): UseQueryResult<string[], Error> => {
+  return useQuery({
+    queryKey: ['getUniqueMaterials'],
+    queryFn: async () => {
+      const products = (await apiClient.get<Product[]>('api/products')).data
+      const allMaterials = products.flatMap(product => product.materials)
+      const uniqueMaterials = Array.from(new Set(allMaterials))
+      return uniqueMaterials
+    },
+  })
+}

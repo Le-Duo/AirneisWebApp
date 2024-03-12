@@ -23,20 +23,15 @@ function ProductItem({ product }: { product: Product }) {
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
     toast.success('Product added to cart')
   }
+
   return (
-    <Card>
+    <Card style={{ cursor: 'pointer' }}>
       <Link to={`/product/${product.slug}`}>
-        <img
-          src={product.URLimage || '/images/no-image.png'}
-          className="card-img-top"
-          alt={product.name}
-        />
+        <Card.Img variant='top' src={product.URLimage || '/images/no-image.png'} alt={product.name} />
       </Link>
       <Card.Body>
         <Link to={`/product/${product.slug}`}>
-          <Card.Title>
-            <strong>{product.name}</strong>
-          </Card.Title>
+          <Card.Title>{product.name}</Card.Title>
         </Link>
         <Card.Text>£{product.price}</Card.Text>
         {product.stock === 0 ? (
@@ -45,6 +40,7 @@ function ProductItem({ product }: { product: Product }) {
           </Button>
         ) : (
           <Button
+            variant='primary'
             onClick={() => addToCartHandler(ConvertProductToCartItem(product))}
           >
             Add to Cart

@@ -1,20 +1,26 @@
 import { useGetCategoriesQuery } from '../hooks/categoryHook'
+import { useGetFeaturedProductsQuery } from '../hooks/featuredProductHook'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
 import HomeCarousel from '../components/HomeCarousel'
 import CookieConsent from '../components/CookieConsent'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import ProductItem from '../components/ProductItem'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { data: categories, isLoading, error } = useGetCategoriesQuery()
+  const { data: categories, isLoading: isLoadingCategories, error: errorCategories } = useGetCategoriesQuery()
+  const { data: featuredProducts, isLoading: isLoadingFeaturedProducts, error: errorFeaturedProducts } = useGetFeaturedProductsQuery()
 
-  if (isLoading) return <LoadingBox />
-  if (error) return <MessageBox variant='danger'>Error loading categories</MessageBox>
+  if (isLoadingCategories || isLoadingFeaturedProducts) return <LoadingBox />
+  if (errorCategories) return <MessageBox variant='danger'>Error loading categories</MessageBox>
+  if (errorFeaturedProducts) return <MessageBox variant='danger'>Error loading featured products</MessageBox>
   if (!Array.isArray(categories))
     return <MessageBox variant='warning'>Categories data is not valid</MessageBox>
+  if (!Array.isArray(featuredProducts))
+    return <MessageBox variant='warning'>Featured products data is not valid</MessageBox>
 
   return (
     <>
@@ -63,7 +69,18 @@ export default function HomePage() {
             THE HIGHLANDERS OF THE MOMENT
           </Col>
         </Row>
-        <div className='product-grid'></div>
+        <div className='product-grid'>
+          <Container>
+            <Row className='mx-lg-5'>
+              {featuredProducts.map(featuredProduct => (
+                <Col xs={12} lg={4} key={featuredProduct._id} className='mb-3'>
+                  <ProductItem product={featuredProduct.product} />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </div>
+        
       </div>
     </>
   )

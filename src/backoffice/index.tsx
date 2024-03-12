@@ -28,6 +28,9 @@ export const NavigationSystem = () => {
         <LinkContainer to="/backoffice/contact">
           <Nav.Link>Contact</Nav.Link>
         </LinkContainer>
+        <LinkContainer to="/backoffice/featured-products">
+          <Nav.Link>Featured products</Nav.Link>
+        </LinkContainer>
       </Nav>
       <Outlet />
     </>
