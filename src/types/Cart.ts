@@ -1,3 +1,5 @@
+import { Category } from "./Category"
+
 export type CartItem = {
   image: string | undefined
   slug: string
@@ -6,6 +8,7 @@ export type CartItem = {
   price: number
   _id: string
   name: string
+  category: Category
 }
 
 export type ShippingAddress = {

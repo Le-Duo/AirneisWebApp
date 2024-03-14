@@ -93,3 +93,18 @@ export const useGetUniqueMaterialsQuery = (): UseQueryResult<string[], Error> =>
     },
   })
 }
+
+export const useDeleteProductMutation = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        const response = await apiClient.delete(`api/products/${id}`)
+        return response.data
+      } catch (error) {
+        console.error('Error deleting product:', error)
+        throw new Error('Error deleting product')
+      }
+    },
+  })
+}
+

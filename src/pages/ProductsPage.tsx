@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import ProductItem from "../components/ProductItem";
-// Import useSearchProducts instead of useGetProductsQuery
 import { useSearchProducts } from "../hooks/searchHook";
 import { getError } from "../utils";
 import { ApiError } from "../types/APIError";

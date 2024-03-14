@@ -45,7 +45,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ show, onHide, user, onUse
   }
 
   return (
-    <Modal show={show} onHide={onHide} size='lg'>
+    <Modal show={show} onHide={onHide} size='lg' scrollable>
       <Modal.Header closeButton>
         <Modal.Title>Edit User</Modal.Title>
       </Modal.Header>

@@ -2,6 +2,7 @@ import apiClient from '../apiClient'
 import { CartItem, ShippingAddress } from '../types/Cart'
 import { Order } from '../types/Order'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 export const useGetOrderDetailsQuery = (id: string) =>
   useQuery({
@@ -59,3 +60,23 @@ export const useGetOrdersQuery = () => {
     },
   })
 }
+export const useSalesDataByDay = () => {
+  const { data: orders, isLoading, isError } = useGetOrdersQuery();
+
+  const salesData = useMemo(() => {
+    if (!orders) return [];
+
+    return orders.reduce((acc: any[], order: any) => {
+      const date = new Date(order.createdAt).toLocaleDateString();
+      const existing = acc.find((data: any) => data.name === date);
+      if (existing) {
+        existing.sales += order.totalPrice;
+      } else {
+        acc.push({ name: date, sales: order.totalPrice });
+      }
+      return acc;
+    }, []);
+  }, [orders]);
+
+  return { salesData, orders, isLoading, isError };
+};

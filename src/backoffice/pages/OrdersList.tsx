@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
 import EditOrderModal from '../components/EditOrderModal'
-import { useGetOrdersQuery, useDeleteOrderMutation } from '../../hooks/orderHooks'
+import { useGetOrdersQuery, useDeleteOrderMutation } from '../../hooks/orderHook'
 import { Order, OrderStatus } from '../../types/Order'
 import { Column } from '../components/Table'
 

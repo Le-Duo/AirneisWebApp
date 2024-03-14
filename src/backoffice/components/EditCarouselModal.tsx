@@ -44,7 +44,7 @@ const EditCarouselModal: React.FC<EditCarouselModalProps> = ({
   }, [carousel])
 
   return (
-    <Modal show={show} onHide={onHide} size='lg'>
+    <Modal show={show} onHide={onHide} size='lg' scrollable>
       <Modal.Header closeButton>
         <Modal.Title>Edit Carousel Item</Modal.Title>
       </Modal.Header>

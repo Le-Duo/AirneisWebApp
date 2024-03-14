@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { Order, OrderStatus } from '../../types/Order'
-import { useUpdateOrderMutation } from '../../hooks/orderHooks'
+import { useUpdateOrderMutation } from '../../hooks/orderHook'
 
 interface EditOrderModalProps {
   show: boolean
@@ -41,7 +41,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ show, onHide, order, on
   }
 
   return (
-    <Modal show={show} onHide={onHide} size='lg'>
+    <Modal show={show} onHide={onHide} size='lg' scrollable>
       <Modal.Header closeButton>
         <Modal.Title>Edit Order</Modal.Title>
       </Modal.Header>

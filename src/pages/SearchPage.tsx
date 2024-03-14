@@ -11,6 +11,7 @@ import { FaMagnifyingGlass, FaFilter } from 'react-icons/fa6'
 import { useSearchProducts } from '../hooks/searchHook'
 import { useGetCategoriesQuery } from '../hooks/categoryHook'
 import { useGetUniqueMaterialsQuery } from '../hooks/productHook'
+import ProductItem from '../components/ProductItem'
 
 const SearchPage = () => {
   const location = useLocation()
@@ -25,6 +26,8 @@ const SearchPage = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
   const [showFilter, setShowFilter] = useState(false)
+  const [sortBy, setSortBy] = useState(query.get('sortBy') || '');
+  const [sortOrder, setSortOrder] = useState(query.get('sortOrder') || 'asc'); // 'asc' par défaut
 
   const {
     data: displayResults,
@@ -37,8 +40,8 @@ const SearchPage = () => {
     categories: selectedCategories,
     inStock: query.get('inStock') === 'true',
     materials: selectedMaterials,
-    sortBy: query.get('sortBy') as 'asc' | 'desc' | undefined,
-    sortOrder: query.get('sortOrder') as 'asc' | 'desc' | undefined,
+    sortBy: sortBy as 'price' | 'dateAdded' | 'inStock' | undefined,
+    sortOrder: sortOrder as 'asc' | 'desc' | undefined,
   })
 
   const {
@@ -68,6 +71,8 @@ const SearchPage = () => {
       ...(maxPrice && { maxPrice: String(maxPrice) }),
       ...(selectedCategories.length > 0 && { categories: selectedCategories.join(',') }),
       ...(selectedMaterials.length > 0 && { materials: selectedMaterials.join(',') }),
+      ...(sortBy && { sortBy }),
+      sortOrder,
     }).toString()}`)
   }
 
@@ -100,6 +105,8 @@ const SearchPage = () => {
       ...(maxPrice && { maxPrice: String(maxPrice) }),
       ...(selectedCategories.length > 0 && { categories: selectedCategories.join(',') }),
       ...(selectedMaterials.length > 0 && { materials: selectedMaterials.join(',') }),
+      ...(sortBy && { sortBy }),
+      sortOrder,
     }).toString()}`)
     setShowFilter(false)
   }
@@ -233,6 +240,29 @@ const SearchPage = () => {
                 )}
               </Col>
             </Row>
+            <Form.Group controlId="sortBy">
+              <Form.Label>Sort By</Form.Label>
+              <Form.Select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="">Select...</option>
+                <option value="price">Price</option>
+                <option value="dateAdded">Newest</option>
+                <option value="inStock">In Stock</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group controlId="sortOrder">
+              <Form.Label>Sort Order</Form.Label>
+              <Form.Select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+              >
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+              </Form.Select>
+            </Form.Group>
             <Button variant='primary' type='submit' className='mt-3'>
               Apply Filters
             </Button>
@@ -250,35 +280,20 @@ const SearchPage = () => {
             </Col>
           </Row>
           {isLoading ? (
-            <p>Loading...</p>
-          ) : isError ? (
-            <p>Error fetching results.</p>
-          ) : displayResults && displayResults.length > 0 ? (
-            <Row className='mx-lg-5'>
-              {displayResults.map((product: Product) => (
-                <Col xs={12} lg={4} key={product._id} className='mb-3'>
-                  <Card style={{ cursor: 'pointer' }}>
-                    <Card.Img variant='top' src={product.URLimage} />
-                    <Card.Body>
-                      <Card.Title>{product.name}</Card.Title>
-                      <Card.Text>£ {product.price}</Card.Text>
-                      <Button
-                        variant='primary'
-                        onClick={e => {
-                          e.stopPropagation()
-                          addToCartHandler(product)
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          ) : (
-            <p>No results found</p>
-          )}
+  <p>Loading...</p>
+) : isError ? (
+  <p>Error fetching results.</p>
+) : displayResults && displayResults.length > 0 ? (
+  <Row className='mx-lg-5'>
+    {displayResults.map((product: Product) => (
+      <Col xs={12} lg={4} key={product._id} className='mb-3'>
+        <ProductItem product={product} />
+      </Col>
+    ))}
+  </Row>
+) : (
+  <p>No results found</p>
+)}
         </Col>
       </Row>
     </>

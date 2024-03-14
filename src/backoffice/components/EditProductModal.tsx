@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, InputGroup } from 'react-bootstrap'
 import { Product } from '../../types/Product'
 import { useUpdateProductMutation } from '../../hooks/productHook'
 import {
@@ -82,7 +82,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   }
 
   return (
-    <Modal show={show} onHide={onHide} size='lg'>
+    <Modal show={show} onHide={onHide} size='lg' scrollable>
       <Modal.Header closeButton>
         <Modal.Title>Edit Product</Modal.Title>
       </Modal.Header>
@@ -98,13 +98,16 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Slug</Form.Label>
-            <Form.Control
-              type='text'
-              name='slug'
-              value={editedProduct.slug || ''}
-              onChange={handleChange}
-            />
+            <Form.Label>URL</Form.Label>
+            <InputGroup>
+              <InputGroup.Text>airneis.com/product/</InputGroup.Text>
+              <Form.Control
+                type='text'
+                name='slug'
+                value={editedProduct.slug || ''}
+                onChange={handleChange}
+              />
+            </InputGroup>
           </Form.Group>
           <Form.Group className='mb-3'>
             <Form.Label>URL Image</Form.Label>
