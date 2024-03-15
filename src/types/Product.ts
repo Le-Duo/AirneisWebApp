@@ -1,14 +1,14 @@
 import { Category } from './Category'
 
 export type Product = {
-  _id: string
+  _id?: string
   name: string
   slug: string
   URLimage: string
   category?: Category
-  price: number
   description: string
   materials: string[]
+  price: number
   stock?: number
   priority?: boolean
 }

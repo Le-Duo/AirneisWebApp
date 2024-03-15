@@ -1,30 +1,32 @@
-import { Container, Navbar, NavbarBrand, Nav, Badge } from 'react-bootstrap'
-import { Outlet } from 'react-router-dom'
+import { Container, Navbar, NavbarBrand, Nav, Badge, Button, Offcanvas } from 'react-bootstrap'
+import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Store } from './Store'
-import { useContext } from 'react'
-import { useEffect } from 'react'
-import { Button } from 'react-bootstrap'
+import { useContext, useEffect } from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { LinkContainer } from 'react-router-bootstrap'
-import Offcanvas from 'react-bootstrap/Offcanvas'
 import { useMediaQuery } from 'react-responsive'
-import { Link } from 'react-router-dom'
+import { useGetCategoriesQuery } from './hooks/categoryHook'
+import useScrollToTop from './hooks/useScrollToTop'; // Adjust the path according to your file structure
 
 function App() {
+  useScrollToTop(); 
+
   const {
     state: { mode, cart, userInfo },
     dispatch,
   } = useContext(Store)
 
-  const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1224px)',
+  const isDesktopOrPhone = useMediaQuery({
+    query: '(min-width: 992px)',
   })
 
   useEffect(() => {
     document.body.setAttribute('data-bs-theme', mode)
   }, [mode])
+
+  const { data: categories } = useGetCategoriesQuery() // Fetch categories
 
   const switchModeHandler = () => {
     dispatch({ type: 'SWITCH_MODE' })
@@ -38,6 +40,9 @@ function App() {
     localStorage.removeItem('paymentMethod')
     window.location.href = '/'
   }
+
+  const location = useLocation();
+  const isBackoffice = location.pathname.startsWith('/backoffice');
 
   return (
     <>
@@ -156,29 +161,63 @@ function App() {
             <Outlet />
           </Container>
         </main>
-        <footer>
-          {isDesktopOrLaptop && (
-            <div className='desktop-footer'>
-              <div className='icon-links'>
-                <a href='https://facebook.com/airneis' target='_blank' rel='noopener noreferrer'>
-                  <i className='fab fa-facebook-f'></i>
-                </a>
-                <a href='https://twitter.com/airneis' target='_blank' rel='noopener noreferrer'>
-                  <i className='fab fa-twitter'></i>
-                </a>
-                <a href='https://instagram.com/airneis' target='_blank' rel='noopener noreferrer'>
-                  <i className='fab fa-instagram'></i>
-                </a>
-              </div>
-              <div className='text-links'>
-                <Link to='/tos'>Terms of Service</Link>
-                <Link to='/legal-notice'>Legal Notice</Link>
-                <Link to='/contact'>Contact</Link>
-              </div>
-            </div>
+        {!isBackoffice && (
+          <footer>
+            {isDesktopOrPhone && (
+              <div className="container pt-5">
+                <div className="row">
+                  <div className="col-6 col-md-2 mb-3">
+                    <h5>Sections</h5>
+                    <ul className="nav flex-column">
+                      <li className="nav-item mb-2"><RouterLink to="/" className="nav-link p-0 text-body-secondary">Home</RouterLink></li>
+                      <li className="nav-item mb-2"><RouterLink to="/tos" className="nav-link p-0 text-body-secondary">Terms of Services</RouterLink></li>
+                      <li className="nav-item mb-2"><RouterLink to="/legal-notice" className="nav-link p-0 text-body-secondary">Legal Notice</RouterLink></li>
+                      <li className="nav-item mb-2"><RouterLink to="/contact" className="nav-link p-0 text-body-secondary">Contact</RouterLink></li>
+                      <li className="nav-item mb-2"><RouterLink to="/about" className="nav-link p-0 text-body-secondary">About</RouterLink></li>
+                    </ul>
+                  </div>
+                  <div className="col-6 col-md-2 mb-3">
+                    <h5>Shop</h5>
+                    <ul className="nav flex-column">
+                      <li className="nav-item mb-2"><RouterLink to="/search" className="nav-link p-0 text-body-secondary">Search</RouterLink></li>
+                      <li className="nav-item mb-2"><RouterLink to="/cart" className="nav-link p-0 text-body-secondary">Cart</RouterLink></li>
+                    </ul>
+                  </div>
+                  <div className="col-6 col-md-2 mb-3">
+                    <h5>Categories</h5>
+                    <ul className="nav flex-column">
+                      {categories?.map(category => (
+                        <li className="nav-item mb-2" key={category._id}>
+                          <RouterLink to={`/products?category=${category.name}`} className="nav-link p-0 text-body-secondary">
+                            {category.name}
+                          </RouterLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="col-md-5 offset-md-1 mb-3">
+                    <form>
+                      <h5>Subscribe to our newsletter</h5>
+                      <p>Monthly digest of what's new and exciting from us.</p>
+                      <div className="d-flex flex-column flex-sm-row w-100 gap-2">
+                        <Button className="coming-soon" disabled>Coming soon</Button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                  <p>© 2024 Airneis. All rights reserved.</p>
+                  <ul className="list-unstyled d-flex">
+                    <li className="ms-3"><a className="link-body-emphasis" href="https://twitter.com/airneis"><i className="fab fa-twitter"></i></a></li>
+                    <li className="ms-3"><a className="link-body-emphasis" href="https://instagram.com/airneis"><i className="fab fa-instagram"></i></a></li>
+                    <li className="ms-3"><a className="link-body-emphasis" href="https://facebook.com/airneis"><i className="fab fa-facebook-f"></i></a></li>
+                  </ul>
+                </div>
+                </div>
+              )}
+            </footer>
           )}
-        </footer>
-      </div>
+        </div>
     </>
   )
 }

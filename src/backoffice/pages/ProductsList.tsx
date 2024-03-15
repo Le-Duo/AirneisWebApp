@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Table from "../components/Table";
 import EditProductModal from "../components/EditProductModal";
+import CreateProductModal from "../components/CreateProductModal";
 import {
   useGetProductsQuery,
   useDeleteProductMutation,
@@ -24,6 +25,7 @@ const ProductsList = () => {
   } = useGetCategoriesQuery();
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const queryClient = useQueryClient();
   const { mutate: deleteProduct } = useDeleteProductMutation();
@@ -33,9 +35,17 @@ const ProductsList = () => {
     setShowEditModal(true);
   };
 
+  const handleCreate = () => {
+    setShowCreateModal(true);
+  }
+
   const handleProductUpdate = () => {
     queryClient.refetchQueries({ queryKey: ["getProducts"] });
   };
+
+  const handleProductCreate = () => {
+    queryClient.refetchQueries({ queryKey: ["getProducts"] });
+  }
 
   const handleDelete = async (product: Product) => {
     deleteProduct(product._id, {
@@ -102,8 +112,16 @@ const ProductsList = () => {
         data={adjustedProducts}
         columns={columns}
         onEdit={handleEdit}
+        onAdd={handleCreate}
         onDelete={handleDelete}
       />
+      {showCreateModal && (
+        <CreateProductModal
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+          onProductCreate={handleProductCreate}
+        />
+      )}
       {currentProduct && categories && (
         <EditProductModal
           show={showEditModal}

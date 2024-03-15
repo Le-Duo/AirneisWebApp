@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Table from "../components/Table";
 import EditCarouselModal from "../components/EditCarouselModal";
+import CreateCarouselModal from "../components/CreateCarouselModal";
 import {
   useGetCarouselItemsQuery,
   useDeleteCarouselItemMutation,
@@ -17,6 +18,7 @@ const CarouselList = () => {
     refetch: refetchCarouselItems,
   } = useGetCarouselItemsQuery();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [currentCarouselItem, setCurrentCarouselItem] =
     useState<CarouselItem | null>(null);
   const queryClient = useQueryClient();
@@ -27,11 +29,24 @@ const CarouselList = () => {
     setShowEditModal(true);
   };
 
+  const openCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
   const handleCarouselUpdate = () => {
     queryClient.refetchQueries({ queryKey: ["getCarouselItems"] });
   };
 
-  const handleDelete = (item: { _id: string; src: string; alt: string; caption: string; }) => {
+  const handleCarouselCreate = () => {
+    queryClient.refetchQueries({ queryKey: ["getCarouselItems"] });
+  };
+
+  const handleDelete = (item: {
+    _id: string;
+    src: string;
+    alt: string;
+    caption: string;
+  }) => {
     deleteCarouselItem(item._id, {
       onSuccess: () => {
         refetchCarouselItems();
@@ -44,7 +59,7 @@ const CarouselList = () => {
 
   const carouselItemsProcessed = useMemo(
     () =>
-      carouselItems?.map(( carouselItem) => ({
+      carouselItems?.map((carouselItem) => ({
         ...carouselItem,
       })) || [],
     [carouselItems]
@@ -90,9 +105,17 @@ const CarouselList = () => {
       <Table
         data={carouselItemsProcessed}
         columns={columns}
+        onAdd={openCreateModal}
         onEdit={openEditModal}
         onDelete={handleDelete}
       />
+      {showCreateModal && (
+        <CreateCarouselModal
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+          onCarouselItemCreate={handleCarouselCreate}
+        />
+      )}
       {currentCarouselItem && (
         <EditCarouselModal
           show={showEditModal}

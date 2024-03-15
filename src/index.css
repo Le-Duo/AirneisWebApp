@@ -25,7 +25,7 @@ footer {
   -webkit-text-size-adjust: 100%;
 }
 
-a.my-link {
+a {
   text-decoration: none;
   color: inherit;
 }

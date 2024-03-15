@@ -9,7 +9,7 @@ export const NavigationSystem = () => {
       <Helmet>
         <title>Backoffice Navigation</title>
       </Helmet>
-      <Nav variant="tabs">
+      <Nav variant="tabs" className='mb-3'>
         <LinkContainer to="/backoffice">
           <Nav.Link>Tableau de Bord</Nav.Link>
         </LinkContainer>

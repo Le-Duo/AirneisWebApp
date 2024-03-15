@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
-import { FaAnglesLeft, FaAngleLeft, FaAngleRight, FaAnglesRight } from 'react-icons/fa6'
+import { FaPlus, FaPen, FaTrash } from 'react-icons/fa6' // Import the icons
 
 export interface Column<T> {
   _id: string
@@ -12,12 +12,13 @@ export interface Column<T> {
 interface TableProps<T> {
   data: T[]
   columns: Column<T>[]
+  onAdd?: () => void
   onEdit?: (item: T) => void
   onDelete?: (item: T) => void
   children?: React.ReactNode
 }
 
-function CustomTable<T>({ data = [], columns, onEdit, onDelete, children }: TableProps<T>) {
+function CustomTable<T>({ data = [], columns, onAdd, onEdit, onDelete, children }: TableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
   const totalItems = data.length
@@ -34,23 +35,27 @@ function CustomTable<T>({ data = [], columns, onEdit, onDelete, children }: Tabl
 
   return (
     <Container fluid>
-      {data.length > 0 && (
-        <Row className='mb-2'>
-          <Col>
-            <Pagination>
-              <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
-              <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
-              {[...Array(totalPages).keys()].map(page => (
-                <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => handlePageChange(page + 1)}>
-                  {page + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
-              <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
-            </Pagination>
-          </Col>
-        </Row>
-      )}
+      <Row className='mb-2'>
+        <Col>
+          {/* Add Button with Icon */}
+          {onAdd && (
+            <Button variant="primary" onClick={onAdd} className="mb-3">
+              <FaPlus />
+            </Button>
+          )}
+          <Pagination>
+            <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+            <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+            {[...Array(totalPages).keys()].map(page => (
+              <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => handlePageChange(page + 1)}>
+                {page + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+            <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+          </Pagination>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Table striped bordered hover>
@@ -72,10 +77,10 @@ function CustomTable<T>({ data = [], columns, onEdit, onDelete, children }: Tabl
                   ))}
                   <td>
                     {children}
-                    {onEdit && <Button onClick={() => onEdit(item)}>Edit</Button>}
+                    {onEdit && <Button onClick={() => onEdit(item)}><FaPen /></Button>}
                     {onDelete && (
                       <Button variant='danger' onClick={() => onDelete(item)}>
-                        Delete
+                        <FaTrash />
                       </Button>
                     )}
                   </td>

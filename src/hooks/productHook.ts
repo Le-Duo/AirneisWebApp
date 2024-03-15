@@ -108,3 +108,28 @@ export const useDeleteProductMutation = () => {
   })
 }
 
+export const useCreateProductMutation = () => {
+  return useMutation<Product, Error, Product, unknown>({
+    mutationFn: async (product: Product): Promise<Product> => {
+      console.log('Creating product:', product);
+      const response = await apiClient.post<Product>('api/products', {
+        name: product.name,
+        URLimage: product.URLimage,
+        slug: product.slug,
+        categoryId: product.category?._id,
+        description: product.description,
+        materials: product.materials,
+        price: product.price,
+        _id: product._id,
+      });
+      console.log('Product created successfully:', response.data);
+      return response.data;
+    },
+    onError: (error: Error) => {
+      console.error('Error creating product:', error);
+    },
+    onSuccess: (data: Product) => {
+      console.log('Product creation successful:', data);
+    },
+  });
+}

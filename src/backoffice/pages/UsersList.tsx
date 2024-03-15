@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Table from "../components/Table";
 import EditUserModal from "../components/EditUserModal";
-import { useGetUsersQuery } from "../../hooks/userHook";
+import CreateUserModal from "../components/CreateUserModal";
+import { useGetUsersQuery, useDeleteUserMutation } from "../../hooks/userHook";
 import { UserInfo } from "../../types/UserInfo";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -11,15 +12,33 @@ const UsersList = () => {
   const [selectedUsers] = useState<string[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const queryClient = useQueryClient();
+  const deleteUserMutation = useDeleteUserMutation();
 
   const openEditModal = (user: UserInfo) => {
     setCurrentUser(user);
     setShowEditModal(true);
   };
 
+  const openCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
   const handleUserUpdate = () => {
     queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+  };
+
+  const handleUserCreate = () => {
+    queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+  };
+
+  const handleUserDelete = (user: UserInfo) => {
+    deleteUserMutation.mutate(user._id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+      },
+    });
   };
 
   const usersWithSelection = useMemo(
@@ -54,7 +73,16 @@ const UsersList = () => {
         data={usersWithSelection}
         columns={columns}
         onEdit={openEditModal}
+        onAdd={openCreateModal}
+        onDelete={handleUserDelete} // Pass the delete function
       />
+      {showCreateModal && (
+        <CreateUserModal
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+          onUserCreate={handleUserCreate}
+        />
+      )}
       {currentUser && (
         <EditUserModal
           show={showEditModal}
