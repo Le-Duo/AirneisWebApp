@@ -93,14 +93,14 @@ export default function HomePage() {
           <Container>
             <Row className="mx-lg-5">
               {featuredProducts.map((featuredProduct) => {
-                if (!featuredProduct.productDetails) {
+                if (!featuredProduct.product) {
                   console.error("Product details are missing for featured product", featuredProduct._id);
                   return null;
                 }
                 return (
                   <Col xs={12} lg={4} key={featuredProduct._id} className="mb-3">
                     <ProductItem
-                      product={featuredProduct.productDetails}
+                      product={featuredProduct.product}
                       stockQuantity={featuredProduct.quantity}
                     />
                   </Col>
