@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Table from "../components/Table";
 import {
@@ -6,7 +6,6 @@ import {
   useDeleteContactMutation,
 } from "../../hooks/contactHook";
 import { Contact } from "../../types/Contact";
-import { useQueryClient } from "@tanstack/react-query";
 
 const ContactList = () => {
   const {
@@ -15,7 +14,6 @@ const ContactList = () => {
     error,
     refetch: refetchContacts,
   } = useContactsQuery();
-  const queryClient = useQueryClient();
   const { mutate: deleteContact } = useDeleteContactMutation();
 
   const handleDelete = (contactId: string) => {
@@ -30,7 +28,8 @@ const ContactList = () => {
   };
 
   const contactsProcessed = useMemo(
-    () => contacts?.map((contact: Contact) => ({
+    () => (contacts?.contacts || []).filter((contact: Contact): contact is Contact & { _id: string } => contact._id !== undefined)
+      .map((contact: Contact & { _id: string }) => ({
         ...contact,
       })) || [],
     [contacts]
@@ -40,17 +39,17 @@ const ContactList = () => {
     () => [
       {
         _id: "mailColumn",
-        key: "mail",
+        key: "mail" as keyof Contact,
         label: "Email",
       },
       {
         _id: "subjectColumn",
-        key: "subject",
+        key: "subject" as keyof Contact,
         label: "Subject",
       },
       {
         _id: "messageColumn",
-        key: "message",
+        key: "message" as keyof Contact,
         label: "Message",
       },
     ],

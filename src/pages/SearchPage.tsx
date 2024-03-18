@@ -1,12 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Row, Col, Card, Button, Form, InputGroup, FormControl, Offcanvas } from 'react-bootstrap'
+import { Row, Col, Button, Form, InputGroup, FormControl, Offcanvas } from 'react-bootstrap'
 import { Product } from '../types/Product'
-import { useState, useEffect, useContext } from 'react'
-import { toast } from 'react-toastify'
-import { ConvertProductToCartItem } from '../utils'
-import { Store } from '../Store'
-import { CartItem } from '../types/Cart'
+import { useState, useEffect } from 'react'
 import { FaMagnifyingGlass, FaFilter } from 'react-icons/fa6'
 import { useSearchProducts } from '../hooks/searchHook'
 import { useGetCategoriesQuery } from '../hooks/categoryHook'
@@ -17,8 +13,6 @@ const SearchPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const query = new URLSearchParams(location.search)
-  const { state, dispatch } = useContext(Store)
-  const { cart } = state
 
   const [searchQuery, setSearchQuery] = useState(query.get('query') || '')
   const [minPrice, setMinPrice] = useState<number | undefined>()
@@ -27,7 +21,7 @@ const SearchPage = () => {
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
   const [showFilter, setShowFilter] = useState(false)
   const [sortBy, setSortBy] = useState(query.get('sortBy') || '');
-  const [sortOrder, setSortOrder] = useState(query.get('sortOrder') || 'asc'); // 'asc' par défaut
+  const [sortOrder, setSortOrder] = useState(query.get('sortOrder') || 'asc');
 
   const {
     data: displayResults,
@@ -74,24 +68,6 @@ const SearchPage = () => {
       ...(sortBy && { sortBy }),
       sortOrder,
     }).toString()}`)
-  }
-
-  const addToCartHandler = (product: Product) => {
-    const existItem = cart.cartItems.find((x: CartItem) => x._id === product._id)
-    const quantity = existItem ? existItem.quantity + 1 : 1
-    if (product.stock && product.stock < quantity) {
-      toast.warn('Sorry. Product is out of stock')
-      return
-    }
-    dispatch({
-      type: 'CART_ADD_ITEM',
-      payload: ConvertProductToCartItem(product),
-    })
-    toast.success('Product added to cart')
-  }
-
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategories(Array.from(event.target.selectedOptions, option => option.value))
   }
 
   const handleClose = () => setShowFilter(false)
@@ -287,7 +263,7 @@ const SearchPage = () => {
   <Row className='mx-lg-5'>
     {displayResults.map((product: Product) => (
       <Col xs={12} lg={4} key={product._id} className='mb-3'>
-        <ProductItem product={product} />
+        <ProductItem product={product} stockQuantity={product.quantity} />
       </Col>
     ))}
   </Row>
@@ -301,3 +277,4 @@ const SearchPage = () => {
 }
 
 export default SearchPage
+

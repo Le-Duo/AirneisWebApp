@@ -11,4 +11,5 @@ export type Product = {
   price: number
   stock?: number
   priority?: boolean
+  quantity?: number
 }

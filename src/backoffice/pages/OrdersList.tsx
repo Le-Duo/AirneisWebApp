@@ -3,14 +3,13 @@ import { Helmet } from 'react-helmet-async'
 import Table from '../components/Table'
 import EditOrderModal from '../components/EditOrderModal'
 import { useGetOrdersQuery, useDeleteOrderMutation } from '../../hooks/orderHook'
-import { Order, OrderStatus } from '../../types/Order'
+import { Order } from '../../types/Order'
 import { Column } from '../components/Table'
 
 const OrdersList = () => {
   const { data: orders, error, isLoading, refetch } = useGetOrdersQuery()
   const deleteOrderMutation = useDeleteOrderMutation()
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null)
-  const [editStatus, setEditStatus] = useState<OrderStatus | null>(null)
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null)
 
   if (isLoading) return <div>Loading...</div>
@@ -18,7 +17,6 @@ const OrdersList = () => {
 
   const handleEdit = (order: Order) => {
     setEditingOrderId(order._id)
-    setEditStatus(order.status)
     setCurrentOrder(order)
   }
 

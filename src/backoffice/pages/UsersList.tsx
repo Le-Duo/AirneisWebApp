@@ -52,10 +52,10 @@ const UsersList = () => {
 
   const columns = useMemo(
     () => [
-      { key: "_id" as const, label: "ID" },
-      { key: "name" as const, label: "Name" },
-      { key: "email" as const, label: "Email" },
-      { key: "isAdmin" as const, label: "Admin" },
+      { _id: "id", key: "_id" as const, label: "ID", accessor: "_id" },
+      { _id: "name", key: "name" as const, label: "Name", accessor: "name" },
+      { _id: "email", key: "email" as const, label: "Email", accessor: "email" },
+      { _id: "isAdmin", key: "isAdmin" as const, label: "Admin", accessor: "isAdmin" },
     ],
     []
   );

@@ -22,15 +22,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   show,
   onHide,
   product,
-  categories,
   onProductUpdate, // Add this prop to signal an update
 }) => {
   const [editedProduct, setEditedProduct] = useState<Product>(product)
   const updateProduct = useUpdateProductMutation()
   const updateStock = useUpdateStockMutation()
   const createStock = useCreateStockMutation()
-  const { data: stockData } = useGetStockByProductIdQuery(product._id)
-  const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery()
+  const { data: stockData } = useGetStockByProductIdQuery(product._id || '');
+const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery();
 
   useEffect(() => {
     setEditedProduct(product)
@@ -68,13 +67,17 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       quantity: editedProduct.stock || 0,
     }
     try {
-      if (stockData) {
-        await updateStock.mutateAsync(stockUpdatePayload)
+      if (editedProduct._id) { // Ensure productId is not undefined
+        if (stockData) {
+          await updateStock.mutateAsync(stockUpdatePayload as { productId: string; quantity: number; })
+        } else {
+          await createStock.mutateAsync(stockUpdatePayload as { productId: string; quantity: number; })
+        }
+        await updateProduct.mutateAsync(editedProduct)
+        onProductUpdate()
       } else {
-        await createStock.mutateAsync(stockUpdatePayload)
+        console.error('Product ID is undefined');
       }
-      await updateProduct.mutateAsync(editedProduct)
-      onProductUpdate()
     } catch (error) {
       console.error('Error updating product or stock:', error)
     }

@@ -43,7 +43,7 @@ export default function ProductsPage() {
         {products &&
           products.map((product: Product) => (
             <Col xs={12} lg={4} key={product.slug} className="mt-3">
-              <ProductItem product={product} />
+              <ProductItem product={product} stockQuantity={product.quantity} />
             </Col>
           ))}
       </Row>

@@ -28,7 +28,7 @@ const FeaturedProductList = () => {
         if (fp.product) {
           const productDetails = products.find((p) => p._id === fp.product._id);
           if (productDetails) {
-            fp.product = productDetails;
+            fp.product = productDetails as any;
           }
         }
       });
@@ -39,8 +39,22 @@ const FeaturedProductList = () => {
 
   const handleAddProduct = async (productId: string) => {
     const productToAdd = products?.find(product => product._id === productId);
-    if (productToAdd) {
-      await createMutation.mutateAsync({ product: productToAdd, order: 0});
+    if (productToAdd && productToAdd._id !== undefined) {
+      await createMutation.mutateAsync({
+        product: {
+          ...productToAdd,
+          _id: productToAdd._id as string
+        },
+        order: 0,
+        productDetails: {
+          name: productToAdd.name,
+          slug: productToAdd.slug,
+          URLimage: productToAdd.URLimage,
+          description: productToAdd.description,
+          materials: productToAdd.materials,
+          price: productToAdd.price,
+        }
+      });
     }
   };
 
@@ -83,9 +97,9 @@ const FeaturedProductList = () => {
   ) || [];
 
   const columns: Column<FeaturedProduct>[] = [
-    { _id: 'URLimage', key: 'product', label: 'Image', renderer: (item) => <img src={item.product?.URLimage} alt={item.product?.name} style={{ width: '300px', height: 'auto' }} /> },
-    { _id: 'name', key: 'product', label: 'Name', renderer: (item) => item.product?.name },
-    { _id: 'category', key: 'product', label: 'Category', renderer: (item) => item.product?.category?.name },
+    { _id: 'URLimage', key: 'product', label: 'Image', renderer: (item) => <img src={(item.product as any)?.URLimage} alt={(item.product as any)?.name} style={{ width: '300px', height: 'auto' }} /> },
+    { _id: 'name', key: 'product', label: 'Name', renderer: (item) => (item.product as any)?.name },
+    { _id: 'category', key: 'product', label: 'Category', renderer: (item) => (item.product as any)?.category?.name },
   ];
 
   return (

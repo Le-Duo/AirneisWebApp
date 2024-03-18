@@ -8,7 +8,7 @@ export type CartItem = {
   price: number
   _id: string
   name: string
-  category: Category
+  category: Category | undefined
 }
 
 export type ShippingAddress = {

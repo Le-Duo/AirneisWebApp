@@ -1,46 +1,58 @@
-import { Product } from '../types/Product'
-import { Link } from 'react-router-dom'
-import { Card, Button } from 'react-bootstrap'
-import { useContext } from 'react'
-import { Store } from '../Store'
-import { CartItem } from '../types/Cart'
-import { ConvertProductToCartItem } from '../utils'
-import { toast } from 'react-toastify'
+import { Product } from "../types/Product";
+import { Link } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
+import { useContext } from "react";
+import { Store } from "../Store";
+import { CartItem } from "../types/Cart";
+import { ConvertProductToCartItem } from "../utils";
+import { toast } from "react-toastify";
 
-function ProductItem({ product }: { product: Product }) {
-  const { state, dispatch } = useContext(Store)
+function ProductItem({ product, stockQuantity }: { product: Product; stockQuantity?: number }) {
+  const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
-  } = state
+  } = state;
+
+  const actualStock = stockQuantity !== undefined ? stockQuantity : product.stock;
 
   const addToCartHandler = async (item: CartItem) => {
-    const existItem = cartItems.find((x) => x._id === item._id)
-    const quantity = existItem ? existItem.quantity + 1 : 1
-    if (product.stock && product.stock < quantity) {
-      alert('Sorry, product is out of stock')
-      return
+    const existItem = cartItems.find((x) => x._id === item._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    if (actualStock && actualStock < quantity) {
+      alert("Sorry, product is out of stock");
+      return;
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
-    toast.success('Product added to cart')
-  }
+    dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
+    toast.success("Product added to cart");
+  };
 
   return (
-    <Card style={{ cursor: 'pointer' }}>
+    <Card style={{ cursor: "pointer" }}>
       <Link to={`/product/${product.slug}`}>
-        <Card.Img variant='top' src={product.URLimage || '/images/no-image.png'} alt={product.name} />
+        <Card.Img
+          variant="top"
+          src={product.URLimage || "/images/no-image.png"}
+          alt={product.name}
+          style={{
+            filter:
+              actualStock === 0
+                ? "brightness(50%) saturate(100%) sepia(100%) hue-rotate(200deg)"
+                : "none",
+          }}
+        />
       </Link>
       <Card.Body>
         <Link to={`/product/${product.slug}`}>
           <Card.Title>{product.name}</Card.Title>
         </Link>
         <Card.Text>£{product.price}</Card.Text>
-        {product.stock === 0 ? (
+        {actualStock === 0 ? (
           <Button variant="light" disabled>
             Out of Stock
           </Button>
         ) : (
           <Button
-            variant='primary'
+            variant="primary"
             onClick={() => addToCartHandler(ConvertProductToCartItem(product))}
           >
             Add to Cart
@@ -48,6 +60,6 @@ function ProductItem({ product }: { product: Product }) {
         )}
       </Card.Body>
     </Card>
-  )
+  );
 }
-export default ProductItem
+export default ProductItem;

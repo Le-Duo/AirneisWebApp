@@ -48,14 +48,18 @@ const ProductsList = () => {
   }
 
   const handleDelete = async (product: Product) => {
-    deleteProduct(product._id, {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: (error) => {
-        console.error("Error deleting product:", error);
-      },
-    });
+    if (typeof product._id === 'string') {
+      deleteProduct(product._id, {
+        onSuccess: () => {
+          refetch();
+        },
+        onError: (error) => {
+          console.error("Error deleting product:", error);
+        },
+      });
+    } else {
+      console.error("Product ID is undefined, cannot delete product.");
+    }
   };
 
   const adjustedProducts = useMemo(

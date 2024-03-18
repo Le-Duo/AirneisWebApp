@@ -39,7 +39,7 @@ export default function PlaceOrderPage() {
       const data = await createOrder({
         orderItems: cart.cartItems,
         shippingAddress: {
-          user: state.userInfo?._id || '', // Add this line
+          user: state.userInfo?._id || '',
           firstName: cart.shippingAddress.firstName,
           lastName: cart.shippingAddress.lastName,
           street: cart.shippingAddress.street,
@@ -51,12 +51,14 @@ export default function PlaceOrderPage() {
         },
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice, // Ensure this is the correctly calculated value
+        shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
         user: state.userInfo?._id || '',
+        isPaid: false,
+        isDelivered: false,
       })
-      console.log(data) // Added to log the response
+      console.log(data)
       if (data && data._id) {
         dispatch({ type: 'CART_CLEAR' })
         localStorage.removeItem('cartItems')
