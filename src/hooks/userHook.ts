@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query'
 import apiClient from '../apiClient'
 import { UserAddress, UserInfo } from '../types/UserInfo'
+import { CreditCard } from '../types/CreditCard'
 
 // ici on utilise useMutation de react-query pour faire des requetes post signup et signin, mutation est un hook qui permet de faire des requetes post, put, delete (CRUD)
 export const userSigninMutation = () =>
@@ -102,6 +103,7 @@ export const useGetUserByIdQuery = (userId: string): UseQueryResult<UserInfo, Er
   })
 }
 
+// update user
 export const useUpdateUserMutation = (userId: string) => 
 useMutation({
   mutationFn: async (user: {
@@ -115,4 +117,31 @@ useMutation({
       user
     )
   ).data,
+})
+
+// change default card for a user
+export const useUpdateDefaultCardMutation = (userId: string) => 
+useMutation({
+  mutationFn: async (cardId: string) => {
+    const response = await apiClient.put<{}>(`api/users/${userId}/payment/card/${cardId}/default`);
+    return response.data;
+}
+})
+
+// add credit card
+export const useAddPaymentCardMutation = (userId: string) => 
+useMutation({
+  mutationFn: async (card: {
+    bankName: string;
+    number: string;
+    fullName: string;
+    monthExpiration: number;
+    yearExpiration: number;
+  }) => {
+    const response = await apiClient.post<{ card: CreditCard }>(
+        `api/users/${userId}/payment/card/add`,
+        card
+    );
+    return response.data.card;
+}
 })

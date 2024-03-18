@@ -39,6 +39,7 @@ import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
 import ContactList from './backoffice/pages/MessagesContactList.tsx'
+import MyWalletPage from './pages/MyWallet.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,6 +62,7 @@ const router = createBrowserRouter(
       <Route path="/password-reset/:token" element={<PasswordReset />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="wallet" element={<MyWalletPage />} />
         <Route path="shipping" element={<ShippingAdressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />

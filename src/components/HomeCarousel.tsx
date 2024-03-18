@@ -14,7 +14,6 @@ const HomeCarousel = () => {
   // Ensure items is always treated as an array
   const carouselItems = Array.isArray(items) ? items : []
 
-  console.log(carouselItems) // Log the carousel items
   if (carouselItems.length === 0) {
     return <div>No images available</div>
   }

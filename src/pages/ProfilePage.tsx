@@ -23,8 +23,6 @@ export default function ProfilePage(){
 
 
     useEffect(() => {
-
- 
         if (user && user.name) {
           setName(user.name);
         }
