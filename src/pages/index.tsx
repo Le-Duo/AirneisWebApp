@@ -94,11 +94,19 @@ export default function HomePage() {
             <Row className="mx-lg-5">
               {featuredProducts.map((featuredProduct) => {
                 if (!featuredProduct.product) {
-                  console.error("Product details are missing for featured product", featuredProduct._id);
+                  console.error(
+                    "Product details are missing for featured product",
+                    featuredProduct._id
+                  );
                   return null;
                 }
                 return (
-                  <Col xs={12} lg={4} key={featuredProduct._id} className="mb-3">
+                  <Col
+                    xs={12}
+                    lg={4}
+                    key={featuredProduct._id}
+                    className="mb-3"
+                  >
                     <ProductItem
                       product={featuredProduct.product}
                       stockQuantity={featuredProduct.quantity}

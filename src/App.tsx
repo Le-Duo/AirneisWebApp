@@ -3,12 +3,12 @@ import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Store } from './Store'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useMediaQuery } from 'react-responsive'
 import { useGetCategoriesQuery } from './hooks/categoryHook'
-import useScrollToTop from './hooks/useScrollToTop'; // Adjust the path according to your file structure
+import useScrollToTop from './hooks/useScrollToTop';
 
 function App() {
   useScrollToTop(); 
@@ -26,7 +26,7 @@ function App() {
     document.body.setAttribute('data-bs-theme', mode)
   }, [mode])
 
-  const { data: categories } = useGetCategoriesQuery() // Fetch categories
+  const { data: categories } = useGetCategoriesQuery()
 
   const switchModeHandler = () => {
     dispatch({ type: 'SWITCH_MODE' })
@@ -43,6 +43,10 @@ function App() {
 
   const location = useLocation();
   const isBackoffice = location.pathname.startsWith('/backoffice');
+
+  const [showOffcanvas, setShowOffcanvas] = useState(false); // Add state for offcanvas visibility
+
+  const handleCloseOffcanvas = () => setShowOffcanvas(false); // Helper function to close offcanvas
 
   return (
     <>
@@ -87,12 +91,14 @@ function App() {
                     }
                   ></i>
                 </Button>
-                <Navbar.Toggle aria-controls='offcanvasNavbar' className='ms-2' />
+                <Navbar.Toggle aria-controls='offcanvasNavbar' className='ms-2' onClick={() => setShowOffcanvas(!showOffcanvas)} />
               </div>
               <Navbar.Offcanvas
                 id='offcanvasNavbar'
                 aria-labelledby='offcanvasNavbarLabel'
                 placement='end'
+                show={showOffcanvas} // Control visibility with state
+                onHide={handleCloseOffcanvas} // Handle hiding offcanvas
               >
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id='offcanvasNavbarLabel'>
@@ -104,48 +110,48 @@ function App() {
                     {userInfo ? (
                       <>
                         {userInfo.isAdmin && (
-                          <LinkContainer to='/backoffice'>
+                          <LinkContainer to='/backoffice' onClick={handleCloseOffcanvas}>
                             <Nav.Link>Backoffice</Nav.Link>
                           </LinkContainer>
                         )}
-                        <LinkContainer to='/profile'>
+                        <LinkContainer to='/profile' onClick={handleCloseOffcanvas}>
                           <Nav.Link>My Settings</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/orderhistory'>
+                        <LinkContainer to='/orderhistory' onClick={handleCloseOffcanvas}>
                           <Nav.Link>My Orders</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/tos'>
+                        <LinkContainer to='/tos' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Terms of Service</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/legal-notice'>
+                        <LinkContainer to='/legal-notice' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Legal Notice</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/contact'>
+                        <LinkContainer to='/contact' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Contact</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/about'>
+                        <LinkContainer to='/about' onClick={handleCloseOffcanvas}>
                           <Nav.Link>About AIRNEIS</Nav.Link>
                         </LinkContainer>
                         <Nav.Link onClick={signoutHandler}>Sign Out</Nav.Link>
                       </>
                     ) : (
                       <>
-                        <LinkContainer to='/signin'>
+                        <LinkContainer to='/signin' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Sign In</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/signup'>
+                        <LinkContainer to='/signup' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Sign Up</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/tos'>
+                        <LinkContainer to='/tos' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Terms of Service</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/legal-notice'>
+                        <LinkContainer to='/legal-notice' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Legal Notice</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/contact'>
+                        <LinkContainer to='/contact' onClick={handleCloseOffcanvas}>
                           <Nav.Link>Contact</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/about'>
+                        <LinkContainer to='/about' onClick={handleCloseOffcanvas}>
                           <Nav.Link>About AIRNEIS</Nav.Link>
                         </LinkContainer>
                       </>
