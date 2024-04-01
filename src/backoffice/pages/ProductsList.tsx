@@ -67,7 +67,7 @@ const ProductsList = () => {
       products?.map((product) => ({
         ...product,
         categoryName: product.category?.name,
-        URLimage: product.URLimage,
+        URLimages: product.URLimages,
       })) || [],
     [products]
   );
@@ -76,11 +76,11 @@ const ProductsList = () => {
     () => [
       {
         _id: "image",
-        key: "URLimage" as const,
+        key: "URLimages" as const,
         label: "Image",
         renderer: (item: Product) => (
           <img
-            src={item.URLimage}
+            src={item.URLimages[0]}
             alt={item.name}
             style={{ width: "100px", height: "auto" }}
           />

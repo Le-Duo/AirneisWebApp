@@ -24,7 +24,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   product,
   onProductUpdate, // Add this prop to signal an update
 }) => {
-  const [editedProduct, setEditedProduct] = useState<Product>(product)
+  const [editedProduct, setEditedProduct] = useState<Product>({
+    ...product,
+    URLimages: product.URLimages || []
+  })
   const updateProduct = useUpdateProductMutation()
   const updateStock = useUpdateStockMutation()
   const createStock = useCreateStockMutation()
@@ -32,7 +35,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery();
 
   useEffect(() => {
-    setEditedProduct(product)
+    setEditedProduct({
+      ...product,
+      URLimages: product.URLimages || []
+    })
   }, [product])
 
   useEffect(() => {
@@ -59,6 +65,22 @@ const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategorie
       setEditedProduct(prev => ({ ...prev, [name]: value }))
     }
   }
+
+  const handleURLChange = (value: string, index: number) => {
+    const updatedURLs = [...editedProduct.URLimages];
+    updatedURLs[index] = value;
+    setEditedProduct(prev => ({ ...prev, URLimages: updatedURLs }));
+  };
+
+  const addURLField = () => {
+    setEditedProduct(prev => ({ ...prev, URLimages: [...prev.URLimages, ''] }));
+  };
+
+  const removeURLField = (index: number) => {
+    const updatedURLs = [...editedProduct.URLimages];
+    updatedURLs.splice(index, 1);
+    setEditedProduct(prev => ({ ...prev, URLimages: updatedURLs }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,15 +134,25 @@ const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategorie
               />
             </InputGroup>
           </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label>URL Image</Form.Label>
-            <Form.Control
-              type='text'
-              name='URLimage'
-              value={editedProduct.URLimage}
-              onChange={handleChange}
-            />
-          </Form.Group>
+          {editedProduct.URLimages?.map((url, index) => (
+            <Form.Group key={index} className="mb-3">
+              <Form.Label>URL Image {index + 1}</Form.Label>
+              <div className="d-flex">
+                <Form.Control
+                  type="text"
+                  value={url}
+                  onChange={(e) => handleURLChange(e.target.value, index)}
+                  className="me-2"
+                />
+                <Button variant="danger" onClick={() => removeURLField(index)}>
+                  Remove
+                </Button>
+              </div>
+            </Form.Group>
+          )) || []}
+          <Button variant="secondary" onClick={addURLField} className="mb-3">
+            Add Another Image URL
+          </Button>
           <Form.Group className='mb-3'>
             <Form.Label>Category</Form.Label>
             <Form.Select

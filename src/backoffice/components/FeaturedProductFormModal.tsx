@@ -43,7 +43,7 @@ const FeaturedProductFormModal: React.FC<FeaturedProductFormModalProps> = ({
             >
               <div className="product-card">
                 <img
-                  src={product.URLimage}
+                  src={product.URLimages[0]}
                   alt={product.name}
                   className="product-image"
                 />

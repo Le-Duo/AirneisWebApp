@@ -31,7 +31,7 @@ function ProductItem({ product, stockQuantity }: { product: Product; stockQuanti
       <Link to={`/product/${product.slug}`}>
         <Card.Img
           variant="top"
-          src={product.URLimage || "/images/no-image.png"}
+          src={product.URLimages[0] || "/images/no-image.png"}
           alt={product.name}
           style={{
             filter:

@@ -59,7 +59,7 @@ export default function ProductPage() {
         <Col md={6}>
           <img
             className="large"
-            src={product.URLimage}
+            src={product.URLimages[0]}
             alt={product.name}
           ></img>
         </Col>

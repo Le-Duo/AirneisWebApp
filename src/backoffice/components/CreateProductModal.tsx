@@ -19,7 +19,7 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
   const [newProduct, setNewProduct] = useState<Product>({
     name: "",
     slug: "",
-    URLimage: "",
+    URLimages: [''], 
     price: 0,
     description: "",
     materials: [],
@@ -27,7 +27,7 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
     priority: false,
     category: {} as Category,
   });
-  const { mutateAsync: createProduct } = useCreateProductMutation(); // Assuming this hook exists
+  const { mutateAsync: createProduct } = useCreateProductMutation();
   const { data: categories } = useGetCategoriesQuery();
 
   const handleChange = (
@@ -35,6 +35,22 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
     value: string | number | boolean | string[] | Category
   ) => {
     setNewProduct((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleURLChange = (value: string, index: number) => {
+    const updatedURLs = [...newProduct.URLimages];
+    updatedURLs[index] = value;
+    setNewProduct((prev) => ({ ...prev, URLimages: updatedURLs }));
+  };
+
+  const addURLField = () => {
+    setNewProduct((prev) => ({ ...prev, URLimages: [...prev.URLimages, ''] }));
+  };
+
+  const removeURLField = (index: number) => {
+    const updatedURLs = [...newProduct.URLimages];
+    updatedURLs.splice(index, 1);
+    setNewProduct((prev) => ({ ...prev, URLimages: updatedURLs }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +76,6 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          {/* Adapted form fields to match Product type */}
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -102,13 +117,21 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>URL Image</Form.Label>
-            <Form.Control
-              type="text"
-              name="URLimage"
-              value={newProduct.URLimage}
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
-            />
+            <Form.Label>URL Images</Form.Label>
+            {newProduct.URLimages.map((url, index) => (
+              <div key={index} className="d-flex mb-2">
+                <Form.Control
+                  type="text"
+                  value={url}
+                  onChange={(e) => handleURLChange(e.target.value, index)}
+                  className="me-2"
+                />
+                <Button variant="danger" onClick={() => removeURLField(index)}>
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button onClick={addURLField}>Add Another Image URL</Button>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Price</Form.Label>

@@ -4,7 +4,7 @@ export type Product = {
   _id?: string
   name: string
   slug: string
-  URLimage: string
+  URLimages: string[]
   category?: Category
   description: string
   materials: string[]

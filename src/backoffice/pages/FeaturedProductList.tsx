@@ -49,7 +49,7 @@ const FeaturedProductList = () => {
         productDetails: {
           name: productToAdd.name,
           slug: productToAdd.slug,
-          URLimage: productToAdd.URLimage,
+          URLimages: productToAdd.URLimages,
           description: productToAdd.description,
           materials: productToAdd.materials,
           price: productToAdd.price,
@@ -97,7 +97,7 @@ const FeaturedProductList = () => {
   ) || [];
 
   const columns: Column<FeaturedProduct>[] = [
-    { _id: 'URLimage', key: 'product', label: 'Image', renderer: (item) => <img src={(item.product as any)?.URLimage} alt={(item.product as any)?.name} style={{ width: '300px', height: 'auto' }} /> },
+    { _id: 'URLimages', key: 'product', label: 'Image', renderer: (item) => <img src={(item.product as any)?.URLimages[0]} alt={(item.product as any)?.name} style={{ width: '300px', height: 'auto' }} /> },
     { _id: 'name', key: 'product', label: 'Name', renderer: (item) => (item.product as any)?.name },
     { _id: 'category', key: 'product', label: 'Category', renderer: (item) => (item.product as any)?.category?.name },
   ];

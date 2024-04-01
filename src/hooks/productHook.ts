@@ -10,7 +10,7 @@ export const useUpdateProductMutation = () => {
         _id: product._id,
         name: product.name,
         slug: product.slug,
-        URLimage: product.URLimage,
+        URLimages: product.URLimages,
         price: product.price,
         description: product.description,
         stock: product.stock,
@@ -39,7 +39,7 @@ export const useGetProductsQuery = (category: string | null): UseQueryResult<Pro
       const products = (await apiClient.get(endpoint)).data
       console.log(
         'Fetched products with URLimage:',
-        products.map((p: Product) => p.URLimage)
+        products.map((p: Product) => p.URLimages)
       )
       const stocks = (await apiClient.get('api/stocks')).data
       console.log('Stocks data fetched successfully:', stocks)
@@ -67,7 +67,7 @@ export const useGetProductDetailsBySlugQuery = (slug: string) =>
       const productDetails = (await apiClient.get<Product>(`api/products/slug/${slug}`)).data
       console.log(
         `Fetched product details for slug: ${slug} with URLimage:`,
-        productDetails.URLimage
+        productDetails.URLimages
       )
       console.log(`Product details fetched successfully for slug: ${slug}:`, productDetails)
 
@@ -114,7 +114,7 @@ export const useCreateProductMutation = () => {
       console.log('Creating product:', product);
       const response = await apiClient.post<Product>('api/products', {
         name: product.name,
-        URLimage: product.URLimage,
+        URLimages: product.URLimages,
         slug: product.slug,
         categoryId: product.category?._id,
         description: product.description,
