@@ -100,7 +100,7 @@ export default function ProductPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {product.stock && product.stock > 0 && (
+                {product.stock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button onClick={addToCartHandler} variant="primary">
