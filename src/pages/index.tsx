@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
+import { Product } from "../types/Product";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function HomePage() {
                     className="mb-3"
                   >
                     <ProductItem
-                      product={featuredProduct.product}
+                      product={featuredProduct.product as Product}
                       stockQuantity={featuredProduct.quantity}
                     />
                   </Col>
