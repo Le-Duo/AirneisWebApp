@@ -114,6 +114,9 @@ function App() {
                         <LinkContainer to="/profile">
                           <Nav.Link>My Profile</Nav.Link>
                         </LinkContainer>
+                        <LinkContainer to="/addresses">
+                          <Nav.Link>My Addresses</Nav.Link>
+                        </LinkContainer>
                         <LinkContainer to="/wallet">
                           <Nav.Link>My Wallet</Nav.Link>
                         </LinkContainer>

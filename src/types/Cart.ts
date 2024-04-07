@@ -1,3 +1,5 @@
+
+
 export type CartItem = {
   image: string | undefined
   slug: string

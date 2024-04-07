@@ -146,7 +146,7 @@ footer .desktop-footer .icon-links {
 
 /* STYLE CREDIT CARDS */
 
-.credit-card {
+.credit-card, .address-card {
   background-color: #f8f9fa; /* Couleur de fond par défaut */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -155,7 +155,7 @@ footer .desktop-footer .icon-links {
   position: relative; /* Pour positionner le badge */
 }
 
-.credit-card:hover {
+.credit-card:hover, .address-card:hover {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -199,3 +199,6 @@ footer .desktop-footer .icon-links {
   font-size: 14px;
   margin-top: 15px;
 }
+
+
+/* STYLE ADDRESS CARDS */

@@ -28,7 +28,7 @@ export default function PaymentMethodPage() {
   }
   return (
     <div>
-      <CheckoutSteps step1 step2 step3 step4={false}></CheckoutSteps>
+      <CheckoutSteps step1 step2 step3  step4={false}></CheckoutSteps>
       <div className="container small-container">
         <Helmet>
           <title>Payment Method</title>

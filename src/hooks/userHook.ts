@@ -109,7 +109,6 @@ useMutation({
   mutationFn: async (user: {
     name: string
     email:string
-    address:UserAddress
   }) =>
   (
     await apiClient.put<{ user: UserInfo }>(
@@ -145,3 +144,48 @@ useMutation({
     return response.data.card;
 }
 })
+
+// add address to user
+export const useAddAddressMutation = (userId: string) => 
+useMutation({
+  mutationFn: async (address: {
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  }) => {
+    const response = await apiClient.post<{ address: UserAddress }>(
+        `api/users/${userId}/address/add`,
+        address
+    );
+    return response.data.address;
+}
+})
+
+// change default address for user
+export const useUpdateDefaultAddressMutation = (userId: string) => 
+useMutation({
+  mutationFn: async (addressId: string) => {
+    const response = await apiClient.put<{}>(`api/users/${userId}/address/${addressId}/default`);
+    return response.data;
+}
+})
+
+// update address
+export const useUpdateAddressMutation = (addressId: string) => 
+useMutation({
+  mutationFn: async (address: {
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  }) => {
+    const response = await apiClient.put<{ address: UserAddress }>(
+        `api/address/${addressId}]`,
+        address
+    );
+    return response.data.address;
+}
+})
+
+

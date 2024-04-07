@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef  } from 'react'
+import { useState, useEffect  } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useGetUserByIdQuery, useUpdateDefaultCardMutation, useAddPaymentCardMutation } from '../hooks/userHook'
@@ -96,7 +96,7 @@ export default function MyWalletPage(){
       return (
         <Container className="medium-container">
           <Helmet>
-            <title>Profile</title>
+            <title>Wallet</title>
           </Helmet>
             <h1 className="my-3">Wallet</h1>
 
