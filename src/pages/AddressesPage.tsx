@@ -5,7 +5,7 @@ import {
   useGetUserByIdQuery,
   useAddAddressMutation,
   useUpdateDefaultAddressMutation,
-  useUpdateAddressMutation
+  useUpdateAddressMutation,
 } from "../hooks/userHook";
 import { UserAddress } from "../types/UserInfo";
 
@@ -15,13 +15,20 @@ export default function AddressesPage() {
 
   const [addresses, setAddresses] = useState<UserAddress[]>([]);
 
-  const { mutateAsync: updateDefaultAddress } =
-    useUpdateDefaultAddressMutation(userConnectedID);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingAddressID, setIsEditingAddressID] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+
+  // add address
   const { mutateAsync: addAddress } = useAddAddressMutation(userConnectedID);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingAddressID, setIsEditingAddressID] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
+  // update address
+  const { mutateAsync: updateDefaultAddress } =
+    useUpdateDefaultAddressMutation(userConnectedID);
+  const { mutateAsync: updateAddress } = useUpdateAddressMutation(
+    userConnectedID,
+    editingAddressID
+  );
 
   useEffect(() => {
     if (user && user.addresses) {
@@ -34,7 +41,7 @@ export default function AddressesPage() {
     city: "",
     postalCode: "",
     country: "",
-    isDefault: false
+    isDefault: false,
   });
 
   // Quand on change une valeur dans le forumulaire, récupère la valeur et la met dans la variable
@@ -63,6 +70,8 @@ export default function AddressesPage() {
     country: string,
     isDefault: boolean
   ) => {
+    // sauvegarde l'id de l'adresse en cours e modification dans la variable
+    setIsEditingAddressID(id);
 
     // met les infos dans le formulaire
     setFormData({
@@ -70,61 +79,66 @@ export default function AddressesPage() {
       city: city,
       postalCode: postalCode,
       country: country,
-      isDefault: isDefault
+      isDefault: isDefault,
     });
 
     // affiche le formulaire et passe en mode "edition"
     setIsEditing(true);
-
-    // sauvegarde l'id de l'adresse en cours e modification dans la variable
-    setIsEditingAddressID(id)
-
-    // 
-    // window.location.reload(); // todo, à modifier dans le futur pour ne recharger que la liste
+    setIsCreating(false);
   };
 
   const handleAddAddressClick = () => {
-    setIsCreating(true);
-  };
-
-  // Quand on envoie le formulaire pour ajouter une adresse
-  const handleSubmitForm = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-
-    // mode creation
-    if (isCreating) {
-        const newAddress = {
-            street: formData.street,
-            city: formData.city,
-            postalCode: formData.postalCode,
-            country: formData.country,
-          };
-      
-          await addAddress(newAddress);
-    } else {
-        // mode edition
-
-        // update address
-        // TODO faire le backend
-        await useUpdateAddressMutation(editingAddressID)
-
-        // set as default if needed
-        if (formData.isDefault) {
-            await updateDefaultAddress(editingAddressID);
-        } 
-
-    }
-
-   
     // reset le formulaire
     setFormData({
       street: "",
       city: "",
       postalCode: "",
       country: "",
-      isDefault: false
+      isDefault: false,
+    });
+
+    setIsCreating(true);
+    setIsEditing(false);
+  };
+
+  // Quand on envoie le formulaire pour ajouter une adresse
+  const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // mode creation
+    if (isCreating) {
+      const newAddress = {
+        street: formData.street,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country,
+      };
+
+      await addAddress(newAddress);
+    } else {
+      // mode edition
+      const updatedAddress = {
+        street: formData.street,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country,
+      };
+
+      // update address
+      await updateAddress(updatedAddress);
+
+      // set as default if needed
+      if (formData.isDefault) {
+        await updateDefaultAddress(editingAddressID);
+      }
+    }
+    // reset le formulaire
+    setFormData({
+      street: "",
+      city: "",
+      postalCode: "",
+      country: "",
+      isDefault: false,
     });
 
     window.location.reload(); // todo, à modifier dans le futur pour ne recharger que la liste
@@ -143,7 +157,14 @@ export default function AddressesPage() {
       <div
         className="address-card"
         onClick={() =>
-          handleCardAddressClick(_id, street, city, postalCode, country, isDefault)
+          handleCardAddressClick(
+            _id,
+            street,
+            city,
+            postalCode,
+            country,
+            isDefault
+          )
         }
       >
         {isDefault && <div className="default-badge">Default</div>}
@@ -494,20 +515,32 @@ export default function AddressesPage() {
 
           <Form.Group className="mb-3" controlId="isDefault">
             <Form.Check
-                type="checkbox"
-                label="Default shipping address"
-                name="isDefault"
-                checked={formData.isDefault}
-                onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+              type="checkbox"
+              label="Default shipping address"
+              name="isDefault"
+              checked={formData.isDefault}
+              onChange={(e) =>
+                setFormData({ ...formData, isDefault: e.target.checked })
+              }
             />
-            </Form.Group>
+          </Form.Group>
 
           <div className="mb-3">
             {isCreating ? (
-              <Button type="submit" style={{ borderRadius: "100px" }}> Create new </Button>
-            ) : 
-                <Button type="submit" id="updateAddressBtn" style={{ borderRadius: "100px" }}> Update </Button>
-          }
+              <Button type="submit" style={{ borderRadius: "100px" }}>
+                {" "}
+                Create new{" "}
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                id="updateAddressBtn"
+                style={{ borderRadius: "100px" }}
+              >
+                {" "}
+                Update{" "}
+              </Button>
+            )}
           </div>
         </Form>
       ) : null}

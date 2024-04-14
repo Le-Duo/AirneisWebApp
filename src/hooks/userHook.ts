@@ -172,7 +172,7 @@ useMutation({
 })
 
 // update address
-export const useUpdateAddressMutation = (addressId: string) => 
+export const useUpdateAddressMutation = (userId: string, addressId: string) => 
 useMutation({
   mutationFn: async (address: {
     street: string;
@@ -181,7 +181,7 @@ useMutation({
     country: string;
   }) => {
     const response = await apiClient.put<{ address: UserAddress }>(
-        `api/address/${addressId}]`,
+        `api/users/${userId}/address/${addressId}`,
         address
     );
     return response.data.address;
