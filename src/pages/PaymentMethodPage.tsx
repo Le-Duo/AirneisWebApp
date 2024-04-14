@@ -135,12 +135,15 @@ export default function PaymentMethodPage() {
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
+        </Form>
+
           <Row>
             <Col md={8}>
               <Form>
                 <Form.Group className="mb-3" controlId="fullName">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control
+                    readOnly
                     value={fullName}
                     required
                   />
@@ -148,6 +151,7 @@ export default function PaymentMethodPage() {
                 <Form.Group className="mb-3" controlId="bankName">
                   <Form.Label>Bank Name</Form.Label>
                   <Form.Control
+                    readOnly
                     value={bankName}
                     required
                   />
@@ -155,6 +159,7 @@ export default function PaymentMethodPage() {
                 <Form.Group className="mb-3" controlId="number">
                   <Form.Label>Card Number</Form.Label>
                   <Form.Control
+                    readOnly
                     value={number}
                     required
                   />
@@ -163,6 +168,7 @@ export default function PaymentMethodPage() {
                 <Form.Group className="mb-3" controlId="yearExpiration">
                   <Form.Label>Year Expiration</Form.Label>
                   <Form.Control
+                    readOnly
                     value={monthExpiration + "/" + yearExpiration}
                     required
                   />
@@ -196,7 +202,6 @@ export default function PaymentMethodPage() {
               Continue
             </Button>
           </div>
-        </Form>
       </div>
     </div>
   );
