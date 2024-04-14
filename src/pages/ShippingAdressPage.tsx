@@ -31,7 +31,7 @@ export default function ShippingAdressPage() {
   const [defaultUserAddress, setDefaultUserAddress] = useState<UserAddress>();
 
   const [fullName, setFullName] = useState(userInfo?.name || "");
-  const [address, setAddress] = useState("");
+  const [street, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
@@ -69,7 +69,7 @@ export default function ShippingAdressPage() {
       type: "SAVE_SHIPPING_ADDRESS",
       payload: {
         fullName,
-        address,
+        street,
         city,
         postalCode,
         country,
@@ -77,7 +77,7 @@ export default function ShippingAdressPage() {
     });
     localStorage.setItem(
       "shippingAddress",
-      JSON.stringify({ fullName, address, city, postalCode, country })
+      JSON.stringify({ fullName, street, city, postalCode, country })
     );
     navigate("/payment");
   };
@@ -135,7 +135,7 @@ export default function ShippingAdressPage() {
             <Form.Group className="mb-3" controlId="address">
               <Form.Label>Address</Form.Label>
               <Form.Control
-                value={address}
+                value={street}
                 onChange={(e) => setAddress(e.target.value)}
                 required
               />

@@ -17,7 +17,7 @@ export default function PaymentMethodPage() {
     paymentMethod || "Card"
   );
   useEffect(() => {
-    if (!shippingAddress.address) {
+    if (!shippingAddress.street) {
       navigate("/shipping");
     }
   }, [shippingAddress, navigate]);

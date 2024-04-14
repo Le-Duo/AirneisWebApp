@@ -88,7 +88,7 @@ function reducer(state: AppState, action: Action): AppState {
           paymentMethod: 'Card',
           shippingAddress: {
             fullName: '',
-            address: '',
+            street: '',
             city: '',
             postalCode: '',
             country: '',
