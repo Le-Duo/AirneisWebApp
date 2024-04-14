@@ -123,85 +123,60 @@ export default function PaymentMethodPage() {
           <title>Payment Method</title>
         </Helmet>
         <h1 className="my-3">Payment Method</h1>
-        <Form onSubmit={submitHandler}>
-          <div className="mb-3">
-            <Form.Check
-              type="radio"
-              id="card"
-              name="paymentMethod"
-              value="Card"
-              label="Card"
-              checked={paymentMethodName === "Card"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
-          </div>
-        </Form>
 
-          <Row>
-            <Col md={8}>
-              <Form>
-                <Form.Group className="mb-3" controlId="fullName">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    readOnly
-                    value={fullName}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="bankName">
-                  <Form.Label>Bank Name</Form.Label>
-                  <Form.Control
-                    readOnly
-                    value={bankName}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="number">
-                  <Form.Label>Card Number</Form.Label>
-                  <Form.Control
-                    readOnly
-                    value={number}
-                    required
-                  />
-                </Form.Group>
+        <Row>
+          <Col md={8}>
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="fullName">
+                <Form.Label>Full Name</Form.Label>
+                <Form.Control readOnly value={fullName} required />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="bankName">
+                <Form.Label>Bank Name</Form.Label>
+                <Form.Control readOnly value={bankName} required />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="number">
+                <Form.Label>Card Number</Form.Label>
+                <Form.Control readOnly value={number} required />
+              </Form.Group>
 
-                <Form.Group className="mb-3" controlId="yearExpiration">
-                  <Form.Label>Year Expiration</Form.Label>
-                  <Form.Control
-                    readOnly
-                    value={monthExpiration + "/" + yearExpiration}
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="ccv" className="mb-3">
-                  <Form.Label>CCV</Form.Label>
-                  <Form.Control
-                    type="number"
-                    inputMode="numeric"
-                    pattern="\d{3}"
-                    maxLength={3}
-                    minLength={3}
-                    required
-                  />
-                </Form.Group>
-              </Form>
-            </Col>
-            <Col md={4} style={{ maxHeight: "450px", overflowY: "auto" }}>
-              {cards.map((card) => (
-                <CardCard
-                  key={card._id}
-                  card={card}
-                  onClick={() => handleCardClick(card)}
+              <Form.Group className="mb-3" controlId="yearExpiration">
+                <Form.Label>Year Expiration</Form.Label>
+                <Form.Control
+                  readOnly
+                  value={monthExpiration + "/" + yearExpiration}
+                  required
                 />
-              ))}
-            </Col>
-          </Row>
-          <div className="mb-3">
-            <Button type="submit" style={{ borderRadius: "100px" }}>
-              Continue
-            </Button>
-          </div>
+              </Form.Group>
+
+              <Form.Group controlId="ccv" className="mb-3">
+                <Form.Label>CCV</Form.Label>
+                <Form.Control
+                  type="number"
+                  inputMode="numeric"
+                  pattern="\d{3}"
+                  maxLength={3}
+                  minLength={3}
+                  required
+                />
+              </Form.Group>
+              <div className="mb-3">
+                <Button type="submit" style={{ borderRadius: "100px" }}>
+                  Continue
+                </Button>
+              </div>
+            </Form>
+          </Col>
+          <Col md={4} style={{ maxHeight: "450px", overflowY: "auto" }}>
+            {cards.map((card) => (
+              <CardCard
+                key={card._id}
+                card={card}
+                onClick={() => handleCardClick(card)}
+              />
+            ))}
+          </Col>
+        </Row>
       </div>
     </div>
   );
