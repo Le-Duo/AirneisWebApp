@@ -40,10 +40,8 @@ export default function PlaceOrderPage() {
         orderItems: cart.cartItems,
         shippingAddress: {
           user: state.userInfo?._id || '',
-          firstName: cart.shippingAddress.firstName,
-          lastName: cart.shippingAddress.lastName,
+          fullName: cart.shippingAddress.fullName,
           street: cart.shippingAddress.street,
-          street2: cart.shippingAddress.street2,
           city: cart.shippingAddress.city,
           postalCode: cart.shippingAddress.postalCode,
           country: cart.shippingAddress.country,
@@ -92,13 +90,10 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Full Name:</strong> {cart.shippingAddress.firstName} {cart.shippingAddress.lastName} <br />
-                <strong>Address Line 1:</strong> {cart.shippingAddress.street} <br />
-                {cart.shippingAddress.street2 && <><strong>Address Line 2:</strong> {cart.shippingAddress.street2} <br /></>}
-                <strong>City:</strong> {cart.shippingAddress.city} <br />
-                <strong>Postal Code:</strong> {cart.shippingAddress.postalCode} <br />
-                <strong>Country:</strong> {cart.shippingAddress.country} <br />
-                <strong>Phone Number:</strong> {cart.shippingAddress.phone}
+                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
+                <strong>Address:</strong> {cart.shippingAddress.street},
+                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
+                {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
             </Card.Body>

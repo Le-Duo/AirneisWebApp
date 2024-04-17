@@ -12,12 +12,10 @@ export type CartItem = {
 }
 
 export type ShippingAddress = {
-  _id?: string
-  user: string
-  firstName: string
-  lastName: string
+  fullName: string
   street: string
-  street2?: string
+  _id?: string
+  user?: string
   city: string
   postalCode: string
   country: string

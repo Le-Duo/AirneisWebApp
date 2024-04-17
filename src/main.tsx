@@ -32,6 +32,7 @@ import ProductsList from './backoffice/pages/ProductsList.tsx'
 import CarouselList from './backoffice/pages/CarouselList.tsx'
 import ContactList from './backoffice/pages/MessagesContactList.tsx'
 import FeaturedProductList from './backoffice/pages/FeaturedProductList.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
 import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
 import PasswordReset from './components/PasswordReset'
@@ -41,6 +42,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
+import MyWalletPage from './pages/MyWallet.tsx'
+import AddressesPage from './pages/AddressesPage.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,7 +66,9 @@ const router = createBrowserRouter(
       />
       <Route path="/password-reset/:token" element={<PasswordReset />} />
       <Route path="" element={<ProtectedRoute />}>
-        <Route path="shipping" element={<ShippingAddressPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="addresses" element={<AddressesPage />} />
+        <Route path="wallet" element={<MyWalletPage />} />
         <Route path="shipping" element={<ShippingAddressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />

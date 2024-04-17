@@ -1,4 +1,4 @@
-import { CartItem, ShippingAddress } from './Cart'
+import { CartItem,ShippingAddress } from './Cart'
 import { User } from './User'
 
 export enum OrderStatus {

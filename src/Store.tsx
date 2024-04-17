@@ -102,12 +102,13 @@ function reducer(state: AppState, action: Action): AppState {
         existingAddresses: [],
         userInfo: null, // Set userInfo to null on sign out
       }
-    case 'SAVE_SHIPPING_ADDRESS':
+    case 'SAVE_SHIPPING_ADDRESS': {
       const { payload } = action;
       return {
         ...state,
         cart: { ...state.cart, shippingAddress: payload }, // Updated to directly use the payload
-      }
+      };
+    }
     case 'SAVE_PAYMENT_METHOD':
       return {
         ...state,
@@ -128,7 +129,7 @@ const Store = React.createContext({
 })
 
 // Fournisseur de contexte pour l'application
-function StoreProvider(props: React.PropsWithChildren<{}>) {
+function StoreProvider(props: React.PropsWithChildren<Record<string, never>>) {
   const [state, dispatch] = React.useReducer<React.Reducer<AppState, Action>>(
     reducer,
     initialState

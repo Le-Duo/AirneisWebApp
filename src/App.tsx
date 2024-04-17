@@ -117,7 +117,13 @@ function App() {
                         <LinkContainer to='/profile' onClick={handleCloseOffcanvas}>
                           <Nav.Link>My Settings</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to='/orderhistory' onClick={handleCloseOffcanvas}>
+                        <LinkContainer to="/addresses" onClick={handleCloseOffcanvas}>
+                          <Nav.Link>My Addresses</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/wallet" onClick={handleCloseOffcanvas}>
+                          <Nav.Link>My Wallet</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/orderhistory" onClick={handleCloseOffcanvas}>
                           <Nav.Link>My Orders</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to='/tos' onClick={handleCloseOffcanvas}>

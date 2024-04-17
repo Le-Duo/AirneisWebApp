@@ -10,13 +10,16 @@ const HomeCarousel = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  if (!items || items.length === 0) {
-    return <div>No images available</div>;
+  // Ensure items is always treated as an array
+  const carouselItems = Array.isArray(items) ? items : []
+
+  if (carouselItems.length === 0) {
+    return <div>No images available</div>
   }
 
   return (
     <Carousel>
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <Carousel.Item key={item._id || index}>
           <img className='d-block w-100' src={item.src} alt={item.alt} loading="lazy" />
           <Carousel.Caption className={mode === 'dark' ? 'dark-mode' : ''}>

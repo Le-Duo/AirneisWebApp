@@ -33,8 +33,10 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {order.shippingAddress.firstName} {order.shippingAddress.lastName}<br />
-                <strong>Address:</strong> {order.shippingAddress.street}, {order.shippingAddress.street2 ? `${order.shippingAddress.street2}, ` : ''}{order.shippingAddress.city}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
+                <strong>Address: </strong> {order.shippingAddress.street},
+                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
+                ,{order.shippingAddress.country}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
