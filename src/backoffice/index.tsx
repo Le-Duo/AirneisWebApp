@@ -9,7 +9,7 @@ export const NavigationSystem = () => {
       <Helmet>
         <title>Backoffice Navigation</title>
       </Helmet>
-      <Nav variant="tabs" defaultActiveKey="/backoffice">
+      <Nav variant="tabs" className='mb-3'>
         <LinkContainer to="/backoffice">
           <Nav.Link>Tableau de Bord</Nav.Link>
         </LinkContainer>
@@ -22,8 +22,14 @@ export const NavigationSystem = () => {
         <LinkContainer to="/backoffice/products">
           <Nav.Link>Liste des Produits</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/backoffice/contacts">
-          <Nav.Link>Liste des messages de contact</Nav.Link>
+        <LinkContainer to="/backoffice/carousel">
+          <Nav.Link>Carousel</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/backoffice/contact">
+          <Nav.Link>Contact</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/backoffice/featured-products">
+          <Nav.Link>Featured products</Nav.Link>
         </LinkContainer>
       </Nav>
       <Outlet />

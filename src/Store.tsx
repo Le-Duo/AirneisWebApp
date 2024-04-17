@@ -1,12 +1,14 @@
 import React from 'react'
-import { Cart, CartItem, ShippingAddress } from './types/Cart'
+import { Cart, CartItem } from './types/Cart'
 import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
+import { ShippingAddress } from './types/shippingAddress' // Updated import to match the structure
 
 // Définition du type pour l'état de l'application
 type AppState = {
   mode: string
   cart: Cart
-  userInfo?: UserInfo
+  userInfo: UserInfo | null
+  existingAddresses: ShippingAddress[]; // Updated to match the structure from shippingAddress.ts
 }
 
 // Initialisation de l'état de l'application
@@ -21,7 +23,7 @@ const initialState: AppState = {
       : [],
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
-      : {},
+      : {} as ShippingAddress, // Updated to match the structure from shippingAddress.ts
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')!
       : 'Card',
@@ -30,6 +32,9 @@ const initialState: AppState = {
     taxPrice: 0,
     totalPrice: 0,
   },
+  existingAddresses: localStorage.getItem('existingAddresses') // Add this line
+    ? JSON.parse(localStorage.getItem('existingAddresses')!) // Ensure JSON structure matches ShippingAddress[]
+    : [], // Initialize as empty array if not found
 }
 
 // Définition des actions possibles
@@ -40,16 +45,17 @@ type Action =
   | { type: 'CART_CLEAR' }
   | { type: 'USER_SIGNIN'; payload: UserInfo }
   | { type: 'USER_SIGNOUT' }
-  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress }
+  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress } // Updated payload to match the structure
   | { type: 'SAVE_PAYMENT_METHOD'; payload: string }
 
 // Fonction réducteur pour gérer les actions
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case 'SWITCH_MODE':
+    case 'SWITCH_MODE': {
       localStorage.setItem('mode', state.mode === 'light' ? 'dark' : 'light')
       return { ...state, mode: state.mode === 'light' ? 'dark' : 'light' }
-    case 'CART_ADD_ITEM':
+    }
+    case 'CART_ADD_ITEM': {
       const newItem = action.payload
       const existItem = state.cart.cartItems.find(
         (item: CartItem) => item._id === newItem._id
@@ -62,12 +68,13 @@ function reducer(state: AppState, action: Action): AppState {
 
       localStorage.setItem('cartItems', JSON.stringify(cartItems))
       return { ...state, cart: { ...state.cart, cartItems } }
+    }
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item: CartItem) => item._id !== action.payload._id
-      ) // Articles du panier: Filtrer les articles du panier
-      localStorage.setItem('cartItems', JSON.stringify(cartItems)) // Panier: Définir le panier dans la mémoire locale
-      return { ...state, cart: { ...state.cart, cartItems } } // Retourner: Nouveau panier
+      )
+      localStorage.setItem('cartItems', JSON.stringify(cartItems))
+      return { ...state, cart: { ...state.cart, cartItems } }
     }
     case 'CART_CLEAR':
       return {
@@ -75,7 +82,7 @@ function reducer(state: AppState, action: Action): AppState {
         cart: { ...state.cart, cartItems: [] },
       }
     case 'USER_SIGNIN':
-      return { ...state, userInfo: action.payload } // Retourner: Nouvel utilisateur
+      return { ...state, userInfo: action.payload }
     case 'USER_SIGNOUT':
       return {
         mode:
@@ -86,24 +93,22 @@ function reducer(state: AppState, action: Action): AppState {
         cart: {
           cartItems: [],
           paymentMethod: 'Card',
-          shippingAddress: {
-            fullName: '',
-            street: '',
-            city: '',
-            postalCode: '',
-            country: '',
-          },
+          shippingAddress: {} as ShippingAddress,
           itemsPrice: 0,
           shippingPrice: 0,
           taxPrice: 0,
           totalPrice: 0,
         },
+        existingAddresses: [],
+        userInfo: null, // Set userInfo to null on sign out
       }
-    case 'SAVE_SHIPPING_ADDRESS':
+    case 'SAVE_SHIPPING_ADDRESS': {
+      const { payload } = action;
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: action.payload },
-      }
+        cart: { ...state.cart, shippingAddress: payload }, // Updated to directly use the payload
+      };
+    }
     case 'SAVE_PAYMENT_METHOD':
       return {
         ...state,
@@ -124,7 +129,7 @@ const Store = React.createContext({
 })
 
 // Fournisseur de contexte pour l'application
-function StoreProvider(props: React.PropsWithChildren<{}>) {
+function StoreProvider(props: React.PropsWithChildren<Record<string, never>>) {
   const [state, dispatch] = React.useReducer<React.Reducer<AppState, Action>>(
     reducer,
     initialState

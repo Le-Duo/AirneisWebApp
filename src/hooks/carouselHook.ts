@@ -1,59 +1,65 @@
-import { useState, useEffect, useCallback } from 'react'
-import apiClient from '../apiClient'
-import { CarouselItem } from '../types/Carousel'
+import {
+  useMutation,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query'
+import apiClient from '../apiClient';
+import { CarouselItem } from '../types/Carousel';
 
-const useCarousel = () => {
-  const [items, setItems] = useState<CarouselItem[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
+export const useGetCarouselItemsQuery = (): UseQueryResult<CarouselItem[], Error> => {
+  return useQuery({
+    queryKey: ['carouselItems'],
+    queryFn: async () => {
+      try {
+        const response = await apiClient.get('api/carousel');
+        return response.data;
+      }
+      catch (error) {
+        throw new Error('Failed to fetch carousel items');
+      }
+    },
+    staleTime: 5 * 60 * 1000, // Adding stale while revalidate strategy
+  });
+};
 
-  const fetchItems = useCallback(async () => {
-    setLoading(true)
-    try {
-      const { data } = await apiClient.get<CarouselItem[]>('/api/carousel')
-      setItems(data)
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Unexpected Error!')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+export const useCreateCarouselItemMutation = () => {
+  return useMutation({
+    mutationFn: async (item: Partial<CarouselItem>) => {
+      try {
+        const response = await apiClient.post('api/carousel', item);
+        return response.data;
+      }
+      catch (error) {
+        throw new Error('Failed to create carousel item');
+      }
+    },
+  });
+};
 
-  useEffect(() => {
-    fetchItems()
-  }, [fetchItems])
+export const useUpdateCarouselItemMutation = () => {
+  return useMutation({
+    mutationFn: async (item: CarouselItem) => {
+      try {
+        const response = await apiClient.put(`api/carousel/${item._id}`, item);
+        return response.data;
+      }
+      catch (error) {
+        throw new Error('Failed to update carousel item');
+      }
+    },
+  });
+};
 
-  const addItem = async (item: CarouselItem) => {
-    try {
-      const { data } = await apiClient.post<CarouselItem>('/api/carousel', item)
-      setItems((prev) => [...prev, data])
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Unexpected Error!')
-    }
-  }
-
-  const updateItem = async (id: string, item: Partial<CarouselItem>) => {
-    try {
-      const { data } = await apiClient.put<CarouselItem>(
-        `/api/carousel/${id}`,
-        item
-      )
-      setItems((prev) => prev.map((i) => (i._id === id ? data : i)))
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Unexpected Error!')
-    }
-  }
-
-  const deleteItem = async (id: string) => {
-    try {
-      await apiClient.delete(`/api/carousel/${id}`)
-      setItems((prev) => prev.filter((i) => i._id !== id))
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Unexpected Error!')
-    }
-  }
-
-  return { items, loading, error, addItem, updateItem, deleteItem }
-}
-
-export default useCarousel
+export const useDeleteCarouselItemMutation = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        const response = await apiClient.delete(`api/carousel/${id}`);
+        return response.data;
+      }
+      catch (error) {
+        throw new Error('Failed to delete carousel item');
+      }
+    },
+  });
+};

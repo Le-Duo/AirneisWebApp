@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
 import { Store } from '../Store'
-import { userSigninMutation } from '../hooks/userHook'
+import { useUserSigninMutation } from '../hooks/userHook'
 import { ApiError } from '../types/APIError'
 import { toast } from 'react-toastify'
 import { getError } from '../utils'
@@ -23,7 +23,7 @@ export default function SigninPage() {
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
 
-  const { mutateAsync: signin } = userSigninMutation()
+  const { mutateAsync: signin } = useUserSigninMutation()
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()

@@ -13,12 +13,12 @@ export default function PaymentMethodPage() {
   const {
     cart: { shippingAddress, paymentMethod },
   } = state;
-  const [paymentMethodName, setPaymentMethod] = useState(
+  const [paymentMethodName] = useState(
     paymentMethod || "Card"
   );
   useEffect(() => {
     if (!shippingAddress.street) {
-      navigate("/shipping");
+      navigate('/shipping')
     }
   }, [shippingAddress, navigate]);
 
@@ -44,7 +44,7 @@ export default function PaymentMethodPage() {
 
   useEffect(() => {
     if (cards) {
-      let defaultCard = cards.find((element) => {
+      const defaultCard = cards.find((element) => {
         return element.isDefault === true;
       });
 

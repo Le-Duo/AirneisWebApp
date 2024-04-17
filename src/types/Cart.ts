@@ -1,4 +1,4 @@
-
+import { Category } from "./Category"
 
 export type CartItem = {
   image: string | undefined
@@ -8,14 +8,18 @@ export type CartItem = {
   price: number
   _id: string
   name: string
+  category: Category | undefined
 }
 
 export type ShippingAddress = {
   fullName: string
   street: string
+  _id?: string
+  user?: string
   city: string
-  country: string
   postalCode: string
+  country: string
+  phone: string
 }
 
 export type Cart = {

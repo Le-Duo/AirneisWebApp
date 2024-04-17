@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
-import { useGetOrderDetailsQuery } from '../hooks/orderHooks'
+import { useGetOrderDetailsQuery } from '../hooks/orderHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 

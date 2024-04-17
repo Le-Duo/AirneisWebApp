@@ -4,7 +4,7 @@ import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
 import { useContext, useEffect, useState } from 'react'
-import { useCreateOrderMutation } from '../hooks/orderHooks'
+import { useCreateOrderMutation } from '../hooks/orderHook'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Helmet } from 'react-helmet-async'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
@@ -38,15 +38,25 @@ export default function PlaceOrderPage() {
       setIsLoading(true)
       const data = await createOrder({
         orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
+        shippingAddress: {
+          user: state.userInfo?._id || '',
+          fullName: cart.shippingAddress.fullName,
+          street: cart.shippingAddress.street,
+          city: cart.shippingAddress.city,
+          postalCode: cart.shippingAddress.postalCode,
+          country: cart.shippingAddress.country,
+          phone: cart.shippingAddress.phone,
+        },
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice, // Ensure this is the correctly calculated value
+        shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
         user: state.userInfo?._id || '',
+        isPaid: false,
+        isDelivered: false,
       })
-      console.log(data) // Added to log the response
+      console.log(data)
       if (data && data._id) {
         dispatch({ type: 'CART_CLEAR' })
         localStorage.removeItem('cartItems')

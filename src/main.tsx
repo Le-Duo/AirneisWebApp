@@ -17,9 +17,8 @@ import ContactPage from './pages/ContactPage.tsx'
 import TOSPage from './pages/TOSPage'
 import SearchPage from './pages/SearchPage'
 import SigninPage from './pages/SigninPage'
-import ProfilePage from './pages/ProfilePage.tsx'
 import SignupPage from './pages/SignupPage'
-import ShippingAdressPage from './pages/ShippingAdressPage.tsx'
+import ShippingAddressPage from './pages/ShippingAddressPage.tsx'
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import AdminRoute from './components/AdminRoute.tsx'
@@ -30,6 +29,11 @@ import Index from './pages/index.tsx'
 import OrdersList from './backoffice/pages/OrdersList.tsx'
 import UsersList from './backoffice/pages/UsersList.tsx'
 import ProductsList from './backoffice/pages/ProductsList.tsx'
+import CarouselList from './backoffice/pages/CarouselList.tsx'
+import ContactList from './backoffice/pages/MessagesContactList.tsx'
+import FeaturedProductList from './backoffice/pages/FeaturedProductList.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
+import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
 import PasswordReset from './components/PasswordReset'
 import { HelmetProvider } from 'react-helmet-async'
@@ -38,7 +42,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
-import ContactList from './backoffice/pages/MessagesContactList.tsx'
 import MyWalletPage from './pages/MyWallet.tsx'
 import AddressesPage from './pages/AddressesPage.tsx'
 
@@ -54,6 +57,7 @@ const router = createBrowserRouter(
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/tos" element={<TOSPage />} />
       <Route path="*" element={<h1>Not Found</h1>} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="signin" element={<SigninPage />} />
       <Route path="signup" element={<SignupPage />} />{' '}
       <Route
@@ -65,7 +69,7 @@ const router = createBrowserRouter(
         <Route path="profile" element={<ProfilePage />} />
         <Route path="addresses" element={<AddressesPage />} />
         <Route path="wallet" element={<MyWalletPage />} />
-        <Route path="shipping" element={<ShippingAdressPage />} />
+        <Route path="shipping" element={<ShippingAddressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />
         <Route path="order/:id" element={<OrderPage />} />
@@ -77,7 +81,9 @@ const router = createBrowserRouter(
           <Route path="/backoffice/orders" element={<OrdersList />} />
           <Route path="/backoffice/users" element={<UsersList />} />
           <Route path="/backoffice/products" element={<ProductsList />} />
-          <Route path="/backoffice/contacts" element={<ContactList />} />
+          <Route path="/backoffice/carousel" element={<CarouselList />} />
+          <Route path="/backoffice/contact" element={<ContactList />} />
+          <Route path="/backoffice/featured-products" element={<FeaturedProductList />} />
         </Route>
       </Route>
     </Route>

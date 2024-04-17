@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
-import { useGetOrderHistoryQuery } from '../hooks/orderHooks'
+import { useGetOrderHistoryQuery } from '../hooks/orderHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 

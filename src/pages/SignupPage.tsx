@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Store } from '../Store'
-import { userSignupMutation } from '../hooks/userHook'
+import { useUserSignupMutation } from '../hooks/userHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
@@ -30,7 +30,7 @@ export default function SignupPage() {
     }
   }, [userInfo, redirect, navigate])
 
-  const { mutateAsync: signup } = userSignupMutation()
+  const { mutateAsync: signup } = useUserSignupMutation()
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()

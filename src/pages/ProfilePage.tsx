@@ -4,7 +4,6 @@ import { getError } from '../utils'
 import { ApiError } from '../types/APIError'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-import LoadingBox from '../components/LoadingBox'
 import { useGetUserByIdQuery, useUpdateUserMutation } from '../hooks/userHook'
 
 export default function ProfilePage(){
