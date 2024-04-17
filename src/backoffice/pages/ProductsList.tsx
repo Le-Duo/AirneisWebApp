@@ -1,14 +1,15 @@
-import { useState, useMemo } from 'react'
-import { Helmet } from 'react-helmet-async'
-import Table from '../components/Table'
+import { useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
+import Table from "../components/Table";
+import EditProductModal from "../components/EditProductModal";
+import CreateProductModal from "../components/CreateProductModal";
 import {
   useGetProductsQuery,
-  useUpdateProductMutation,
-} from '../../hooks/productHook'
-import { useGetCategoriesQuery } from '../../hooks/categoryHook'
-import Popup from '../components/Popup'
-import EditProductForm from '../components/EditProductForm'
-import { Product } from '../../types/Product'
+  useDeleteProductMutation,
+} from "../../hooks/productHook";
+import { useGetCategoriesQuery } from "../../hooks/categoryHook";
+import { Product } from "../../types/Product";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ProductsList = () => {
   const {
@@ -16,67 +17,94 @@ const ProductsList = () => {
     isLoading: productsLoading,
     error: productsError,
     refetch,
-  } = useGetProductsQuery(null)
+  } = useGetProductsQuery(null);
   const {
     data: categories,
     isLoading: categoriesLoading,
     error: categoriesError,
-  } = useGetCategoriesQuery()
-  const [showPopup, setShowPopup] = useState(false)
-  const [popupContent, setPopupContent] = useState<JSX.Element | string>('')
-  const updateProductMutation = useUpdateProductMutation()
+  } = useGetCategoriesQuery();
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const queryClient = useQueryClient();
+  const { mutate: deleteProduct } = useDeleteProductMutation();
+
+  const handleEdit = async (product: Product) => {
+    setCurrentProduct(product);
+    setShowEditModal(true);
+  };
+
+  const handleCreate = () => {
+    setShowCreateModal(true);
+  }
+
+  const handleProductUpdate = () => {
+    queryClient.refetchQueries({ queryKey: ["getProducts"] });
+  };
+
+  const handleProductCreate = () => {
+    queryClient.refetchQueries({ queryKey: ["getProducts"] });
+  }
+
+  const handleDelete = async (product: Product) => {
+    if (typeof product._id === 'string') {
+      deleteProduct(product._id, {
+        onSuccess: () => {
+          refetch();
+        },
+        onError: (error) => {
+          console.error("Error deleting product:", error);
+        },
+      });
+    } else {
+      console.error("Product ID is undefined, cannot delete product.");
+    }
+  };
 
   const adjustedProducts = useMemo(
     () =>
       products?.map((product) => ({
         ...product,
         categoryName: product.category?.name,
-        URLimage: (
-          <img
-            src={product.URLimage}
-            alt={product.name}
-            style={{ width: '100px' }}
-          />
-        ),
+        URLimages: product.URLimages,
       })) || [],
     [products]
-  )
+  );
 
   const columns = useMemo(
     () => [
-      { key: 'URLimage', label: 'Image' },
-      { key: 'name', label: 'Name' },
-      { key: 'slug', label: 'URL' },
-      { key: 'categoryName', label: 'Category' },
-      { key: 'price', label: 'Price' },
-      { key: 'stock', label: 'Stock' },
-      { key: 'description', label: 'Description' },
+      {
+        _id: "image",
+        key: "URLimages" as const,
+        label: "Image",
+        renderer: (item: Product) => (
+          <img
+            src={item.URLimages[0]}
+            alt={item.name}
+            style={{ width: "100px", height: "auto" }}
+          />
+        ),
+      },
+      { _id: "name", key: "name" as const, label: "Name" },
+      {
+        _id: "slug",
+        key: "slug" as const,
+        label: "URL",
+        renderer: (item: Product) =>
+          `https://www.airneis.com/product/${item.slug}`,
+      },
+      { _id: "categoryName", key: "categoryName" as const, label: "Category" },
+      { _id: "price", key: "price" as const, label: "Price" },
+      { _id: "stock", key: "stock" as const, label: "Stock" },
+      { _id: "description", key: "description" as const, label: "Description" },
+      { _id: "priority", key: "priority" as const, label: "Priority" },
     ],
     []
-  )
+  );
 
-  const handleEdit = (product: Product) => {
-    setPopupContent(
-      <EditProductForm
-        product={product}
-        onSave={handleSaveProduct}
-        categories={categories || []}
-      />
-    )
-    setShowPopup(true)
-  }
-
-  const handleSaveProduct = async (editedProduct: Product) => {
-    await updateProductMutation.mutateAsync(editedProduct, {
-      onSuccess: () => {
-        setShowPopup(false)
-        refetch()
-      },
-    })
-  }
-
-  if (productsLoading || categoriesLoading) return <div>Loading...</div>
-  if (productsError || categoriesError) return <div>Error fetching data</div>
+  if (productsLoading || categoriesLoading) return <div>Loading...</div>;
+  if (productsError || categoriesError) return <div>Error fetching data</div>;
 
   return (
     <div>
@@ -84,15 +112,31 @@ const ProductsList = () => {
         <title>Products List</title>
       </Helmet>
       <h2>Products List</h2>
-      <Table data={adjustedProducts} columns={columns} onEdit={handleEdit} />
-      <Popup
-        show={showPopup}
-        onHide={() => setShowPopup(false)}
-        title="Product Details"
-        content={popupContent}
+      <Table
+        data={adjustedProducts}
+        columns={columns}
+        onEdit={handleEdit}
+        onAdd={handleCreate}
+        onDelete={handleDelete}
       />
+      {showCreateModal && (
+        <CreateProductModal
+          show={showCreateModal}
+          onHide={() => setShowCreateModal(false)}
+          onProductCreate={handleProductCreate}
+        />
+      )}
+      {currentProduct && categories && (
+        <EditProductModal
+          show={showEditModal}
+          onHide={() => setShowEditModal(false)}
+          product={currentProduct}
+          categories={categories}
+          onProductUpdate={handleProductUpdate}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ProductsList
+export default ProductsList;

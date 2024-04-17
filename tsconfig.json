@@ -32,7 +32,10 @@
     "noFallthroughCasesInSwitch": true
   },
   // Dossier code source
-  "include": ["src"],
+  "include": [
+    "src",
+    "react-bootstrap-multiselect.d.ts"
+  ],
   // Fichier de configuration pour Node.js
   "references": [{ "path": "./tsconfig.node.json" }]
 }

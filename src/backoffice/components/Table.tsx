@@ -1,63 +1,59 @@
 import React, { useState } from 'react'
-import Table from 'react-bootstrap/Table' // Import Table from react-bootstrap
-import Button from 'react-bootstrap/Button' // Import Button from react-bootstrap
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import { Table, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
+import { FaPlus, FaPen, FaTrash } from 'react-icons/fa6' // Import the icons
+
+export interface Column<T> {
+  _id: string
+  key: keyof T
+  label: string
+  renderer?: (item: T) => React.ReactNode
+}
 
 interface TableProps<T> {
   data: T[]
-  columns: { key: keyof T; label: string }[]
-  onSelectionChange?: (selectedItems: T[]) => void
+  columns: Column<T>[]
+  onAdd?: () => void
   onEdit?: (item: T) => void
+  onDelete?: (item: T) => void
   children?: React.ReactNode
 }
 
-const CustomTable: React.FC<TableProps<any>> = ({
-  data,
-  columns,
-  onSelectionChange,
-  onEdit, // Destructure onEdit here
-  children,
-}) => {
-  const [selectedItems, setSelectedItems] = useState<any[]>([])
+function CustomTable<T>({ data = [], columns, onAdd, onEdit, onDelete, children }: TableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
-
-  const handleSelectItem = (item: any, isChecked: boolean) => {
-    setSelectedItems((prev) =>
-      isChecked
-        ? [...prev, item]
-        : prev.filter((selectedItem) => selectedItem !== item)
-    )
-    onSelectionChange?.(selectedItems)
-  }
+  const totalItems = data.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
 
   const paginatedItems = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
   return (
     <Container fluid>
-      <Row className="mb-2">
+      <Row className='mb-2'>
         <Col>
-          <Button
-            className="m-1"
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            Previous
-          </Button>
-          <Button
-            className="m-1"
-            onClick={() =>
-              setCurrentPage((p) =>
-                Math.min(p + 1, Math.ceil(data.length / itemsPerPage))
-              )
-            }
-          >
-            Next
-          </Button>
+          {/* Add Button with Icon */}
+          {onAdd && (
+            <Button variant="primary" onClick={onAdd} className="mb-3">
+              <FaPlus />
+            </Button>
+          )}
+          <Pagination>
+            <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+            <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+            {[...Array(totalPages).keys()].map(page => (
+              <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => handlePageChange(page + 1)}>
+                {page + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+            <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+          </Pagination>
         </Col>
       </Row>
       <Row>
@@ -65,9 +61,8 @@ const CustomTable: React.FC<TableProps<any>> = ({
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Select</th>
-                {columns.map((column) => (
-                  <th key={column.key as string}>{column.label}</th>
+                {columns.map(column => (
+                  <th key={String(column.key)}>{column.label}</th>
                 ))}
                 <th>Action</th>
               </tr>
@@ -75,46 +70,24 @@ const CustomTable: React.FC<TableProps<any>> = ({
             <tbody>
               {paginatedItems.map((item, index) => (
                 <tr key={index}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(item)}
-                      onChange={(e) => handleSelectItem(item, e.target.checked)}
-                    />
-                  </td>
-                  {columns.map((column) => (
-                    <td key={column.key as string}>{item[column.key]}</td>
+                  {columns.map(column => (
+                    <td key={String(column.key)}>
+                      {column.renderer ? column.renderer(item) : String(item[column.key])}
+                    </td>
                   ))}
                   <td>
                     {children}
-                    {onEdit && (
-                      <Button onClick={() => onEdit(item)}>Edit</Button> // Add an Edit button
+                    {onEdit && <Button onClick={() => onEdit(item)}><FaPen /></Button>}
+                    {onDelete && (
+                      <Button variant='danger' onClick={() => onDelete(item)}>
+                        <FaTrash />
+                      </Button>
                     )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-        </Col>
-      </Row>
-      <Row className="mt-2">
-        <Col>
-          <Button
-            className="m-1"
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            Previous
-          </Button>
-          <Button
-            className="m-1"
-            onClick={() =>
-              setCurrentPage((p) =>
-                Math.min(p + 1, Math.ceil(data.length / itemsPerPage))
-              )
-            }
-          >
-            Next
-          </Button>
         </Col>
       </Row>
     </Container>

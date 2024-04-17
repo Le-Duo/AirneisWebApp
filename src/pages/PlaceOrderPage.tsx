@@ -4,7 +4,7 @@ import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
 import { useContext, useEffect, useState } from 'react'
-import { useCreateOrderMutation } from '../hooks/orderHooks'
+import { useCreateOrderMutation } from '../hooks/orderHook'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Helmet } from 'react-helmet-async'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
@@ -38,15 +38,27 @@ export default function PlaceOrderPage() {
       setIsLoading(true)
       const data = await createOrder({
         orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
+        shippingAddress: {
+          user: state.userInfo?._id || '',
+          firstName: cart.shippingAddress.firstName,
+          lastName: cart.shippingAddress.lastName,
+          street: cart.shippingAddress.street,
+          street2: cart.shippingAddress.street2,
+          city: cart.shippingAddress.city,
+          postalCode: cart.shippingAddress.postalCode,
+          country: cart.shippingAddress.country,
+          phone: cart.shippingAddress.phone,
+        },
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice, // Ensure this is the correctly calculated value
+        shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
         user: state.userInfo?._id || '',
+        isPaid: false,
+        isDelivered: false,
       })
-      console.log(data) // Added to log the response
+      console.log(data)
       if (data && data._id) {
         dispatch({ type: 'CART_CLEAR' })
         localStorage.removeItem('cartItems')
@@ -80,10 +92,13 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Address:</strong> {cart.shippingAddress.address},
-                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
-                {cart.shippingAddress.country}
+                <strong>Full Name:</strong> {cart.shippingAddress.firstName} {cart.shippingAddress.lastName} <br />
+                <strong>Address Line 1:</strong> {cart.shippingAddress.street} <br />
+                {cart.shippingAddress.street2 && <><strong>Address Line 2:</strong> {cart.shippingAddress.street2} <br /></>}
+                <strong>City:</strong> {cart.shippingAddress.city} <br />
+                <strong>Postal Code:</strong> {cart.shippingAddress.postalCode} <br />
+                <strong>Country:</strong> {cart.shippingAddress.country} <br />
+                <strong>Phone Number:</strong> {cart.shippingAddress.phone}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
             </Card.Body>

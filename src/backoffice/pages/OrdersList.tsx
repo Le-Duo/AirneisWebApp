@@ -1,59 +1,59 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Table, Button, Form } from 'react-bootstrap'
-import { Order, OrderStatus } from '../../types/Order'
-import {
-  useGetOrdersQuery,
-  useUpdateOrderMutation,
-  useDeleteOrderMutation,
-} from '../../hooks/orderHooks'
+import Table from '../components/Table'
+import EditOrderModal from '../components/EditOrderModal'
+import { useGetOrdersQuery, useDeleteOrderMutation } from '../../hooks/orderHook'
+import { Order } from '../../types/Order'
+import { Column } from '../components/Table'
 
 const OrdersList = () => {
   const { data: orders, error, isLoading, refetch } = useGetOrdersQuery()
-  const updateOrderMutation = useUpdateOrderMutation()
   const deleteOrderMutation = useDeleteOrderMutation()
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([])
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null)
-  const [editStatus, setEditStatus] = useState<OrderStatus>(
-    OrderStatus.Initiated
-  )
+  const [currentOrder, setCurrentOrder] = useState<Order | null>(null)
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error fetching orders</div>
 
-  const handleSelectOrder = (orderId: string) => {
-    if (selectedOrders.includes(orderId)) {
-      setSelectedOrders(selectedOrders.filter((id) => id !== orderId))
-    } else {
-      setSelectedOrders([...selectedOrders, orderId])
-    }
-  }
-
   const handleEdit = (order: Order) => {
     setEditingOrderId(order._id)
-    setEditStatus(order.status)
+    setCurrentOrder(order)
   }
 
-  const handleSave = async () => {
-    if (editingOrderId) {
-      await updateOrderMutation.mutateAsync({
-        _id: editingOrderId,
-        status: editStatus,
-      })
-      setEditingOrderId(null)
-      refetch()
-    }
+  const handleDelete = async (order: Order) => {
+    await deleteOrderMutation.mutateAsync(order._id)
+    refetch()
   }
 
-  const handleDelete = async (orderId: string) => {
-    const isConfirmed = window.confirm(
-      'Are you sure you want to delete this order?'
-    )
-    if (isConfirmed) {
-      await deleteOrderMutation.mutateAsync(orderId)
-      refetch()
-    }
-  }
+  const columns: Column<Order>[] = [
+    { _id: 'id', key: '_id', label: 'ID' },
+    {
+      _id: 'date',
+      key: 'createdAt',
+      label: 'Date',
+      renderer: (order: Order) => new Date(order.createdAt).toLocaleString(),
+    },
+    {
+      _id: 'customer',
+      key: 'user',
+      label: 'Customer',
+      renderer: (order: Order) => {
+        if (typeof order.user === 'object' && order.user !== null) {
+          return order.user.name || 'User name not available'
+        }
+        return 'User name not available'
+      },
+    },
+    { _id: 'status', key: 'status', label: 'Status' },
+    {
+      _id: 'items',
+      key: 'orderItems',
+      label: 'Items',
+      renderer: (order: Order) =>
+        order.orderItems.map(item => `${item.name} (x${item.quantity})`).join(', '),
+    },
+    { _id: 'total', key: 'totalPrice', label: 'Total' },
+  ]
 
   return (
     <div>
@@ -61,101 +61,15 @@ const OrdersList = () => {
         <title>Orders List</title>
       </Helmet>
       <h2>Orders List</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Select</th>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Customer</th>
-            <th>Status</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders?.map((order: Order) => (
-            <tr key={order._id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedOrders.includes(order._id)}
-                  onChange={() => handleSelectOrder(order._id)}
-                />
-              </td>
-              <td>{order._id}</td>
-              <td>{new Date(order.createdAt).toLocaleString()}</td>
-              <td>
-                {typeof order.user === 'object'
-                  ? order.user.name
-                  : 'User name not available'}
-              </td>
-              <td>
-                {editingOrderId === order._id ? (
-                  <Form.Control
-                    as="select"
-                    value={editStatus}
-                    onChange={(e) =>
-                      setEditStatus(e.target.value as OrderStatus)
-                    }
-                  >
-                    {Object.values(OrderStatus).map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </Form.Control>
-                ) : (
-                  order.status
-                )}
-              </td>
-              <td>
-                {order.orderItems
-                  .reduce((acc, item) => {
-                    const existingItem = acc.find(
-                      (accItem) => accItem.name === item.name
-                    )
-                    if (existingItem) {
-                      existingItem.quantity += item.quantity
-                    } else {
-                      acc.push({ ...item })
-                    }
-                    return acc
-                  }, [] as { name: string; quantity: number }[])
-                  .map((item) => `${item.name} (x${item.quantity})`)
-                  .join(', ')}
-              </td>
-              <td>{order.totalPrice}</td>
-              <td>
-                {editingOrderId === order._id ? (
-                  <>
-                    <Button variant="success" onClick={handleSave}>
-                      Save
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(order._id)}
-                    >
-                      Delete
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button onClick={() => handleEdit(order)}>Edit</Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(order._id)}
-                    >
-                      Delete
-                    </Button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <Table data={orders || []} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
+      {currentOrder && (
+        <EditOrderModal
+          show={editingOrderId !== null}
+          onHide={() => setEditingOrderId(null)}
+          order={currentOrder}
+          onOrderUpdate={refetch}
+        />
+      )}
     </div>
   )
 }

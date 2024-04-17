@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
-import { useGetOrderDetailsQuery } from '../hooks/orderHooks'
+import { useGetOrderDetailsQuery } from '../hooks/orderHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
 
@@ -33,10 +33,8 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Address: </strong> {order.shippingAddress.address},
-                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
-                ,{order.shippingAddress.country}
+                <strong>Name:</strong> {order.shippingAddress.firstName} {order.shippingAddress.lastName}<br />
+                <strong>Address:</strong> {order.shippingAddress.street}, {order.shippingAddress.street2 ? `${order.shippingAddress.street2}, ` : ''}{order.shippingAddress.city}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">

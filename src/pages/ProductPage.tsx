@@ -59,7 +59,7 @@ export default function ProductPage() {
         <Col md={6}>
           <img
             className="large"
-            src={product.URLimage}
+            src={product.URLimages[0]}
             alt={product.name}
           ></img>
         </Col>
@@ -100,7 +100,7 @@ export default function ProductPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {product.stock && product.stock > 0 && (
+                {product.stock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button onClick={addToCartHandler} variant="primary">

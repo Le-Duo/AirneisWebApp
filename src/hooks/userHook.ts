@@ -5,10 +5,10 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query'
 import apiClient from '../apiClient'
-import { UserAddress, UserInfo } from '../types/UserInfo'
+import { UserInfo } from '../types/UserInfo'
 
 // ici on utilise useMutation de react-query pour faire des requetes post signup et signin, mutation est un hook qui permet de faire des requetes post, put, delete (CRUD)
-export const userSigninMutation = () =>
+export const useUserSigninMutation = () =>
   useMutation({
     mutationFn: async ({
       email,
@@ -21,8 +21,7 @@ export const userSigninMutation = () =>
         .data,
   })
 
-//même principe que pour la requete post signin mais ici on ajoute name dans les parametres de la fonction
-export const userSignupMutation = () =>
+export const useUserSignupMutation = () =>
   useMutation({
     mutationFn: async ({
       name,
@@ -87,6 +86,22 @@ export const useGetUsersQuery = (): UseQueryResult<UserInfo[], Error> => {
   })
 }
 
+export const useUpdateUserMutation = () => {
+  return useMutation({
+    mutationFn: async (user: UserInfo) => {
+      return (await apiClient.put(`api/users/${user._id}`, user)).data
+    },
+  })
+}
+
+export const useDeleteUserMutation = () => {
+  return useMutation({
+    mutationFn: async (userId: string) => {
+      return (await apiClient.delete(`api/users/${userId}`)).data
+    },
+  })
+}
+
 export const useGetUserByIdQuery = (userId: string): UseQueryResult<UserInfo, Error> => {
   return useQuery({
     queryKey: ['getUser', userId],
@@ -101,18 +116,3 @@ export const useGetUserByIdQuery = (userId: string): UseQueryResult<UserInfo, Er
     },
   })
 }
-
-export const useUpdateUserMutation = (userId: string) => 
-useMutation({
-  mutationFn: async (user: {
-    name: string
-    email:string
-    address:UserAddress
-  }) =>
-  (
-    await apiClient.put<{ user: UserInfo }>(
-      `api/users/${userId}`,
-      user
-    )
-  ).data,
-})
