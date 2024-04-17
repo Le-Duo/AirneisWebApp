@@ -17,7 +17,6 @@ import ContactPage from './pages/ContactPage.tsx'
 import TOSPage from './pages/TOSPage'
 import SearchPage from './pages/SearchPage'
 import SigninPage from './pages/SigninPage'
-import ProfilePage from './pages/ProfilePage.tsx'
 import SignupPage from './pages/SignupPage'
 import ShippingAddressPage from './pages/ShippingAddressPage.tsx'
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
@@ -31,7 +30,7 @@ import OrdersList from './backoffice/pages/OrdersList.tsx'
 import UsersList from './backoffice/pages/UsersList.tsx'
 import ProductsList from './backoffice/pages/ProductsList.tsx'
 import CarouselList from './backoffice/pages/CarouselList.tsx'
-import ContactList from './backoffice/pages/ContactList.tsx'
+import ContactList from './backoffice/pages/MessagesContactList.tsx'
 import FeaturedProductList from './backoffice/pages/FeaturedProductList.tsx'
 import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
@@ -42,7 +41,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
 import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
-import ContactList from './backoffice/pages/MessagesContactList.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,8 +64,7 @@ const router = createBrowserRouter(
       <Route path="/password-reset/:token" element={<PasswordReset />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="shipping" element={<ShippingAddressPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="shipping" element={<ShippingAdressPage />} />
+        <Route path="shipping" element={<ShippingAddressPage />} />
         <Route path="payment" element={<PaymentMethodPage />} />
         <Route path="placeorder" element={<PlaceOrderPage />} />
         <Route path="order/:id" element={<OrderPage />} />

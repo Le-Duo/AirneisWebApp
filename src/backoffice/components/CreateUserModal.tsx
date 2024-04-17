@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { User } from "../../types/User";
-import { userSignupMutation } from "../../hooks/userHook";
+import { useUserSignupMutation } from "../../hooks/userHook";
 
 interface CreateUserModalProps {
   show: boolean;
@@ -22,7 +22,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
     isAdmin: false,
     token: "",
   });
-  const { mutateAsync: createUser } = userSignupMutation();
+  const { mutateAsync: createUser } = useUserSignupMutation();
 
   const handleChange = (name: string, value: string | boolean) => {
     setNewUser((prev) => ({ ...prev, [name]: value }));
