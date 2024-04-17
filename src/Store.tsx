@@ -1,7 +1,6 @@
 import React from 'react'
-import { Cart, CartItem } from './types/Cart'
+import { Cart, CartItem, ShippingAddress } from './types/Cart'
 import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
-import { ShippingAddress } from './types/shippingAddress' // Updated import to match the structure
 
 // Définition du type pour l'état de l'application
 type AppState = {

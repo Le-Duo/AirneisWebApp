@@ -19,7 +19,6 @@ export type ShippingAddress = {
   city: string
   postalCode: string
   country: string
-  phone: string
 }
 
 export type Cart = {

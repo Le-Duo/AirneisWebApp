@@ -87,14 +87,6 @@ export const useGetUsersQuery = (): UseQueryResult<UserInfo[], Error> => {
   })
 }
 
-export const useUpdateUserMutation = () => {
-  return useMutation({
-    mutationFn: async (user: UserInfo) => {
-      return (await apiClient.put(`api/users/${user._id}`, user)).data
-    },
-  })
-}
-
 export const useDeleteUserMutation = () => {
   return useMutation({
     mutationFn: async (userId: string) => {
