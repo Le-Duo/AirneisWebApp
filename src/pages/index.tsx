@@ -67,14 +67,14 @@ export default function HomePage() {
               {categories.map((category) => (
                 <Col
                   xs={12}
-                  lg={4}
+                  md={4}
                   key={category._id}
                   className="d-flex justify-content-center mb-3"
                 >
                   <div
                     className="category-item"
                     onClick={() =>
-                      navigate(`/products?category=${category.name}`)
+                      navigate(`/products?category=${category.slug}`)
                     }
                     style={{ backgroundImage: `url(${category.urlImage})` }}
                   >
@@ -104,7 +104,7 @@ export default function HomePage() {
                 return (
                   <Col
                     xs={12}
-                    lg={4}
+                    md={4}
                     key={featuredProduct._id}
                     className="mb-3"
                   >

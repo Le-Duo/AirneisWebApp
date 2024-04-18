@@ -247,7 +247,7 @@ const SearchPage = () => {
           ) : displayResults && displayResults.length > 0 ? (
             <Row className="mx-lg-5">
               {displayResults.map((product: Product) => (
-                <Col xs={12} lg={4} key={product._id} className="mb-3">
+                <Col xs={12} md={4} key={product._id} className="mb-3">
                   <ProductItem product={product} stockQuantity={product.quantity} />
                 </Col>
               ))}
