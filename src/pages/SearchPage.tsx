@@ -161,8 +161,8 @@ const SearchPage = () => {
                       type="checkbox"
                       id={`category-${category._id}`}
                       label={category.name}
-                      value={category.name}
-                      checked={selectedCategories.includes(category.name)}
+                      value={category.slug}
+                      checked={selectedCategories.includes(category.slug)}
                       onChange={(e) => {
                         const slug = e.target.value;
                         if (e.target.checked) {
