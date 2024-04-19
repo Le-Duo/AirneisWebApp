@@ -3,8 +3,10 @@ import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
-import { useGetProductDetailsBySlugQuery } from '../hooks/productHook'
+import ProductItem from '../components/ProductItem';
+import { useGetProductDetailsBySlugQuery, useGetSimilarProductsQuery } from '../hooks/productHook'
 import { ApiError } from '../types/APIError'
+import { Product } from '../types/Product'
 import { getError } from '../utils'
 import { useContext } from 'react'
 import { Store } from '../Store'
@@ -16,6 +18,10 @@ import { useNavigate } from 'react-router-dom'
 export default function ProductPage() {
   // Récupération du slug du produit depuis l'URL
   const { slug } = useParams()
+  const navigate = useNavigate();
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+
   // Utilisation du hook pour obtenir les détails du produit
   const {
     data: product,
@@ -23,10 +29,11 @@ export default function ProductPage() {
     error,
   } = useGetProductDetailsBySlugQuery(slug!)
 
-  const { state, dispatch } = useContext(Store)
-  const { cart } = state
-
-  const navigate = useNavigate()
+  const categoryId = product?.category?._id ?? '';
+  const productId = product?._id ?? '';
+  const {
+    data: similarProducts = [],
+  } = useGetSimilarProductsQuery(categoryId, productId);
 
   const addToCartHandler = () => {
     const existItem = cart.cartItems.find((x) => x._id === product!._id)
@@ -40,7 +47,6 @@ export default function ProductPage() {
       payload: { ...ConvertProductToCartItem(product!), quantity },
     })
     toast.success('Product added to cart')
-    navigate('/cart')
   }
 
   // Gestion des différents états de la requête
@@ -56,14 +62,14 @@ export default function ProductPage() {
     // Affichage du produit
     <div>
       <Row>
-        <Col md={6}>
+        <Col md={4}>
           <img
             className="large"
             src={product.URLimages[0]}
             alt={product.name}
           ></img>
         </Col>
-        <Col md={3}>
+        <Col md={5}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <Helmet>
@@ -114,6 +120,18 @@ export default function ProductPage() {
           </Card>
         </Col>
       </Row>
+      {similarProducts && (
+  <div>
+    <h2 className="text-center my-3">Similar Products</h2>
+    <Row className="justify-content-center">
+      {similarProducts.map((item: Product) => (
+        <Col key={item._id} sm={12} md={4}>
+          <ProductItem product={item} />
+        </Col>
+      ))}
+    </Row>
+  </div>
+)}
     </div>
   )
 }

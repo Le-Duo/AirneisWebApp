@@ -94,6 +94,16 @@ export const useGetUniqueMaterialsQuery = (): UseQueryResult<string[], Error> =>
   })
 }
 
+export const useGetSimilarProductsQuery = (categoryId: string, productId: string) => {
+  return useQuery({
+    queryKey: ['similarProducts', categoryId, productId],
+    queryFn: async () => {
+      const { data } = await apiClient.get(`/api/products/similar/${categoryId}/${productId}`);
+      return data;
+    }
+  });
+};
+
 export const useDeleteProductMutation = () => {
   return useMutation({
     mutationFn: async (id: string) => {
