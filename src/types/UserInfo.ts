@@ -6,7 +6,6 @@ export type UserInfo = {
   email: string
   phoneNumber:string
   isAdmin: boolean
-  address: UserAddress,
   addresses: UserAddress[],
   paymentCards : CreditCard[]
 }
