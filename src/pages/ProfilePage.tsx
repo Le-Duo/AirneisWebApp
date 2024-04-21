@@ -13,6 +13,7 @@ export default function ProfilePage(){
 
     const [ name, setName]= useState('')    
     const [ email, setEmail]= useState('')
+    const [ phoneNumber, setPhoneNumber]= useState('')
     const formRef = useRef<HTMLFormElement>(null);
     const { mutateAsync: updateProfile } = useUpdateUserMutation(userConnectedID)
 
@@ -23,6 +24,10 @@ export default function ProfilePage(){
         }
         if (user && user.email) {
             setEmail(user.email);
+          }
+
+          if(user && user.phoneNumber){
+            setPhoneNumber(user.phoneNumber);
           }
       }, [user]);
 
@@ -35,7 +40,8 @@ export default function ProfilePage(){
             await updateProfile({
                 name : name,
                 email: email,
-                //phone
+                phoneNumber:phoneNumber,
+                
             })
     
         toast.success("Profile updated")
@@ -73,6 +79,16 @@ export default function ProfilePage(){
                 required
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="phone">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="input"
+                required
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
               />
             </Form.Group>
             

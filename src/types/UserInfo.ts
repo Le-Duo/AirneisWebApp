@@ -4,8 +4,8 @@ export type UserInfo = {
   _id: string
   name: string
   email: string
+  phoneNumber:string
   isAdmin: boolean
-  address: UserAddress,
   addresses: UserAddress[],
   paymentCards : CreditCard[]
 }

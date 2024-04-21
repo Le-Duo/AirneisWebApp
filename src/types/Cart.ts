@@ -13,6 +13,7 @@ export type CartItem = {
 
 export type ShippingAddress = {
   fullName: string
+  phoneNumber: string
   street: string
   _id?: string
   user?: string

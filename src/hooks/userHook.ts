@@ -116,6 +116,7 @@ useMutation({
   mutationFn: async (user: {
     name: string
     email:string
+    phoneNumber: string
   }) =>
   (
     await apiClient.put<{ user: UserInfo }>(
