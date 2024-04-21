@@ -34,6 +34,7 @@ export default function OrderPage() {
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
                 <strong>Name:</strong> {order.shippingAddress.fullName} <br />
+                <strong>Phone Number:</strong> {order.shippingAddress.phoneNumber} <br />
                 <strong>Address: </strong> {order.shippingAddress.street},
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 ,{order.shippingAddress.country}

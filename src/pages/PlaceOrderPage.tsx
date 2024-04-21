@@ -45,7 +45,7 @@ export default function PlaceOrderPage() {
           city: cart.shippingAddress.city,
           postalCode: cart.shippingAddress.postalCode,
           country: cart.shippingAddress.country,
-          phone: cart.shippingAddress.phone,
+          phoneNumber: cart.shippingAddress.phoneNumber,
         },
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
