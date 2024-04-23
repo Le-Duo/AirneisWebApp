@@ -2,12 +2,14 @@ import { Product } from "../types/Product";
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Store } from "../Store";
 import { CartItem } from "../types/Cart";
 import { ConvertProductToCartItem } from "../utils";
 import { toast } from "react-toastify";
 
 function ProductItem({ product, stockQuantity }: { product: Product; stockQuantity?: number }) {
+  const { t } = useTranslation();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -19,11 +21,11 @@ function ProductItem({ product, stockQuantity }: { product: Product; stockQuanti
     const existItem = cartItems.find((x) => x._id === item._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     if (actualStock && actualStock < quantity) {
-      alert("Sorry, product is out of stock");
+      alert(t("Sorry, product is out of stock"));
       return;
     }
     dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
-    toast.success("Product added to cart");
+    toast.success(t("Product added to cart"));
   };
 
   return (
@@ -48,14 +50,14 @@ function ProductItem({ product, stockQuantity }: { product: Product; stockQuanti
         <Card.Text>£{product.price}</Card.Text>
         {actualStock === 0 ? (
           <Button variant="light" disabled>
-            Out of Stock
+            {t("Out of Stock")}
           </Button>
         ) : (
           <Button
             variant="primary"
             onClick={() => addToCartHandler(ConvertProductToCartItem(product))}
           >
-            Add to Cart
+            {t("Add to Cart")}
           </Button>
         )}
       </Card.Body>

@@ -8,6 +8,7 @@ import { getError } from '../utils'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import LoadingBox from '../components/LoadingBox'
+import { useTranslation } from 'react-i18next'
 
 export default function SigninPage() {
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ export default function SigninPage() {
   const { userInfo } = state
 
   const { mutateAsync: signin } = useUserSigninMutation()
+  const { t } = useTranslation()
 
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -41,7 +43,6 @@ export default function SigninPage() {
     }
   }
 
-  //ne redirige pas si l'utilisateur est déjà connecté
   useEffect(() => {
     if (userInfo) {
       navigate(redirect)
@@ -51,12 +52,12 @@ export default function SigninPage() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Sign In</title>
+        <title>{t('Sign In')}</title>
       </Helmet>
-      <h1 className="my-3">Sign In</h1>
+      <h1 className="my-3">{t('Sign In')}</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t('Email')}</Form.Label>
           <Form.Control
             type="email"
             required
@@ -64,7 +65,7 @@ export default function SigninPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t('Password')}</Form.Label>
           <Form.Control
             type={showPassword ? 'text' : 'password'}
             required
@@ -74,12 +75,12 @@ export default function SigninPage() {
         <Form.Group className="mb-3" controlId="show-password">
           <Form.Check
             type="checkbox"
-            label="Show Password"
+            label={t('Show Password')}
             onChange={(e) => setShowPassword(e.target.checked)}
           />
         </Form.Group>
         <div className="mb-3">
-          <Link to="/password-reset-request">Forgot Password?</Link>
+          <Link to="/password-reset-request">{t('Forgot Password?')}</Link>
         </div>
         <div className="mb-3">
           <Button
@@ -87,15 +88,14 @@ export default function SigninPage() {
             disabled={isLoading}
             style={{ borderRadius: '100px' }}
           >
-            Sign In
+            {t('Sign In')}
           </Button>
           {isLoading && <LoadingBox />}
         </div>
         <div className="mb-3">
-          New customer?
-          {/* redirect = valeur string query */}
+          {t('New customer?')}{' '}
           <Link to={`/signup?redirect=${redirect}`}>
-            Create your account
+            {t('Create your account')}
           </Link>{' '}
         </div>
       </Form>

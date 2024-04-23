@@ -6,8 +6,10 @@ import MessageBox from '../components/MessageBox'
 import { useGetOrderDetailsQuery } from '../hooks/orderHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
+import { useTranslation } from 'react-i18next'
 
 export default function OrderPage() {
+  const { t } = useTranslation();
   const params = useParams()
   const { id: orderId } = params
 
@@ -20,54 +22,54 @@ export default function OrderPage() {
       {getError(error as unknown as ApiError)}
     </MessageBox>
   ) : !order ? (
-    <MessageBox variant="danger">Order Not Found</MessageBox>
+    <MessageBox variant="danger">{t('Order Not Found')}</MessageBox>
   ) : (
     <div>
       <Helmet>
-        <title>Order {orderId}</title>
+        <title>{t('Order')} {orderId}</title>
       </Helmet>
-      <h1 className="my-3">Order {orderId}</h1>
+      <h1 className="my-3">{t('Order')} {orderId}</h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Shipping</Card.Title>
+              <Card.Title>{t('Shipping')}</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Phone Number:</strong> {order.shippingAddress.phoneNumber} <br />
-                <strong>Address: </strong> {order.shippingAddress.street},
+                <strong>{t('Name')}:</strong> {order.shippingAddress.fullName} <br />
+                <strong>{t('Phone Number')}:</strong> {order.shippingAddress.phoneNumber} <br />
+                <strong>{t('Address')}: </strong> {order.shippingAddress.street},
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 ,{order.shippingAddress.country}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
-                  Delivered at {order.deliveredAt instanceof Date ? order.deliveredAt.toLocaleString() : order.deliveredAt}
+                  {t('Delivered at')} {order.deliveredAt instanceof Date ? order.deliveredAt.toLocaleString() : order.deliveredAt}
                 </MessageBox>
               ) : (
-                <MessageBox variant="warning">Not Delivered</MessageBox>
+                <MessageBox variant="warning">{t('Not Delivered')}</MessageBox>
               )}
             </Card.Body>
           </Card>
 
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Payment</Card.Title>
+              <Card.Title>{t('Payment')}</Card.Title>
               <Card.Text>
-                <strong>Method:</strong> {order.paymentMethod}
+                <strong>{t('Method')}:</strong> {order.paymentMethod}
               </Card.Text>
               {order.isPaid ? (
                 <MessageBox variant="success">
-                  Paid at {order.paidAt instanceof Date ? order.paidAt.toLocaleString() : order.paidAt}
+                  {t('Paid at')} {order.paidAt instanceof Date ? order.paidAt.toLocaleString() : order.paidAt}
                 </MessageBox>
               ) : (
-                <MessageBox variant="warning">Not Paid</MessageBox>
+                <MessageBox variant="warning">{t('Not Paid')}</MessageBox>
               )}
             </Card.Body>
           </Card>
 
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Items</Card.Title>
+              <Card.Title>{t('Items')}</Card.Title>
               <ListGroup variant="flush">
                 {order && order.orderItems ? (
                   order.orderItems.map((item) => (
@@ -89,7 +91,7 @@ export default function OrderPage() {
                     </ListGroup.Item>
                   ))
                 ) : (
-                  <div>Loading...</div>
+                  <div>{t('Loading...')}</div>
                 )}
               </ListGroup>
             </Card.Body>
@@ -98,30 +100,30 @@ export default function OrderPage() {
         <Col md={4}>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Order Summary</Card.Title>
+              <Card.Title>{t('Order Summary')}</Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Items</Col>
+                    <Col>{t('Items')}</Col>
                     <Col>£{order.itemsPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Shipping</Col>
+                    <Col>{t('Shipping')}</Col>
                     <Col>£{order.shippingPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Tax</Col>
+                    <Col>{t('Tax')}</Col>
                     <Col>£{order.taxPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>
-                      <strong> Order Total</strong>
+                      <strong>{t('Order Total')}</strong>
                     </Col>
                     <Col>
                       <strong>£{order.totalPrice.toFixed(2)}</strong>
