@@ -7,9 +7,11 @@ import { Col, Row, ListGroup, Button, Card } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import MessageBox from '../components/MessageBox'
+import { useTranslation } from 'react-i18next'
 
 export default function CartPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const {
     state: {
@@ -21,7 +23,7 @@ export default function CartPage() {
 
   const updateCartHandler = (item: CartItem, quantity: number) => {
     if (item.stock < quantity) {
-      toast.warn('Sorry. Product is out of stock')
+      toast.warn(t('Sorry. Product is out of stock'))
       return
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
@@ -36,14 +38,14 @@ export default function CartPage() {
   return (
     <div>
       <Helmet>
-        <title>Shopping Cart</title>
+        <title>{t('Shopping Cart')}</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <h1>{t('Shopping Cart')}</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              Cart is empty. <Link to="/">Go Shopping</Link>
+              {t('Cart is empty.')} <Link to="/">{t('Go Shopping')}</Link>
             </MessageBox>
           ) : (
             <ListGroup variant="flush">
@@ -101,8 +103,8 @@ export default function CartPage() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : £
+                    {t('Subtotal')} ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
+                    {t('items')}) : £
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </h3>
                 </ListGroup.Item>
@@ -114,7 +116,7 @@ export default function CartPage() {
                       disabled={cartItems.length === 0}
                       onClick={checkoutHandler}
                     >
-                      Proceed to Checkout
+                      {t('Proceed to Checkout')}
                     </Button>
                   </div>
                 </ListGroup.Item>

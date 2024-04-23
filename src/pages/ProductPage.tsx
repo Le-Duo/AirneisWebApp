@@ -10,10 +10,11 @@ import { useContext } from 'react'
 import { Store } from '../Store'
 import { toast } from 'react-toastify'
 import { ConvertProductToCartItem } from '../utils'
-import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 // Page produit
 export default function ProductPage() {
+  const { t } = useTranslation();
   // Récupération du slug du produit depuis l'URL
   const { slug } = useParams()
   // Utilisation du hook pour obtenir les détails du produit
@@ -26,21 +27,18 @@ export default function ProductPage() {
   const { state, dispatch } = useContext(Store)
   const { cart } = state
 
-  const navigate = useNavigate()
-
   const addToCartHandler = () => {
     const existItem = cart.cartItems.find((x) => x._id === product!._id)
     const quantity = existItem ? existItem.quantity + 1 : 1
     if (product!.stock && product!.stock < quantity) {
-      toast.warn('Sorry. Product is out of stock')
+      toast.warn(t('Sorry. Product is out of stock'))
       return
     }
     dispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...ConvertProductToCartItem(product!), quantity },
     })
-    toast.success('Product added to cart')
-    navigate('/cart')
+    toast.success(t('Product added to cart'))
   }
 
   // Gestion des différents états de la requête
@@ -51,7 +49,7 @@ export default function ProductPage() {
       {getError(error as unknown as ApiError)}
     </MessageBox>
   ) : !product ? (
-    <MessageBox variant="danger">Product Not Found</MessageBox>
+    <MessageBox variant="danger">{t('Product Not Found')}</MessageBox>
   ) : (
     // Affichage du produit
     <div>
@@ -71,9 +69,9 @@ export default function ProductPage() {
               </Helmet>
               <h1>{product.name}</h1>
             </ListGroup.Item>
-            <ListGroup.Item>Price : £{product.price}</ListGroup.Item>
+            <ListGroup.Item>{t('Price')} : £{product.price}</ListGroup.Item>
             <ListGroup.Item>
-              Description:
+              {t('Description')}:
               <p>{product.description}</p>
             </ListGroup.Item>
           </ListGroup>
@@ -84,18 +82,18 @@ export default function ProductPage() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Price:</Col>
+                    <Col>{t('Price')}:</Col>
                     <Col>£{product.price}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status:</Col>
+                    <Col>{t('Status')}:</Col>
                     <Col>
                       {product.stock && product.stock > 0 ? (
-                        <Badge bg="success">In Stock</Badge>
+                        <Badge bg="success">{t('In Stock')}</Badge>
                       ) : (
-                        <Badge bg="danger">Unavailable</Badge>
+                        <Badge bg="danger">{t('Unavailable')}</Badge>
                       )}
                     </Col>
                   </Row>
@@ -104,7 +102,7 @@ export default function ProductPage() {
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button onClick={addToCartHandler} variant="primary">
-                        Add to Cart
+                        {t('Add to Cart')}
                       </Button>
                     </div>
                   </ListGroup.Item>

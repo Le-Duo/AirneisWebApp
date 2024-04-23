@@ -6,18 +6,20 @@ import MessageBox from '../components/MessageBox'
 import { useGetOrderHistoryQuery } from '../hooks/orderHook'
 import { ApiError } from '../types/APIError'
 import { getError } from '../utils'
+import { useTranslation } from 'react-i18next'
 
 export default function OrderHistoryPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate()
   const { data: Orders, isLoading, error } = useGetOrderHistoryQuery()
 
   return (
     <div>
       <Helmet>
-        <title>Order History</title>
+        <title>{t('Order History')}</title>
       </Helmet>
 
-      <h1>Order History</h1>
+      <h1>{t('Order History')}</h1>
       {isLoading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -28,12 +30,12 @@ export default function OrderHistoryPage() {
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
+              <th>{t('ID')}</th>
+              <th>{t('DATE')}</th>
+              <th>{t('TOTAL')}</th>
+              <th>{t('PAID')}</th>
+              <th>{t('DELIVERED')}</th>
+              <th>{t('ACTIONS')}</th>
             </tr>
           </thead>
           <tbody>
@@ -41,22 +43,22 @@ export default function OrderHistoryPage() {
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>
-                  {order.createdAt ? order.createdAt.substring(0, 10) : 'N/A'}
+                  {order.createdAt ? order.createdAt.substring(0, 10) : t('N/A')}
                 </td>
                 <td>{order.totalPrice.toFixed(2)}</td>
                 <td>
                   {order.isPaid
                     ? order.paidAt
                     ? (order.paidAt instanceof Date ? order.paidAt.toISOString() : order.paidAt).substring(0, 10)
-                      : 'N/A'
-                    : 'No'}
+                      : t('N/A')
+                    : t('No')}
                 </td>
                 <td>
                   {order.isDelivered
                     ? order.deliveredAt
                     ? (order.deliveredAt instanceof Date ? order.deliveredAt.toISOString() : order.deliveredAt).substring(0, 10)
-                    : 'N/A'
-                    : 'No'}
+                    : t('N/A')
+                    : t('No')}
                 </td>
                 <td>
                   <Button
@@ -66,7 +68,7 @@ export default function OrderHistoryPage() {
                       navigate(`/order/${order._id}`)
                     }}
                   >
-                    Details
+                    {t('Details')}
                   </Button>
                 </td>
               </tr>

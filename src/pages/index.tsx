@@ -9,8 +9,10 @@ import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import ProductItem from "../components/ProductItem";
 import { Product } from "../types/Product";
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     data: categories,
@@ -25,19 +27,19 @@ export default function HomePage() {
 
   if (isLoadingCategories || isLoadingFeaturedProducts) return <LoadingBox />;
   if (errorCategories)
-    return <MessageBox variant="danger">Error loading categories</MessageBox>;
+    return <MessageBox variant="danger">{t('errorLoadingCategories')}</MessageBox>;
   if (errorFeaturedProducts)
     return (
-      <MessageBox variant="danger">Error loading featured products</MessageBox>
+      <MessageBox variant="danger">{t('errorLoadingFeaturedProducts')}</MessageBox>
     );
   if (!Array.isArray(categories))
     return (
-      <MessageBox variant="warning">Categories data is not valid</MessageBox>
+      <MessageBox variant="warning">{t('Categories data is not valid')}</MessageBox>
     );
   if (!Array.isArray(featuredProducts))
     return (
       <MessageBox variant="warning">
-        Featured products data is not valid
+        {t('Featured products data is not valid')}
       </MessageBox>
     );
 
@@ -45,19 +47,19 @@ export default function HomePage() {
     <>
       <CookieConsent />
       <Helmet>
-        <title>Home | Airneis</title>
+        <title>{t('Home')} | Àirneis</title>
       </Helmet>
       <div className="home-page">
         <HomeCarousel />
         <Container>
           <Row className="justify-content-md-center pt-3">
             <Col md="auto" style={{ fontSize: "24px", fontWeight: "bold" }}>
-              FROM THE HIGHLANDS OF SCOTLAND
+              {t('FROM THE HIGHLANDS OF SCOTLAND')}
             </Col>
           </Row>
           <Row className="justify-content-md-center pb-3">
             <Col md="auto" style={{ fontSize: "24px", fontWeight: "bold" }}>
-              OUR FURNITURE IS IMMORTAL
+              {t('OUR FURNITURE IS IMMORTAL')}
             </Col>
           </Row>
         </Container>
@@ -87,7 +89,7 @@ export default function HomePage() {
         </div>
         <Row className="justify-content-md-center pb-3">
           <Col md="auto" style={{ fontSize: "24px", fontWeight: "bold" }}>
-            THE HIGHLANDERS OF THE MOMENT
+            {t('THE HIGHLANDERS OF THE MOMENT')}
           </Col>
         </Row>
         <div className="product-grid">

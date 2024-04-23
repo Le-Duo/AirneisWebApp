@@ -6,10 +6,10 @@ import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import LoadingBox from '../components/LoadingBox'
 import { useCreateContactMutation } from '../hooks/contactHook'
-
+import { useTranslation } from 'react-i18next';
 
 export default function ContactPage() {
-
+  const { t } = useTranslation();
   const [mail, setEmail] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
@@ -17,7 +17,6 @@ export default function ContactPage() {
   const [isLoading, setIsLoading] = useState(false)
   const formRef = useRef<HTMLFormElement>(null);
 
-  // quand on appuis sur "submit"
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
@@ -29,9 +28,8 @@ export default function ContactPage() {
         message: message,
       })
 
-      toast.success("New message sent")
+      toast.success(t("New message sent"))
 
-      // Réinitialisez le formulaire
       if (formRef.current) {
         formRef.current.reset();
       }
@@ -47,12 +45,12 @@ export default function ContactPage() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Contact</title>
+        <title>{t('Contact')}</title>
       </Helmet>
-      <h1 className="my-3">Contact</h1>
-      <Form onSubmit={submitHandler}  ref={formRef}>
+      <h1 className="my-3">{t('Contact')}</h1>
+      <Form onSubmit={submitHandler} ref={formRef}>
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t('Email')}</Form.Label>
           <Form.Control
             type="email"
             required
@@ -60,7 +58,7 @@ export default function ContactPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="subject">
-          <Form.Label>Subject</Form.Label>
+          <Form.Label>{t('Subject')}</Form.Label>
           <Form.Control
             type="input"
             required
@@ -68,7 +66,7 @@ export default function ContactPage() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="message">
-          <Form.Label>Message</Form.Label>
+          <Form.Label>{t('Message')}</Form.Label>
           <Form.Control
             as="textarea"
             required
@@ -81,12 +79,11 @@ export default function ContactPage() {
             disabled={isLoading}
             style={{ borderRadius: '100px' }}
           >
-            Send
+            {t('Send')}
           </Button>
           {isLoading && <LoadingBox />}
         </div>
       </Form>
     </Container>
   )
-
 }

@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import LoadingBox from '../components/LoadingBox'
+import { useTranslation } from 'react-i18next'
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -24,6 +25,8 @@ export default function SignupPage() {
   const { state, dispatch } = useContext(Store)
   const { userInfo } = state
 
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (userInfo) {
       navigate(redirect)
@@ -35,7 +38,7 @@ export default function SignupPage() {
   const submitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('Passwords do not match'))
       return
     }
     try {
@@ -53,17 +56,17 @@ export default function SignupPage() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Sign Up</title>
+        <title>{t('Sign Up')}</title>
       </Helmet>
-      <h1>Sign Up</h1>
+      <h1>{t('Sign Up')}</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>{t('Name')}</Form.Label>
           <Form.Control onChange={(e) => setName(e.target.value)} required />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t('Email')}</Form.Label>
           <Form.Control
             type="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +75,7 @@ export default function SignupPage() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t('Password')}</Form.Label>
           <Form.Control
             type="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -81,7 +84,7 @@ export default function SignupPage() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>{t('Confirm Password')}</Form.Label>
           <Form.Control
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -95,14 +98,14 @@ export default function SignupPage() {
             disabled={isLoading}
             style={{ borderRadius: '100px' }}
           >
-            Sign Up
+            {t('Sign Up')}
           </Button>
           {isLoading && <LoadingBox />}
         </div>
 
         <div className="mb-3">
-          Already have an account?{' '}
-          <Link to={`/signin?redirect=${redirect}`}>Sign In</Link>
+          {t('Already have an account?')}{' '}
+          <Link to={`/signin?redirect=${redirect}`}>{t('Sign In')}</Link>
         </div>
       </Form>
     </Container>

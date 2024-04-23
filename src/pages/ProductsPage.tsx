@@ -31,7 +31,7 @@ export default function ProductsPage() {
   return (
     <div>
       <Helmet>
-        <title>{`Products in ${categoryDetails?.name}`}</title>
+        <title>{categoryDetails?.name}</title>
       </Helmet>
       {categoryDetails?.urlImage && (
         <div style={{ position: 'relative', marginBottom: '20px' }}>

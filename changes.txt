@@ -74,7 +74,7 @@ index ca44336..af1bccf 100644
 -                </a>
 -              </div>
 -              <div className='text-links'>
--                <Link to='/tos'>Terms of Service</Link>
+-                <Link to='/tos'>Terms of Services</Link>
 -                <Link to='/legal-notice'>Legal Notice</Link>
 -                <Link to='/contact'>Contact</Link>
 -              </div>

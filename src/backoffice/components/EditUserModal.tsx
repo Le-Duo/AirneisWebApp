@@ -15,7 +15,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ show, onHide, user, onUse
     ...user,
     isAdmin: !!user.isAdmin,
   })
-  const { mutateAsync: updateUser } = useUpdateUserMutation()
+  const { mutateAsync: updateUser } = useUpdateUserMutation(user._id)
 
   useEffect(() => {
     setEditedUser({
