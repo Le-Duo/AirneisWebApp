@@ -9,7 +9,7 @@ interface LanguageInfo {
 }
 
 const languages: Record<string, LanguageInfo> = {
-  // en: { name: 'English', flag: 'https://flagcdn.com/256x192/us.png' },
+  en: { name: 'English', flag: 'https://flagcdn.com/256x192/us.png' },
   fr: { name: 'Français', flag: 'https://flagcdn.com/256x192/fr.png' },
   // ar: { name: 'العربية', flag: 'https://flagcdn.com/256x192/sa.png' },
   // he: { name: 'עברית', flag: 'https://flagcdn.com/256x192/il.png' },
