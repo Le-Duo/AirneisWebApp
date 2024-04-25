@@ -39,8 +39,10 @@ img.large {
   max-width: 100%;
 }
 
+
+
 img.thumbnail {
-  height: 80px;
+  height: 100px;
 }
 
 .small-container {
@@ -102,10 +104,6 @@ img.thumbnail {
   color: white;
   z-index: 1;
   text-shadow: black 0px 0px 10px;
-}
-
-img.thumbnail {
-  height: 80px;
 }
 
 footer .desktop-footer {

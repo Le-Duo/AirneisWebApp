@@ -8,6 +8,7 @@ export type CartItem = {
   price: number
   _id: string
   name: string
+  description: string
   category: Category | undefined
 }
 

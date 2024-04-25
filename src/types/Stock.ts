@@ -3,3 +3,7 @@ export type Stock = {
   product: { _id: string }
   quantity: number
 }
+
+export type StockDictionary = {
+  [key: string]: number;
+}
