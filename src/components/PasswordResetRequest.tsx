@@ -58,7 +58,7 @@ const PasswordResetRequest = () => {
         <Col xs={12} md={6}>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="email">
-              <Form.Label>{t('Email Address')}</Form.Label>
+              <Form.Label>{t('Email')}</Form.Label>
               <Form.Control
                 type="email"
                 value={email}
