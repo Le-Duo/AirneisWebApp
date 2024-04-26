@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import MessageBox from '../components/MessageBox';
 import { useTranslation } from 'react-i18next';
 import { useGetStockByProductIdQuery } from '../hooks/stockHook';
-import { truncateTextByLines } from '../utils';
+import { truncateTextByNumberOfLines } from '../utils';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -56,8 +56,8 @@ export default function CartPage() {
         <title>Shopping Cart</title>
       </Helmet>
       <h1>{t('Shopping Cart')}</h1>
-      <Row  >
-        <Col md={8}>
+      <Row>
+      <Col md={8} className="p-0 p-md-2">
           {cartItems.length === 0 ? (
             <MessageBox>
               Cart is empty. <Link to="/">Go Shopping</Link>
@@ -66,57 +66,60 @@ export default function CartPage() {
             <ListGroup variant="flush">
               {cartItems.map((item: CartItem, index) => (
                 <ListGroup.Item key={item._id} className="d-flex align-items-center">
-                  <div className="flex-grow-1 d-flex">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="img-fluid rounded thumbnail"
-                      style={{ objectFit: 'cover', aspectRatio: '1 / 1'}}
-                    />
-                    <div className="ms-3">
+                  <div className="flex-container">
+                    <img src={item.image} alt={item.name} className="img-fluid rounded thumbnail fixed-size" />
+                    <div className="ms-3 flex-grow">
                       <Link to={`/product/${item.slug}`} className="h5">
                         {item.name}
                       </Link>
-                      <p className="small text-muted">{truncateTextByLines(item.description, 2, 200)}</p>
+                      <p className="small text-muted truncate-text">{item.description}</p>
+                    </div>
+                    <div className="controls">
+                      <Stack gap={0} className="align-items-center">
+                        <span className="py-1 px-12 fixed-size">£{item.price}</span>
+                        <Stack direction="horizontal" gap={3} className="align-items-center text-center center">
+                          <Button
+                            onClick={() => updateCartHandler(item, item.quantity - 1)}
+                            variant={mode}
+                            disabled={item.quantity === 1}
+                            className="fixed-size"
+                          >
+                            <i className="fa-solid fa-minus-circle"></i>
+                          </Button>
+                          <span className="fixed-size">{item.quantity}</span>
+                          <Button
+                            variant={mode}
+                            onClick={() => updateCartHandler(item, item.quantity + 1)}
+                            disabled={item.quantity >= (stockQueries[index].data?.quantity || 0)}
+                            className="fixed-size"
+                          >
+                            <i className="fa-solid fa-plus-circle"></i>
+                          </Button>
+                        </Stack>
+                        <Button onClick={() => removeItemHandler(item)} variant={mode} className="fixed-size">
+                          <i className="fa-solid fa-trash-can"></i>
+                        </Button>
+                      </Stack>
                     </div>
                   </div>
-                  <Stack gap={3} className="align-items-center">
-                    <span className="py-1 px-12">£{item.price}</span>
-                    <Stack direction="horizontal" gap={3} className="align-items-center text-center center">
-                      <Button onClick={() => updateCartHandler(item, item.quantity - 1)} variant={mode} disabled={item.quantity === 1}>
-                        <i className="fa-solid fa-minus-circle"></i>
-                      </Button>
-                      <span>{item.quantity}</span>
-                      <Button
-                        variant={mode}
-                        onClick={() => updateCartHandler(item, item.quantity + 1)}
-                        disabled={item.quantity >= (stockQueries[index].data?.quantity || 0)}
-                      >
-                        <i className="fa-solid fa-plus-circle"></i>
-                      </Button>
-                    </Stack>
-                    <Button onClick={() => removeItemHandler(item)} variant={mode}>
-                      <i className="fa-solid fa-trash-can"></i>
-                    </Button>
-                  </Stack>
                 </ListGroup.Item>
               ))}
             </ListGroup>
           )}
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="shadow-sm rounded">
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h3>
-                    {t('Subtotal')} ({cartItems.reduce((a, c) => a + c.quantity, 0)} {t('items')}) : £
+                  <h3 className="fw-bold">
+                    {t('Subtotal')} ({cartItems.reduce((a, c) => a + c.quantity, 0)} {t('items')}): £
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <div className="d-flex gap-2">
-                    <Button type="button" className="primary" disabled={cartItems.length === 0} onClick={checkoutHandler}>
+                  <div className="d-flex gap-2 justify-content-center">
+                    <Button type="button" className="btn-primary btn-lg w-100" disabled={cartItems.length === 0} onClick={checkoutHandler}>
                       {t('Proceed to Checkout')}
                     </Button>
                   </div>

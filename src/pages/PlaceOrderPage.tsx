@@ -9,6 +9,7 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { Helmet } from 'react-helmet-async'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import LoadingBox from '../components/LoadingBox'
+import { countryTaxRates } from '../data/countries';
 
 export default function PlaceOrderPage() {
   const navigate = useNavigate()
@@ -17,6 +18,12 @@ export default function PlaceOrderPage() {
   const { cart } = state
 
   const round2 = (num: number) => Math.round(num * 100 + Number.EPSILON) / 100
+
+  // Function to calculate tax based on country
+  const calculateTax = (itemsPrice: number, country: string): number => {
+    const taxRate = countryTaxRates[country] / 100;
+    return round2(itemsPrice * taxRate);
+  };
 
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
@@ -27,7 +34,7 @@ export default function PlaceOrderPage() {
       : cart.itemsPrice <= 1000
       ? round2(59)
       : round2(109)
-  cart.taxPrice = round2(0.2 * cart.itemsPrice)
+  cart.taxPrice = calculateTax(cart.itemsPrice, cart.shippingAddress.country); // Use dynamic tax calculation
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
   const { mutateAsync: createOrder } = useCreateOrderMutation()

@@ -29,21 +29,11 @@ export const truncateText = (text: string, maxLength: number): string => {
   return text;
 };
 
-export const truncateTextByLines = (text: string, maxLines: number, charsPerLine: number): string => {
-  const maxChars = maxLines * charsPerLine;
-  let lineCount = 0;
-  let lastIndex = 0;
-
-  for (let i = 0; i < text.length && lineCount < maxLines; i++) {
-    if (text[i] === '\n' || i - lastIndex >= charsPerLine) {
-      lineCount++;
-      lastIndex = i;
-    }
+export const truncateTextByNumberOfLines = (text: string, maxLines: number): string => {
+  const lines = text.split('\n');
+  if (lines.length > maxLines) {
+    return lines.slice(0, maxLines).join('\n');
   }
-
-  if (lineCount >= maxLines) {
-    return `${text.substring(0, lastIndex)}...`;
-  }
-
   return text;
 };
+

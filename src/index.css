@@ -40,9 +40,18 @@ img.large {
 }
 
 
+@media (min-width: 768px) {
+  img.thumbnail {
+    height: 200px;
+    object-fit: cover;
+  } 
+}
 
-img.thumbnail {
-  height: 100px;
+@media (max-width: 768px) {
+  img.thumbnail {
+    height: 100px;
+    object-fit: cover;
+  } 
 }
 
 .small-container {
@@ -195,7 +204,7 @@ footer .desktop-footer .icon-links {
 
 
 /* STYLE ADDRESS CARDS */
-@media (min-width: 992px) and (max-width: 1223px) {
+@media (min-width: 768px) and (max-width: 1223px) {
   #filter-collapse {
     display: block !important;
   }
@@ -209,13 +218,13 @@ footer .desktop-footer .icon-links {
     display: none;
   }
 }
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   .search-form {
     width: 100%;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .search-form {
     display: flex;
     justify-content: center;
@@ -257,7 +266,7 @@ footer .desktop-footer .icon-links {
   width: auto;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   .search-area {
     flex-direction: column;
   }
@@ -267,7 +276,7 @@ footer .desktop-footer .icon-links {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .search-form {
     width: auto;
   }
@@ -307,4 +316,27 @@ footer .desktop-footer .icon-links {
 .product-name {
   margin-top: 10px;
   font-weight: bold;
+}
+
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.controls {
+  flex-shrink: 0;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
