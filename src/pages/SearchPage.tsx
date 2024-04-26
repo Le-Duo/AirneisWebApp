@@ -162,7 +162,7 @@ const SearchPage = () => {
                       key={category._id}
                       type="checkbox"
                       id={`category-${category._id}`}
-                      label={category.name}
+                      label={t(category.name)}
                       value={category.slug}
                       checked={selectedCategories.includes(category.slug)}
                       onChange={(e) => {
@@ -191,7 +191,7 @@ const SearchPage = () => {
                       key={material}
                       type="checkbox"
                       id={`material-${material}`}
-                      label={material.charAt(0).toUpperCase() + material.slice(1)} // Capitalize the first letter
+                      label={t(material.charAt(0).toUpperCase() + material.slice(1))} // Capitalize the first letter
                       value={material}
                       checked={selectedMaterials.includes(material)}
                       onChange={(e) => {

@@ -9,9 +9,15 @@ import { getError } from '../utils'
 import { useTranslation } from 'react-i18next'
 
 export default function OrderHistoryPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate()
   const { data: Orders, isLoading, error } = useGetOrderHistoryQuery()
+
+  // Function to format date based on current language
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(i18n.language, { dateStyle: 'full', timeStyle: 'short' });
+  };
 
   return (
     <div>
@@ -43,21 +49,21 @@ export default function OrderHistoryPage() {
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>
-                  {order.createdAt ? order.createdAt.substring(0, 10) : t('N/A')}
+                  {order.createdAt ? formatDate(order.createdAt) : t('N/A')}
                 </td>
                 <td>{order.totalPrice.toFixed(2)}</td>
                 <td>
                   {order.isPaid
                     ? order.paidAt
-                    ? (order.paidAt instanceof Date ? order.paidAt.toISOString() : order.paidAt).substring(0, 10)
+                      ? formatDate(order.paidAt)
                       : t('N/A')
                     : t('No')}
                 </td>
                 <td>
                   {order.isDelivered
                     ? order.deliveredAt
-                    ? (order.deliveredAt instanceof Date ? order.deliveredAt.toISOString() : order.deliveredAt).substring(0, 10)
-                    : t('N/A')
+                      ? formatDate(order.deliveredAt)
+                      : t('N/A')
                     : t('No')}
                 </td>
                 <td>
