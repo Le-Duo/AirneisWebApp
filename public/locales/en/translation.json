@@ -191,5 +191,11 @@
   "Bookcases": "Bookcases",
   "Rugs": "Rugs",
   "Lamps": "Lamps",
-  "Wardrobes": "Wardrobes"
+  "Wardrobes": "Wardrobes",
+
+  "Cotton": "Cotton",
+  "Wood": "Wood",
+  "Metal": "Metal",
+  "Wool": "Wool",
+  "Glass": "Glass"
 }

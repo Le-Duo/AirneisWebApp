@@ -105,7 +105,7 @@ export default function PlaceOrderPage() {
             <Card.Body>
               <Card.Title>{t('Payment')}</Card.Title>
               <Card.Text>
-                <strong>{t('Method')}:</strong> {cart.paymentMethod}
+                <strong>{t('Method')}:</strong> {t(cart.paymentMethod)}
               </Card.Text>
               <Link to="/payment">{t('Edit')}</Link>
             </Card.Body>

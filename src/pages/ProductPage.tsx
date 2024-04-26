@@ -112,7 +112,7 @@ export default function ProductPage() {
         <div>
           <h2 className="text-center my-3">{t('Similar Products')}</h2>
           <Row className="justify-content-center">
-            {similarProducts.map((item: Product, index: number) => (
+            {similarProducts.map((item: Product) => (
               <Col key={item._id} sm={12} md={4}>
                 <ProductItem product={item} />
               </Col>

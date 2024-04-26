@@ -80,7 +80,7 @@ export default function HomePage() {
                     }
                     style={{ backgroundImage: `url(${category.urlImage})` }}
                   >
-                    <h3 style={{ userSelect: "none" }}>{category.name}</h3>
+                    <h3 style={{ userSelect: "none" }}>{t(category.name)}</h3>
                   </div>
                 </Col>
               ))}
