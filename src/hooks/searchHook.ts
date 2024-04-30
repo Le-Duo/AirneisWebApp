@@ -11,7 +11,14 @@ interface SearchParams {
   materials?: string[];
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
 }
+
+interface SearchResults {
+  results: Product[];
+  totalResults: number;
+}   
 
 export const useSearchProducts = ({
   searchText,
@@ -22,9 +29,11 @@ export const useSearchProducts = ({
   materials,
   sortBy,
   sortOrder,
+  page=1,
+  limit=6
 }: SearchParams) => {
-  return useQuery<Product[], Error>({
-    queryKey: ['searchProducts', { searchText, minPrice, maxPrice, categories, inStock, materials, sortBy, sortOrder }],
+  return useQuery<SearchResults, Error>({
+    queryKey: ['searchProducts', { searchText, minPrice, maxPrice, categories, inStock, materials, sortBy, sortOrder, page, limit }],
     queryFn: () => apiClient.get('/api/products/search', {
       params: {
         searchText,
@@ -35,6 +44,8 @@ export const useSearchProducts = ({
         materials: materials?.join(','),
         sortBy,
         sortOrder,
+        page,
+        limit
       },
     }).then(res => res.data)
   });

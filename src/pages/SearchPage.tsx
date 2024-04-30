@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Row, Col, Button, Form, InputGroup, FormControl, Offcanvas } from 'react-bootstrap';
+import { Row, Col, Button, Form, InputGroup, FormControl, Offcanvas, Pagination } from 'react-bootstrap';
 import { Product } from '../types/Product';
 import { useState, useEffect } from 'react';
 import { FaMagnifyingGlass, FaFilter } from 'react-icons/fa6';
@@ -22,6 +22,8 @@ const SearchPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [sortBy, setSortBy] = useState(query.get('sortBy') || '');
   const [sortOrder, setSortOrder] = useState(query.get('sortOrder') || 'asc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const {
     data: displayResults,
@@ -36,6 +38,8 @@ const SearchPage = () => {
     materials: selectedMaterials,
     sortBy: sortBy as 'price' | 'dateAdded' | 'inStock' | undefined,
     sortOrder: sortOrder as 'asc' | 'desc' | undefined,
+    page: currentPage,
+    limit: itemsPerPage,
   });
 
   const { data: categories, isLoading: isLoadingCategories, isError: isErrorCategories } = useGetCategoriesQuery();
@@ -68,6 +72,7 @@ const SearchPage = () => {
 
   const handleFilterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setCurrentPage(1);
     const params = new URLSearchParams({
       query: searchQuery,
       ...(minPrice && { minPrice: String(minPrice) }),
@@ -75,7 +80,7 @@ const SearchPage = () => {
       ...(selectedCategories.length > 0 && { categories: selectedCategories.join(',') }),
       ...(selectedMaterials.length > 0 && { materials: selectedMaterials.join(',') }),
       ...(sortBy && { sortBy }),
-      ...(sortBy && { sortOrder }), // Include sortOrder only if sortBy has a value
+      ...(sortBy && { sortOrder }),
     }).toString();
     navigate(`/search?${params}`);
     setShowFilter(false);
@@ -90,6 +95,24 @@ const SearchPage = () => {
     setShowFilter(false);
     navigate('/search');
   };
+
+  const totalPages = displayResults ? Math.ceil(displayResults.totalResults / itemsPerPage) : 0;
+
+  useEffect(() => {
+    // If the current page is greater than the total pages and there are results, reset to page 1
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
+
+  let paginationItems = [];
+  for (let number = 1; number <= totalPages; number++) {
+    paginationItems.push(
+      <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+        {number}
+      </Pagination.Item>
+    );
+  }
 
   return (
     <>
@@ -244,14 +267,21 @@ const SearchPage = () => {
             <p>Loading...</p>
           ) : isError ? (
             <p>Error fetching results.</p>
-          ) : displayResults && displayResults.length > 0 ? (
-            <Row className="mx-lg-5">
-              {displayResults.map((product: Product) => (
-                <Col xs={12} md={4} key={product._id} className="mb-3">
-                  <ProductItem product={product} stockQuantity={product.quantity} />
-                </Col>
-              ))}
-            </Row>
+          ) : displayResults ? (
+            <>
+              <Row className="mx-lg-5">
+                {displayResults?.results?.map((product: Product) => (
+                  <Col xs={12} md={4} key={product._id} className="mb-3">
+                    <ProductItem product={product} stockQuantity={product.quantity} />
+                  </Col>
+                ))}
+              </Row>
+              {totalPages > 1 && (
+                <div className="d-flex justify-content-center">
+                  <Pagination>{paginationItems}</Pagination>
+                </div>
+              )}
+            </>
           ) : (
             <p>No results found</p>
           )}
