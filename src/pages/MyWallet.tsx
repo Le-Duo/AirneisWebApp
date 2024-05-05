@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Card } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useGetUserByIdQuery, useUpdateDefaultCardMutation, useAddPaymentCardMutation } from '../hooks/userHook';
 import { CreditCard } from './../types/CreditCard';
@@ -11,7 +11,6 @@ export default function MyWalletPage() {
     const { data: user, error, isLoading } = useGetUserByIdQuery(userConnectedID);
 
     const [cards, setCards] = useState<CreditCard[]>([]);
-
     const { mutateAsync: updateDefaultCard } = useUpdateDefaultCardMutation(userConnectedID);
     const { mutateAsync: addCard } = useAddPaymentCardMutation(userConnectedID);
 
@@ -23,16 +22,75 @@ export default function MyWalletPage() {
         yearExpiration: '',
     });
 
+    const [formErrors, setFormErrors] = useState({
+        bankName: '',
+        number: '',
+        fullName: '',
+        monthExpiration: '',
+        yearExpiration: '',
+    });
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+        validateField(name, value);
+    };
+
+    const validateField = (name: string, value: string) => {
+        let error = '';
+        switch (name) {
+            case 'bankName':
+                if (!value.trim() || value.length < 2 || value.length > 40) {
+                    error = t('Bank name must be between 2 and 40 characters.');
+                }
+                break;
+            case 'number':
+                if (!/^\d{16}$/.test(value)) {
+                    error = t('Card number must be exactly 16 digits.');
+                }
+                break;
+            case 'fullName':
+                if (!value.trim() || !/^[a-zA-Z\s]*$/.test(value)) {
+                    error = t('Full name must contain only letters and spaces.');
+                }
+                break;
+            case 'monthExpiration':
+                const month = parseInt(value);
+                if (isNaN(month) || month < 1 || month > 12) {
+                    error = t('Month must be between 01 and 12.');
+                }
+                break;
+            case 'yearExpiration':
+                const year = parseInt(value);
+                const currentYear = new Date().getFullYear();
+                if (isNaN(year) || year < currentYear || year > currentYear + 10) {
+                    error = t(`Year must be between ${currentYear} and ${currentYear + 10}.`);
+                }
+                break;
+            default:
+                break;
+        }
+        setFormErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: error
+        }));
+    };
+
+    const validateForm = () => {
+        Object.keys(formData).forEach(key => {
+            validateField(key, formData[key as keyof typeof formData]);
         });
+        return Object.values(formErrors).every(error => error === '');
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
 
         const newCardData = {
             bankName: formData.bankName,
@@ -52,16 +110,17 @@ export default function MyWalletPage() {
             yearExpiration: '',
         });
 
-        window.location.reload(); // todo, à modifier dans le futur pour ne recharger que la liste
+        alert(t('Card added successfully!'));
+        window.location.reload();
     };
 
     const CreditCardHTML = ({ _id, bankName, number, fullName, monthExpiration, yearExpiration, isDefault }: CreditCard) => {
         return (
-            <div className="credit-card" onClick={() => handleCardClick(_id)}>
-                {isDefault && <div className="default-badge">{t('Default')}</div>}
-                <div className="card-body">
-                    <div className="bank-name">{bankName}</div>
-                    <div className="card-number">{number}</div>
+            <Card className="credit-card" onClick={() => handleCardClick(_id)}>
+                {isDefault && <Card.Header className="default-badge">{t('Default')}</Card.Header>}
+                <Card.Body>
+                    <Card.Title className="bank-name">{bankName}</Card.Title>
+                    <Card.Text className="card-number">{number}</Card.Text>
                     <div className="card-holder">
                         <div className="label">{t('Card Holder')}</div>
                         <div className="name">{fullName}</div>
@@ -70,8 +129,8 @@ export default function MyWalletPage() {
                         <div className="label">{t('Expires')}</div>
                         <div className="date">{monthExpiration}/{yearExpiration}</div>
                     </div>
-                </div>
-            </div>
+                </Card.Body>
+            </Card>
         );
     };
 
@@ -86,7 +145,7 @@ export default function MyWalletPage() {
 
     const handleCardClick = (cardId: string) => {
         updateDefaultCard(cardId);
-        window.location.reload(); // todo, à modifier dans le futur pour ne recharger que la liste
+        window.location.reload();
     };
 
     return (
@@ -96,16 +155,16 @@ export default function MyWalletPage() {
             </Helmet>
             <h1 className="my-3">{t('Wallet')}</h1>
 
-            <div className="container">
+            <Container>
                 <h3 className="mt-5">{t('List of Payment Cards')}:</h3>
-                <div className="row">
+                <Row>
                     {cards.map(card => (
-                        <div key={card._id} className="col-md-6 mb-4">
+                        <Col key={card._id} md={6} className="mb-4">
                             <CreditCardHTML {...card} />
-                        </div>
+                        </Col>
                     ))}
-                </div>
-            </div>
+                </Row>
+            </Container>
 
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="bankName">
@@ -115,8 +174,12 @@ export default function MyWalletPage() {
                         name="bankName"
                         value={formData.bankName}
                         onChange={handleChange}
-                        required
+                        isInvalid={!!formErrors.bankName}
+                        maxLength={40}
                     />
+                    <Form.Control.Feedback type="invalid">
+                        {formErrors.bankName}
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="number">
@@ -126,8 +189,12 @@ export default function MyWalletPage() {
                         name="number"
                         value={formData.number}
                         onChange={handleChange}
-                        required
+                        isInvalid={!!formErrors.number}
+                        maxLength={16}
                     />
+                    <Form.Control.Feedback type="invalid">
+                        {formErrors.number}
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="fullName">
@@ -137,8 +204,12 @@ export default function MyWalletPage() {
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleChange}
-                        required
+                        isInvalid={!!formErrors.fullName}
+                        maxLength={50}
                     />
+                    <Form.Control.Feedback type="invalid">
+                        {formErrors.fullName}
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="expiration">
@@ -150,7 +221,8 @@ export default function MyWalletPage() {
                             name="monthExpiration"
                             value={formData.monthExpiration}
                             onChange={handleChange}
-                            required
+                            isInvalid={!!formErrors.monthExpiration}
+                            maxLength={2}
                         />
                         <span className="mx-2">/</span>
                         <Form.Control
@@ -159,8 +231,12 @@ export default function MyWalletPage() {
                             name="yearExpiration"
                             value={formData.yearExpiration}
                             onChange={handleChange}
-                            required
+                            isInvalid={!!formErrors.yearExpiration}
+                            maxLength={4}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            {formErrors.monthExpiration || formErrors.yearExpiration}
+                        </Form.Control.Feedback>
                     </div>
                 </Form.Group>
 

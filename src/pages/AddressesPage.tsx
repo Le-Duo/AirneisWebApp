@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Form, Card, Badge } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import {
   useGetUserByIdQuery,
@@ -22,10 +22,8 @@ export default function AddressesPage() {
   const [editingAddressID, setIsEditingAddressID] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
-  // add address
   const { mutateAsync: addAddress } = useAddAddressMutation(userConnectedID);
 
-  // update address
   const { mutateAsync: updateDefaultAddress } =
     useUpdateDefaultAddressMutation(userConnectedID);
   const { mutateAsync: updateAddress } = useUpdateAddressMutation(
@@ -136,7 +134,7 @@ export default function AddressesPage() {
     isDefault,
   }: UserAddress) => {
     return (
-      <div
+      <Card
         className="address-card"
         onClick={() =>
           handleCardAddressClick(
@@ -149,18 +147,14 @@ export default function AddressesPage() {
           )
         }
       >
-        {isDefault && <div className="default-badge">{t('Default')}</div>}
-        <div className="card-body">
-          <div className="card-street">
-            <div className="street">{street} </div>
-          </div>
-          <div className="card-postalCode">
-            <div className="postalCode">
-              {postalCode} {city} {country}
-            </div>
-          </div>
-        </div>
-      </div>
+        {isDefault && <Badge bg="success" className="default-badge">{t('Default')}</Badge>}
+        <Card.Body>
+          <Card.Title className="card-street">{street}</Card.Title>
+          <Card.Text className="card-postalCode">
+            {postalCode} {city}, {country}
+          </Card.Text>
+        </Card.Body>
+      </Card>
     );
   };
 
@@ -198,6 +192,7 @@ export default function AddressesPage() {
               name="street"
               value={formData.street}
               onChange={handleChange}
+              maxLength={100}
               required
             />
           </Form.Group>
@@ -209,6 +204,7 @@ export default function AddressesPage() {
               name="city"
               value={formData.city}
               onChange={handleChange}
+              maxLength={50}
               required
             />
           </Form.Group>
@@ -220,6 +216,7 @@ export default function AddressesPage() {
               name="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
+              maxLength={20}
               required
             />
           </Form.Group>

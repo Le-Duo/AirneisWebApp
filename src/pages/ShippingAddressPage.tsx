@@ -44,7 +44,7 @@ export default function ShippingAdressPage() {
 
   useEffect(() => {
     if (addresses) {
-      let defaultAddr = addresses.find((element) => {
+      const defaultAddr = addresses.find((element) => {
         return element.isDefault === true;
       });
 
