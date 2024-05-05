@@ -48,7 +48,6 @@ const LanguageSwitcher = () => {
 
       <Modal scrollable show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Choose Language</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>

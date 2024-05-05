@@ -48,7 +48,7 @@ export default function ProductsPage() {
   <p style={{ fontSize: '1.2rem', textAlign: 'center' }}>{t(categoryDetails?.description || '')}</p>
 </Col>
       </Row>
-      <Row>
+      <Row className="mx-lg-5">
         {products && products.map((product: Product) => (
           <Col xs={12} md={4} key={product.slug} className="mb-4">
             <ProductItem product={product} stockQuantity={product.quantity} />

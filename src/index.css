@@ -5,19 +5,16 @@ body {
   font-family: 'Noto Sans', sans-serif;
 }
 
-/* Arabic font */
 .body-ar {
   font-family: 'Noto Kufi Arabic', sans-serif;
 }
 
-/* Hebrew font */
-.body-he {
-  font-family: 'Noto Sans Hebrew', sans-serif;
-}
-
-/* Japanese font */
 .body-ja {
   font-family: 'Noto Sans JP', sans-serif;
+}
+
+.body-cn {
+  font-family: 'Noto Sans SC', sans-serif;
 }
 
 #root {
