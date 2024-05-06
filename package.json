@@ -22,6 +22,7 @@
     "i18next": "^23.11.2",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.1",
+    "rc-scrollbars": "^1.1.6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.2",
     "react-bootstrap-multiselect": "^2.4.1",
