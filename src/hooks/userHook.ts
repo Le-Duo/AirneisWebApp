@@ -130,9 +130,9 @@ useMutation({
 export const useUpdateDefaultCardMutation = (userId: string) => 
 useMutation({
   mutationFn: async (cardId: string) => {
-    const response = await apiClient.put<{}>(`api/users/${userId}/payment/card/${cardId}/default`);
+    const response = await apiClient.put<Record<string, never>>(`api/users/${userId}/payment/card/${cardId}/default`);
     return response.data;
-}
+  }
 })
 
 // add credit card
@@ -174,9 +174,9 @@ useMutation({
 export const useUpdateDefaultAddressMutation = (userId: string) => 
 useMutation({
   mutationFn: async (addressId: string) => {
-    const response = await apiClient.put<{}>(`api/users/${userId}/address/${addressId}/default`);
+    const response = await apiClient.put<Record<string, never>>(`api/users/${userId}/address/${addressId}/default`);
     return response.data;
-}
+  }
 })
 
 // update address

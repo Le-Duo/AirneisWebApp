@@ -33,8 +33,7 @@
   },
   // Dossier code source
   "include": [
-    "src",
-    "react-bootstrap-multiselect.d.ts"
+    "src"
   ],
   // Fichier de configuration pour Node.js
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -212,5 +212,8 @@
 
   "Sign-In": "Anmeldung",
   "We use functional cookies to ensure the best experience on our website.": "Wir verwenden funktionale Cookies, um die beste Erfahrung auf unser Website zu gewährleisten.",
-  "OK": "OK"
+  "OK": "OK",
+  "Back to Sign In": "Zurck zur Anmeldung",
+  "Processing your request...": "Ihre Anfrage wird bearbeitet...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Ein Reset-Link wurde an Ihre E-Mail-Adresse gesendet. Sie werden in Krze auf die Anmeldeseite weitergeleitet."
 }

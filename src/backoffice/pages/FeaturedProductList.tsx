@@ -11,6 +11,7 @@ import FeaturedProductFormModal from '../components/FeaturedProductFormModal';
 import Table, { Column } from '../components/Table';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import { useQueryClient } from '@tanstack/react-query';
+import { Product } from '../../types/Product';
 
 const FeaturedProductList = () => {
   const { data: products, isLoading: isLoadingProducts } = useGetProductsQuery(null); // Fetch all products
@@ -28,7 +29,7 @@ const FeaturedProductList = () => {
         if (fp.product) {
           const productDetails = products.find((p) => p._id === fp.product._id);
           if (productDetails) {
-            fp.product = productDetails as any;
+            fp.product = { ...productDetails, _id: productDetails._id! };
           }
         }
       });
@@ -97,9 +98,30 @@ const FeaturedProductList = () => {
   ) || [];
 
   const columns: Column<FeaturedProduct>[] = [
-    { _id: 'URLimages', key: 'product', label: 'Image', renderer: (item) => <img src={(item.product as any)?.URLimages[0]} alt={(item.product as any)?.name} style={{ width: '300px', height: 'auto' }} /> },
-    { _id: 'name', key: 'product', label: 'Name', renderer: (item) => (item.product as any)?.name },
-    { _id: 'category', key: 'product', label: 'Category', renderer: (item) => (item.product as any)?.category?.name },
+    {
+      _id: 'URLimages',
+      key: 'product',
+      label: 'Image',
+      renderer: (item) => (
+        <img
+          src={(item.product as Product )?.URLimages?.[0]}
+          alt={(item.product as Product )?.name}
+          style={{ width: '300px', height: 'auto' }}
+        />
+      ),
+    },
+    {
+      _id: 'name',
+      key: 'product',
+      label: 'Name',
+      renderer: (item) => (item.product as Product)?.name,
+    },
+    {
+      _id: 'category',
+      key: 'product',
+      label: 'Category',
+      renderer: (item) => (item.product as Product)?.category?.name,
+    },
   ];
 
   return (

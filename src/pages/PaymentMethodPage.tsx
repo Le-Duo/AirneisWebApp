@@ -20,15 +20,15 @@ export default function PaymentMethodPage() {
   );
   useEffect(() => {
     if (!shippingAddress.street) {
-      navigate('/shipping')
+      navigate('/shipping');
     }
   }, [shippingAddress, navigate]);
 
-  const userConnectedID = JSON.parse(localStorage.getItem("userInfo")!)._id;
+  const userConnectedID = JSON.parse(localStorage.getItem("userInfo") || '{}')._id;
 
   const { data: user, error, isLoading } = useGetUserByIdQuery(userConnectedID);
   const [cards, setCards] = useState<CreditCard[]>([]);
-  const [defaultUserCard, setDefaultUserCard] = useState<CreditCard>();
+  const [defaultUserCard, setDefaultUserCard] = useState<CreditCard | undefined>();
 
   const [bankName, setBankName] = useState("");
   const [number, setCardNumber] = useState("");
@@ -40,13 +40,11 @@ export default function PaymentMethodPage() {
     if (user && user.paymentCards) {
       setCards(user.paymentCards);
     }
-  });
+  }, [user]);
 
   useEffect(() => {
-    if (cards) {
-      const defaultCard = cards.find((element) => {
-        return element.isDefault === true;
-      });
+    if (cards.length > 0) {
+      const defaultCard = cards.find((element) => element.isDefault === true);
 
       if (defaultCard) {
         setDefaultUserCard(defaultCard);

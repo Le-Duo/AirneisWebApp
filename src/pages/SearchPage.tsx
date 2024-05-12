@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Row, Col, Button, Form, InputGroup, FormControl, Offcanvas } from 'react-bootstrap';
 import { Product } from '../types/Product';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FaMagnifyingGlass, FaFilter } from 'react-icons/fa6';
 import { useSearchProducts } from '../hooks/searchHook';
 import { useGetCategoriesQuery } from '../hooks/categoryHook';
@@ -14,7 +14,7 @@ const SearchPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const query = new URLSearchParams(location.search);
+  const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   const [searchQuery, setSearchQuery] = useState(query.get('query') || '');
   const [minPrice, setMinPrice] = useState<number | undefined>();
@@ -45,11 +45,16 @@ const SearchPage = () => {
   const { data: uniqueMaterials, isLoading: isLoadingMaterials, isError: isErrorMaterials } = useGetUniqueMaterialsQuery();
 
   useEffect(() => {
-    setMinPrice(query.get('minPrice') ? Number(query.get('minPrice')) : undefined);
-    setMaxPrice(query.get('maxPrice') ? Number(query.get('maxPrice')) : undefined);
-    setSelectedCategories(query.get('categories')?.split(',') ?? []);
-    setSelectedMaterials(query.get('materials')?.split(',') ?? []);
-  }, [location.search]);
+    const minPriceValue = query.get('minPrice');
+    const maxPriceValue = query.get('maxPrice');
+    const categoriesValue = query.get('categories');
+    const materialsValue = query.get('materials');
+
+    setMinPrice(minPriceValue ? Number(minPriceValue) : undefined);
+    setMaxPrice(maxPriceValue ? Number(maxPriceValue) : undefined);
+    setSelectedCategories(categoriesValue ? categoriesValue.split(',') : []);
+    setSelectedMaterials(materialsValue ? materialsValue.split(',') : []);
+  }, [query]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

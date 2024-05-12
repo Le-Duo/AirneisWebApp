@@ -212,5 +212,8 @@
 
   "Sign-In": "Giriş Yap",
   "We use functional cookies to ensure the best experience on our website.": "Sitemizde en iyi deneyimi sağlamak için fonksiyonel çerezler kullanıyoruz.",
-  "OK": "Tamam"
+  "OK": "Tamam",
+  "Back to Sign In": "Giriş Yap",
+  "Processing your request...": "İstekinizi işliyoruz...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Sıfırlama bağlantısı e-postanıza gnderildi. Kısa sre içinde giriş sayfasına ynlendirileceksiniz."
 }

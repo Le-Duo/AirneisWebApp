@@ -212,5 +212,8 @@
 
   "Sign-In": "تسجيل الدخول",
   "We use functional cookies to ensure the best experience on our website.": "نستخدم ملفات تعريف الارتباط الوظيفية لضمان أفضل تجربة على موقعنا الإلكتروني.",
-  "OK": "حسنًا"
+  "OK": "حسنًا",
+  "Back to Sign In": "العودة إلى تسجيل الدخول",
+  "Processing your request...": "جاري معالجة طلبك...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "تم إرسال رابط الإعادة إلى بريدك البريدك. ستتم إعادة توجيه إلى صفحة تسجيل الدخول بسرعة."
 }

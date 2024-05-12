@@ -212,5 +212,8 @@
 
   "Sign-In": "Вход",
   "We use functional cookies to ensure the best experience on our website.": "Мы используем функциональные cookies для точного выполнения наших услуг.",
-  "OK": "ОК"
+  "OK": "ОК",
+  "Back to Sign In": "Вернуться к входу",
+  "Processing your request...": "Обработка вашего запроса...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Ссылка на сброс пароля была отправлена на вашу электронную почту. Вы будете автоматически переводиться на страницу входа в течение нескольких секунд."
 }
