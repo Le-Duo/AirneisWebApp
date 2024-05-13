@@ -215,6 +215,15 @@
   "OK": "OK",
   "Back to Sign In": "Back to Sign In",
   "Processing your request...": "Processing your request...",
-  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Reset link has been sent to your email. You will be redirected to the sign-in page shortly."
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.",
+  "Password reset successful. You will be redirected to the login page in a few seconds.": "Password reset successful. You will be redirected to the login page in a few seconds.",
+
+  "Password Strength": "Password Strength",
+  "Weak": "Weak",
+  "Strong": "Strong",
+  "Password must be at least 8 characters long.": "Password must be at least 8 characters long.",
+  "Password should include at least one letter.": "Password should include at least one letter.",
+  "Password should include at least one number.": "Password should include at least one number.",
+  "Password should include at least one special character.": "Password should include at least one special character."
 }
 

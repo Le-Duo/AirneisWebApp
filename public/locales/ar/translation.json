@@ -215,5 +215,14 @@
   "OK": "حسنًا",
   "Back to Sign In": "العودة إلى تسجيل الدخول",
   "Processing your request...": "جاري معالجة طلبك...",
-  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "تم إرسال رابط الإعادة إلى بريدك البريدك. ستتم إعادة توجيه إلى صفحة تسجيل الدخول بسرعة."
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "تم إرسال رابط الإعادة إلى بريدك البريدك. ستتم إعادة توجيه إلى صفحة تسجيل الدخول بسرعة.",
+  "Password reset successful. You will be redirected to the login page in a few seconds.": "تم إعادة تعيين كلمة المرور بنجاح. ستتم إعادة توجيه إلى صفحة تسجيل الدخول بسرعة.",
+
+  "Password Strength": "أستقلال كلمة المرور",
+  "Weak": "ضعيف",
+  "Strong": "شديد",
+  "Password must be at least 8 characters long.": "يجب علي الأقل من 8 أحرف.",
+  "Password should include at least one letter.": "يجب علي الأقل من حرف واحد.",
+  "Password should include at least one number.": "يجب علي الأقل من رقم واحد.",
+  "Password should include at least one special character.": "يجب علي الأقل من حرف واحد."
 }

@@ -199,21 +199,30 @@
   "Wool": "Len",
   "Glass": "Kính",
 
-  "Discover the beauty of outdoor living with our garden range": "Khám phá vẻ đẹp của cuộc sống ngoại thất với dòng sản phẩm vườn của chng tôi",
-  "Explore our latest bedroom furniture collections": "Khám phá các bộ sản phẩm giường ngủ mới nhất của chng tôi",
-  "Transform your living space with our contemporary designs": "Diễn đạt cuộc sống bằng các thiết kế hiện đại của chng tôi",
+  "Discover the beauty of outdoor living with our garden range": "Khám phá vẻ đẹp của cuộc sống ngoại thất với dòng sản phẩm vườn của chúng tôi",
+  "Explore our latest bedroom furniture collections": "Khám phá các bộ sưu tập nội thất phòng ngủ mới nhất của chúng tôi",
+  "Transform your living space with our contemporary designs": "Biến đổi không gian sống của bạn với các thiết kế hiện đại của chúng tôi",
   
-  "Discover the ultimate comfort with our luxurious sofa collection, perfect for elevating your living space.": "Khám phá vẻ đẹp của cuộc sống ngoại thất với dòng sản phẩm giường ngủ lịch thiệp của chng tôi",
-  "Elevate your dining experience with our stylish and functional tables, designed to fit any space.": "Cải thiện trải nghiệm ăn sáng bằng các bộ sản phẩm bàn ăn hiện đại và tối ưu",
-  "Organize your favorite reads and accentuate your space with our elegant and versatile bookcases.": "Đạt đến cuộc sống bằng các bộ sản phẩm bảng sách tinh tế và phát triển.",
-  "Add a touch of warmth and style to any room with our exquisite collection of rugs.": "Thêm một cách lạnh mạnh và tinh tế vào bất kỳ phòng nào với bộ sản phẩm bồn bạn tinh tế.",
-  "Illuminate your home with our range of beautiful and functional lamps, perfect for setting the mood.": "Đạt đến cuộc sống bằng các bộ sản phẩm lồng sống tinh tế và phát triển.",
-  "Keep your clothes organized and your bedroom tidy with our stylish and spacious wardrobes.": "Giữ các vải sản phẩm đã được sắp xếp và bảng sách đã được sắp xếp.",
+  "Discover the ultimate comfort with our luxurious sofa collection, perfect for elevating your living space.": "Khám phá sự thoải mái tối ưu với bộ sưu tập ghế sofa sang trọng của chúng tôi, hoàn hảo để nâng tầm không gian sống của bạn.",
+  "Elevate your dining experience with our stylish and functional tables, designed to fit any space.": "Nâng tầm trải nghiệm ăn uống của bạn với các bàn ăn thời trang và tiện dụng của chúng tôi, được thiết kế để phù hợp với mọi không gian.",
+  "Organize your favorite reads and accentuate your space with our elegant and versatile bookcases.": "Sắp xếp các cuốn sách yêu thích và làm nổi bật không gian của bạn với các tủ sách thanh lịch và đa năng của chúng tôi.",
+  "Add a touch of warmth and style to any room with our exquisite collection of rugs.": "Thêm một chút ấm áp và phong cách cho bất kỳ phòng nào với bộ sưu tập thảm tuyệt đẹp của chúng tôi.",
+  "Illuminate your home with our range of beautiful and functional lamps, perfect for setting the mood.": "Chiếu sáng ngôi nhà của bạn với dòng đèn đẹp và tiện dụng của chúng tôi, hoàn hảo để tạo không khí.",
+  "Keep your clothes organized and your bedroom tidy with our stylish and spacious wardrobes.": "Giữ quần áo của bạn được sắp xếp gọn gàng và phòng ngủ của bạn ngăn nắp với các tủ quần áo rộng rãi và thời trang của chúng tôi.",
 
   "Sign-In": "Đăng nhập",
-  "We use functional cookies to ensure the best experience on our website.": "Chng tôi sử dụng các bộ sản phẩm cookie để đảm bảo với cuộc sống tốt nhất trên website.",
-  "OK": "Đồng ",
+  "We use functional cookies to ensure the best experience on our website.": "Chúng tôi sử dụng cookie chức năng để đảm bảo trải nghiệm tốt nhất trên trang web của chúng tôi.",
+  "OK": "Đồng ý",
   "Back to Sign In": "Quay lại đăng nhập",
-  "Processing your request...": "Đang xử l yêu cầu của bạn...",
-  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Liên kết đặt lại đã được gửi đến email của bạn. Bạn sẽ được chuyển hướng đến trang đăng nhập trong thời gian ngắn."
+  "Processing your request...": "Đang xử lý yêu cầu của bạn...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Liên kết đặt lại đã được gửi đến email của bạn. Bạn sẽ được chuyển hướng đến trang đăng nhập trong thời gian ngắn.",
+  "Password reset successful. You will be redirected to the login page in a few seconds.": "Đặt lại mật khẩu thành công. Bạn sẽ được chuyển hướng đến trang đăng nhập trong vài giây.",
+
+  "Password Strength": "Độ mạnh mật khẩu",
+  "Weak": "Yếu",
+  "Strong": "Mạnh",
+  "Password must be at least 8 characters long.": "Mật khẩu phải có độ dài tối thiểu 8 ký tự.",
+  "Password should include at least one letter.": "Mật khẩu phải chứa ít nhất một chữ cái.",
+  "Password should include at least one number.": "Mật khẩu phải chứa ít nhất một số.",
+  "Password should include at least one special character.": "Mật khẩu phải chứa ít nhất một ký tự đặc biệt."
 }

@@ -24,8 +24,8 @@
   "All rights reserved.": "Tüm hakları saklıdır.",
   "Coming soon": "Yakında",
 
-  "Error loading categories": "Kategoriler yüklenirken hata",
-  "Error loading featured products": "Öne çıkan ürünler yüklenirken hata",
+  "Error loading categories": "Kategoriler yüklenirken hata oluştu",
+  "Error loading featured products": "Öne çıkan ürünler yüklenirken hata oluştu",
   "Categories data is not valid": "Kategori verileri geçerli değil",
   "Featured products data is not valid": "Öne çıkan ürün verileri geçerli değil",
   "FROM THE HIGHLANDS OF SCOTLAND": "İSKOÇYA YAYLALARINDAN",
@@ -60,7 +60,7 @@
   "Select Country": "Ülke Seç",
   "Continue": "Devam Et",
   "Loading...": "Yükleniyor...",
-  "Error fetching one user": "Bir kullanıcıyı getirirken hata",
+  "Error fetching one user": "Bir kullanıcıyı getirirken hata oluştu",
   "Default": "Varsayılan",
   "Shipping Address": "Teslimat Adresi",
 
@@ -199,21 +199,30 @@
   "Wool": "Yün",
   "Glass": "Cam",
 
-  "Discover the beauty of outdoor living with our garden range": "Bahçe serimizle açık hava yaşamının gzelliğini keşfedin",
-  "Explore our latest bedroom furniture collections": "En son kçk ev mebellarımızı keşfedin",
-  "Transform your living space with our contemporary designs": "Kçk evinizi modern tasarımlarla dnştrn",
+  "Discover the beauty of outdoor living with our garden range": "Bahçe serimizle açık hava yaşamının güzelliğini keşfedin",
+  "Explore our latest bedroom furniture collections": "En son yatak odası mobilyalarımızı keşfedin",
+  "Transform your living space with our contemporary designs": "Çağdaş tasarımlarımızla yaşam alanınızı dönüştürün",
   
-  "Discover the ultimate comfort with our luxurious sofa collection, perfect for elevating your living space.": "Lks kanepe koleksiyonumuzla en st dzey konforu keşfedin, yaşam alanınızı ykseltmek için mkemmel.",
-  "Elevate your dining experience with our stylish and functional tables, designed to fit any space.": "Sizin yemek deneyiminizi kolayca ykseltmek için stil ve fonksiyonel masa tasarımlarımızla birleştirin.",
-  "Organize your favorite reads and accentuate your space with our elegant and versatile bookcases.": "En sevdiğiniz kitapları veya kitapçeğiyle alanınızı kolayca organize edin.",
+  "Discover the ultimate comfort with our luxurious sofa collection, perfect for elevating your living space.": "Lüks kanepe koleksiyonumuzla en üst düzey konforu keşfedin, yaşam alanınızı yükseltmek için mükemmel.",
+  "Elevate your dining experience with our stylish and functional tables, designed to fit any space.": "Her alana uygun tasarlanmış şık ve işlevsel masalarımızla yemek deneyiminizi yükseltin.",
+  "Organize your favorite reads and accentuate your space with our elegant and versatile bookcases.": "Sevdiğiniz kitapları düzenleyin ve alanınızı şık ve çok yönlü kitaplıklarımızla vurgulayın.",
   "Add a touch of warmth and style to any room with our exquisite collection of rugs.": "Zarif halı koleksiyonumuzla her odaya sıcaklık ve stil katın.",
-  "Illuminate your home with our range of beautiful and functional lamps, perfect for setting the mood.": "Mekanınızı aydınlatmak için gzel ve fonksiyonel lambalarımızla evinizi aydınlatın.",
-  "Keep your clothes organized and your bedroom tidy with our stylish and spacious wardrobes.": "Kıyafetlerinizi organize edin ve yatak odanızı şık ve geniş dolaplarımızla dzenli tutun.",
+  "Illuminate your home with our range of beautiful and functional lamps, perfect for setting the mood.": "Mekanınızı aydınlatmak için güzel ve işlevsel lambalarımızla evinizi aydınlatın.",
+  "Keep your clothes organized and your bedroom tidy with our stylish and spacious wardrobes.": "Kıyafetlerinizi düzenleyin ve yatak odanızı şık ve geniş dolaplarımızla düzenli tutun.",
 
   "Sign-In": "Giriş Yap",
-  "We use functional cookies to ensure the best experience on our website.": "Sitemizde en iyi deneyimi sağlamak için fonksiyonel çerezler kullanıyoruz.",
+  "We use functional cookies to ensure the best experience on our website.": "Sitemizde en iyi deneyimi sağlamak için işlevsel çerezler kullanıyoruz.",
   "OK": "Tamam",
-  "Back to Sign In": "Giriş Yap",
-  "Processing your request...": "İstekinizi işliyoruz...",
-  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Sıfırlama bağlantısı e-postanıza gnderildi. Kısa sre içinde giriş sayfasına ynlendirileceksiniz."
+  "Back to Sign In": "Girişe Dön",
+  "Processing your request...": "İsteğiniz işleniyor...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Sıfırlama bağlantısı e-postanıza gönderildi. Kısa süre içinde giriş sayfasına yönlendirileceksiniz.",
+  "Password reset successful. You will be redirected to the login page in a few seconds.": "Şifre sıfırlama başarılı. Birkaç saniye içinde giriş sayfasına yönlendirileceksiniz.",
+
+  "Password Strength": "Şifre Gücü",
+  "Weak": "Zayıf",
+  "Strong": "Güçlü",
+  "Password must be at least 8 characters long.": "Şifre en az 8 karakter uzunluğunda olmalıdır.",
+  "Password should include at least one letter.": "Şifre en az bir harf içermelidir.",
+  "Password should include at least one number.": "Şifre en az bir rakam içermelidir.",
+  "Password should include at least one special character.": "Şifre en az bir özel karakter içermelidir."
 }

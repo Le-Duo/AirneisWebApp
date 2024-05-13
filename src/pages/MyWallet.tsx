@@ -32,11 +32,20 @@ export default function MyWalletPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    let formattedValue = value;
+
+    if (name === 'number') {
+      formattedValue = value.replace(/\D/g, '');
+      formattedValue = formattedValue.substring(0, 16);
+      formattedValue = formattedValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+    }
+
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: formattedValue,
     }));
-    validateField(name, value);
+
+    validateField(name, formattedValue);
   };
 
   const validateField = (name: string, value: string) => {
@@ -48,7 +57,7 @@ export default function MyWalletPage() {
         }
         break;
       case 'number':
-        if (!/^\d{16}$/.test(value)) {
+        if (!/^\d{16}$/.test(value.replace(/\s/g, '')) || value.length !== 19) {
           error = t('Card number must be exactly 16 digits.');
         }
         break;
@@ -96,7 +105,7 @@ export default function MyWalletPage() {
 
     const newCardData = {
       bankName: formData.bankName,
-      number: formData.number,
+      number: formData.number.replace(/\s/g, ''),
       fullName: formData.fullName,
       monthExpiration: parseInt(formData.monthExpiration),
       yearExpiration: parseInt(formData.yearExpiration),
@@ -186,7 +195,14 @@ export default function MyWalletPage() {
 
         <Form.Group className="mb-3" controlId="number">
           <Form.Label>{t('Card Number')}</Form.Label>
-          <Form.Control type="text" name="number" value={formData.number} onChange={handleChange} isInvalid={!!formErrors.number} maxLength={16} />
+          <Form.Control
+            type="text"
+            name="number"
+            value={formData.number}
+            onChange={handleChange}
+            isInvalid={!!formErrors.number}
+            maxLength={19}
+          />
           <Form.Control.Feedback type="invalid">{formErrors.number}</Form.Control.Feedback>
         </Form.Group>
 
