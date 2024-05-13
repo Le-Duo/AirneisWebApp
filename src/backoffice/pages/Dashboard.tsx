@@ -72,7 +72,7 @@ const Dashboard = () => {
   // Custom Tooltip component for more detailed information
   const CustomTooltip: React.FC<{
     active?: boolean;
-    payload?: any[];
+    payload?: Record<string, unknown>[];
     label?: string;
   }> = ({ active, payload, label }) => {
     if (active && payload && payload.length) {

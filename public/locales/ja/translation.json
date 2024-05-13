@@ -212,5 +212,8 @@
   
   "Sign-In": "サインイン",
   "We use functional cookies to ensure the best experience on our website.": "当ウェブサイトでは機能的なクッキーを使用して、最高の体験を保証します。",
-  "OK": "了解"
+  "OK": "了解",
+  "Back to Sign In": "サインインに戻る",
+  "Processing your request...": "リクエストを処理しています...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "リセットリンクがあなたのメールに送信されました。まもなくサインインページにリダイレクトされます。"
 }

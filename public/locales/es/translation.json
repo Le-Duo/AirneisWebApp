@@ -212,5 +212,8 @@
 
   "Sign-In": "Iniciar sesión",
   "We use functional cookies to ensure the best experience on our website.": "Utilizamos cookies funcionales para asegurar la mejor experiencia en nuestro sitio web.",
-  "OK": "Aceptar"
+  "OK": "Aceptar",
+  "Back to Sign In": "Volver a Iniciar sesión",
+  "Processing your request...": "Procesando tu solicitud...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Un enlace de restablecimiento ha sido enviado a tu correo electrónico. Te redirigirás a la página de inicio de sesión en unos instantes."
 }

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Carousel from 'react-bootstrap/Carousel';
+import { Placeholder } from 'react-bootstrap';
 import { Store } from '../Store';
 import { useGetCarouselItemsQuery } from '../hooks/carouselHook';
 
@@ -9,10 +10,15 @@ const HomeCarousel = () => {
   const { state: { mode } } = useContext(Store);
   const { data: items, isLoading, error } = useGetCarouselItemsQuery();
 
-  if (isLoading) return <div>{t('Loading...')}</div>;
+  if (isLoading) return (
+    <div style={{ width: '100%', minHeight: '40dvh', height: '40dvh' }}>
+      <Placeholder as="div" animation="glow" style={{ height: '100%', width: '100%' }}>
+        <Placeholder xs={12} style={{ height: '100%', width: '100%' }} />
+      </Placeholder>
+    </div>
+  );
   if (error) return <div>{t('Error')}: {error.message}</div>;
 
-  // Ensure items is always treated as an array
   const carouselItems = Array.isArray(items) ? items : []
 
   if (carouselItems.length === 0) {

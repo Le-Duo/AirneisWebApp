@@ -157,7 +157,6 @@ footer .desktop-footer .icon-links {
 /* STYLE CREDIT CARDS */
 
 .credit-card, .address-card {
-  background-color: #f8f9fa; /* Couleur de fond par défaut */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;

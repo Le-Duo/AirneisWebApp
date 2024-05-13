@@ -212,5 +212,8 @@
 
   "Sign-In": "Masuk",
   "We use functional cookies to ensure the best experience on our website.": "Kami menggunakan cookie fungsional untuk memastikan pengalaman terbaik di website kami.",
-  "OK": "OK"
+  "OK": "OK",
+  "Back to Sign In": "Kembali ke Masuk",
+  "Processing your request...": "Memproses permintaan Anda...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Reset link telah dikirim ke email Anda. Anda akan otomatis diarahkan ke halaman masuk dalam beberapa saat."
 }

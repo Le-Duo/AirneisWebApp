@@ -212,5 +212,8 @@
 
   "Sign-In": "登录",
   "We use functional cookies to ensure the best experience on our website.": "我们使用功能性cookie来确保在我们的网站上的最佳体验",
-  "OK": "确定"
+  "OK": "确定",
+  "Back to Sign In": "返回登录",
+  "Processing your request...": "正在处理您的请求...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "重置链接已发送到您的邮箱。您将在几秒钟后被重定向到登录页面。"
 }

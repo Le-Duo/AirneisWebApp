@@ -212,6 +212,9 @@
 
   "Sign-In": "Sign-In",
   "We use functional cookies to ensure the best experience on our website.": "We use functional cookies to ensure the best experience on our website.",
-  "OK": "OK"
+  "OK": "OK",
+  "Back to Sign In": "Back to Sign In",
+  "Processing your request...": "Processing your request...",
+  "Reset link has been sent to your email. You will be redirected to the sign-in page shortly.": "Reset link has been sent to your email. You will be redirected to the sign-in page shortly."
 }
 
