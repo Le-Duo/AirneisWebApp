@@ -52,12 +52,14 @@ export default function OrderHistoryPage() {
         <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
       ) : (
         <>
-        <Pagination>
+          <Pagination>
             <Pagination.First onClick={() => paginate(1)} disabled={currentPage === 1} />
             <Pagination.Prev onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} />
-            <Pagination.Item onClick={() => paginate(1)} active={currentPage === 1}>1</Pagination.Item>
+            <Pagination.Item onClick={() => paginate(1)} active={currentPage === 1}>
+              1
+            </Pagination.Item>
             {currentPage > 3 && <Pagination.Ellipsis disabled />}
-            {pageNumbers.map(number => (
+            {pageNumbers.map((number) => (
               <Pagination.Item key={number} active={number === currentPage} onClick={() => paginate(number)}>
                 {number}
               </Pagination.Item>
@@ -94,9 +96,19 @@ export default function OrderHistoryPage() {
                       <Image key={index} src={item.image} thumbnail width="50" />
                     ))}
                   </td>
-                  <td className="d-none d-md-table-cell">{order.isPaid ? (order.paidAt ? formatDate(order.paidAt) : t('N/A')) : t('No')}</td>
                   <td className="d-none d-md-table-cell">
-                    {order.isDelivered ? (order.deliveredAt ? formatDate(order.deliveredAt) : t('N/A')) : t('No')}
+                    {order.isPaid
+                      ? order.paidAt
+                        ? formatDate(order.paidAt instanceof Date ? order.paidAt.toISOString() : order.paidAt)
+                        : t('N/A')
+                      : t('No')}
+                  </td>
+                  <td className="d-none d-md-table-cell">
+                    {order.isDelivered
+                      ? order.deliveredAt
+                        ? formatDate(order.deliveredAt instanceof Date ? order.deliveredAt.toISOString() : order.deliveredAt)
+                        : t('N/A')
+                      : t('No')}
                   </td>
                   <td>
                     <Button
@@ -117,9 +129,11 @@ export default function OrderHistoryPage() {
           <Pagination>
             <Pagination.First onClick={() => paginate(1)} disabled={currentPage === 1} />
             <Pagination.Prev onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} />
-            <Pagination.Item onClick={() => paginate(1)} active={currentPage === 1}>1</Pagination.Item>
+            <Pagination.Item onClick={() => paginate(1)} active={currentPage === 1}>
+              1
+            </Pagination.Item>
             {currentPage > 3 && <Pagination.Ellipsis disabled />}
-            {pageNumbers.map(number => (
+            {pageNumbers.map((number) => (
               <Pagination.Item key={number} active={number === currentPage} onClick={() => paginate(number)}>
                 {number}
               </Pagination.Item>
