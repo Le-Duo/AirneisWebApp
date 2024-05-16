@@ -3,25 +3,20 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import ProductItem from '../components/ProductItem';
 import { useGetProductDetailsBySlugQuery, useGetSimilarProductsQuery } from '../hooks/productHook';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { ConvertProductToCartItem } from '../utils';
 import { ApiError } from '../types/APIError';
-import { Product } from '../types/Product';
 import { getError } from '../utils';
-import { useQueries } from '@tanstack/react-query';
-import apiClient from '../apiClient';
-
-// Define the expected structure of the stock data
-interface StockData {
-  quantity: number;
-}
+import { useTranslation } from 'react-i18next';
+import ProductItem from '../components/ProductItem';
+import { Product } from '../types/Product';
 
 // Page produit
 export default function ProductPage() {
+  const { t } = useTranslation();
   // Récupération du slug du produit depuis l'URL
   const { slug } = useParams();
   const { state, dispatch } = useContext(Store);
@@ -34,31 +29,18 @@ export default function ProductPage() {
   const productId = product?._id ?? '';
   const { data: similarProducts = [] } = useGetSimilarProductsQuery(categoryId, productId);
 
-  // Prepare queries for fetching stock data for each similar product
-  const stockQueries = useQueries({
-    queries: similarProducts.map((product: Product) => ({
-      queryKey: ['stock', product._id],
-      queryFn: async () => {
-        if (!product._id) return undefined;
-        const { data } = await apiClient.get(`api/stocks/products/${product._id}`);
-        return data;
-      },
-      enabled: !!product._id // Ensure the query is only run if the product ID is available
-    }))
-  });
-
   const addToCartHandler = () => {
     const existItem = cart.cartItems.find((x) => x._id === product!._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     if (product!.stock && product!.stock < quantity) {
-      toast.warn('Sorry. Product is out of stock');
+      toast.warn(t('Sorry. Product is out of stock'));
       return;
     }
     dispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...ConvertProductToCartItem(product!), quantity },
     });
-    toast.success('Product added to cart');
+    toast.success(t('Product added to cart'));
   };
 
   // Gestion des différents états de la requête
@@ -67,7 +49,7 @@ export default function ProductPage() {
   ) : error ? (
     <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
   ) : !product ? (
-    <MessageBox variant="danger">Product Not Found</MessageBox>
+    <MessageBox variant="danger">{t('Product Not Found')}</MessageBox>
   ) : (
     // Affichage du produit
     <div>
@@ -83,9 +65,9 @@ export default function ProductPage() {
               </Helmet>
               <h1>{product.name}</h1>
             </ListGroup.Item>
-            <ListGroup.Item>Price : £{product.price}</ListGroup.Item>
+            <ListGroup.Item>{t('Price')} : £{product.price}</ListGroup.Item>
             <ListGroup.Item>
-              Description:
+              {t('Description')}:
               <p>{product.description}</p>
             </ListGroup.Item>
           </ListGroup>
@@ -96,21 +78,27 @@ export default function ProductPage() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Price:</Col>
+                    <Col>{t('Price')}:</Col>
                     <Col>£{product.price}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status:</Col>
-                    <Col>{product.stock && product.stock > 0 ? <Badge bg="success">In Stock</Badge> : <Badge bg="danger">Unavailable</Badge>}</Col>
+                    <Col>{t('Status')}:</Col>
+                    <Col>
+                      {product.stock && product.stock > 0 ? (
+                        <Badge bg="success">{t('In Stock')}</Badge>
+                      ) : (
+                        <Badge bg="danger">{t('Unavailable')}</Badge>
+                      )}
+                    </Col>
                   </Row>
                 </ListGroup.Item>
                 {product.stock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button onClick={addToCartHandler} variant="primary">
-                        Add to Cart
+                        {t('Add to Cart')}
                       </Button>
                     </div>
                   </ListGroup.Item>
@@ -122,26 +110,19 @@ export default function ProductPage() {
       </Row>
       {similarProducts.length > 0 ? (
         <div>
-          <h2 className="text-center my-3">Similar Products</h2>
+          <h2 className="text-center my-3">{t('Similar Products')}</h2>
           <Row className="justify-content-center">
-            {similarProducts.map((item: Product, index: number) => {
-              const stockQuery = stockQueries[index];
-              if (!item._id) return <p key={index}>Product ID missing</p>;
-              if (stockQuery.isLoading) return <p key={index}>Loading...</p>;
-              if (stockQuery.error) return <p key={index}>Error: {stockQuery.error.message}</p>;
-
-              return (
-                <Col key={item._id} sm={12} md={4}>
-                  <ProductItem product={item} stockQuantity={(stockQuery.data as StockData).quantity ?? 0} />
-                </Col>
-              );
-            })}
+            {similarProducts.map((item: Product) => (
+              <Col key={item._id} sm={12} md={4}>
+                <ProductItem product={item} />
+              </Col>
+            ))}
           </Row>
         </div>
       ) : (
         <>
-        <h2 className="text-center my-3">Similar Products</h2>
-        <p className="text-center my-3">No similar products found.</p>
+          <h2 className="text-center my-3">{t('Similar Products')}</h2>
+          <p className="text-center my-3">{t('No similar products found.')}</p>
         </>
       )}
     </div>

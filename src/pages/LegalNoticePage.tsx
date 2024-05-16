@@ -1,25 +1,28 @@
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 const LegalNoticePage = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Helmet>
-        <title>Legal Notice | Airneis</title>
+        <title>{t('Legal Notice')} | Àirneis</title>
       </Helmet>
       <div>
-        <h1>Legal Notice</h1>
-        <p>Company Name: Airneis Furniture Co.</p>
-        <p>Address: 123 High Street, Edinburgh, EH1 1RE, Scotland</p>
-        <p>Contact: contact@airneis.com | +44 131 555 5555</p>
-        <p>Company Registration Number: SC123456</p>
-        <p>Publication Director: Ewan McGregor</p>
+        <h1>{t('Legal Notice')}</h1>
+        <p>{t('Company Name')}: Àirneis Furniture Co.</p>
+        <p>{t('Address')}: 123 High Street, Edinburgh, EH1 1RE, Scotland</p>
+        <p>{t('Contact')}: contact@airneis.com | +44 131 555 5555</p>
+        <p>{t('Company Registration Number')}: SC123456</p>
+        <p>{t('Publication Director')}: Ewan McGregor</p>
         <p>
-          Hosting Provider: Airneis Hosting, 789 Web Services Avenue, Edinburgh,
+          {t('Hosting Provider')}: Àirneis Hosting, 789 Web Services Avenue, Edinburgh,
           EH1 1RE, Scotland
         </p>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LegalNoticePage
+export default LegalNoticePage;

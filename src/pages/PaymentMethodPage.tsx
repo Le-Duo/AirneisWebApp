@@ -6,29 +6,29 @@ import { Helmet } from "react-helmet-async";
 import { Badge, Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useGetUserByIdQuery } from "../hooks/userHook";
 import { CreditCard } from "../types/CreditCard";
+import { useTranslation } from 'react-i18next';
 
 export default function PaymentMethodPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { shippingAddress, paymentMethod },
   } = state;
   const [paymentMethodName] = useState(
-    paymentMethod || "Card"
+    paymentMethod || t("Card")
   );
   useEffect(() => {
     if (!shippingAddress.street) {
-      navigate('/shipping')
+      navigate('/shipping');
     }
   }, [shippingAddress, navigate]);
 
-  // récupération de l'id du user connecté dans le localStorage
-  const userConnectedID = JSON.parse(localStorage.getItem("userInfo")!)._id;
+  const userConnectedID = JSON.parse(localStorage.getItem("userInfo") || '{}')._id;
 
-  // récupération d'un user avec toutes ses propriétées dans la BDD
   const { data: user, error, isLoading } = useGetUserByIdQuery(userConnectedID);
   const [cards, setCards] = useState<CreditCard[]>([]);
-  const [defaultUserCard, setDefaultUserCard] = useState<CreditCard>();
+  const [defaultUserCard, setDefaultUserCard] = useState<CreditCard | undefined>();
 
   const [bankName, setBankName] = useState("");
   const [number, setCardNumber] = useState("");
@@ -40,13 +40,11 @@ export default function PaymentMethodPage() {
     if (user && user.paymentCards) {
       setCards(user.paymentCards);
     }
-  });
+  }, [user]);
 
   useEffect(() => {
-    if (cards) {
-      const defaultCard = cards.find((element) => {
-        return element.isDefault === true;
-      });
+    if (cards.length > 0) {
+      const defaultCard = cards.find((element) => element.isDefault === true);
 
       if (defaultCard) {
         setDefaultUserCard(defaultCard);
@@ -96,7 +94,7 @@ export default function PaymentMethodPage() {
 
           {card.isDefault && (
             <Badge bg="success" className="ms-5">
-              Default
+              {t("Default")}
             </Badge>
           )}
         </Card.Header>
@@ -112,36 +110,36 @@ export default function PaymentMethodPage() {
     );
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching one user</div>;
+  if (isLoading) return <div>{t("Loading...")}</div>;
+  if (error) return <div>{t("Error fetching one user")}</div>;
 
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4={false}></CheckoutSteps>
       <div className="container medium-container">
         <Helmet>
-          <title>Payment Method</title>
+          <title>{t("Payment Method")}</title>
         </Helmet>
-        <h1 className="my-3">Payment Method</h1>
+        <h1 className="my-3">{t("Payment Method")}</h1>
 
         <Row>
           <Col md={8}>
             <Form onSubmit={submitHandler}>
               <Form.Group className="mb-3" controlId="fullName">
-                <Form.Label>Full Name</Form.Label>
+                <Form.Label>{t("Full Name")}</Form.Label>
                 <Form.Control readOnly value={fullName} required />
               </Form.Group>
               <Form.Group className="mb-3" controlId="bankName">
-                <Form.Label>Bank Name</Form.Label>
+                <Form.Label>{t("Bank Name")}</Form.Label>
                 <Form.Control readOnly value={bankName} required />
               </Form.Group>
               <Form.Group className="mb-3" controlId="number">
-                <Form.Label>Card Number</Form.Label>
+                <Form.Label>{t("Card Number")}</Form.Label>
                 <Form.Control readOnly value={number} required />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="yearExpiration">
-                <Form.Label>Year Expiration</Form.Label>
+                <Form.Label>{t("Year Expiration")}</Form.Label>
                 <Form.Control
                   readOnly
                   value={monthExpiration + "/" + yearExpiration}
@@ -150,7 +148,7 @@ export default function PaymentMethodPage() {
               </Form.Group>
 
               <Form.Group controlId="ccv" className="mb-3">
-                <Form.Label>CCV</Form.Label>
+                <Form.Label>{t("CCV")}</Form.Label>
                 <Form.Control
                   type="number"
                   inputMode="numeric"
@@ -162,7 +160,7 @@ export default function PaymentMethodPage() {
               </Form.Group>
               <div className="mb-3">
                 <Button type="submit" style={{ borderRadius: "100px" }}>
-                  Continue
+                  {t("Continue")}
                 </Button>
               </div>
             </Form>

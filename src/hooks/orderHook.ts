@@ -60,15 +60,18 @@ export const useGetOrdersQuery = () => {
     },
   })
 }
+
 export const useSalesDataByDay = () => {
   const { data: orders, isLoading, isError } = useGetOrdersQuery();
+
+  type SalesData = { name: string; sales: number };
 
   const salesData = useMemo(() => {
     if (!orders) return [];
 
-    return orders.reduce((acc: any[], order: any) => {
+    return orders.reduce((acc: SalesData[], order: Order) => {
       const date = new Date(order.createdAt).toLocaleDateString();
-      const existing = acc.find((data: any) => data.name === date);
+      const existing = acc.find((data: SalesData) => data.name === date);
       if (existing) {
         existing.sales += order.totalPrice;
       } else {

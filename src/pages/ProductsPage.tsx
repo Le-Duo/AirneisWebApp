@@ -9,8 +9,10 @@ import { getError } from "../utils";
 import { ApiError } from "../types/APIError";
 import { Product } from "../types/Product";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function ProductsPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const categorySlug = queryParams.get("category");
@@ -31,22 +33,22 @@ export default function ProductsPage() {
   return (
     <div>
       <Helmet>
-        <title>{`Products in ${categoryDetails?.name}`}</title>
+        <title>{categoryDetails?.name ? t(categoryDetails.name) : t('Products')}</title>
       </Helmet>
       {categoryDetails?.urlImage && (
         <div style={{ position: 'relative', marginBottom: '20px' }}>
-          <img src={categoryDetails.urlImage} alt={categoryDetails.name} style={{ width: '100%', maxHeight: '300px', objectFit: 'cover' }} />
+          <img src={categoryDetails.urlImage} alt={t(categoryDetails.name)} style={{ width: '100%', maxHeight: '300px', objectFit: 'cover' }} />
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', textShadow: '0px 0px 8px black' }}>
-            <h2 style={{ fontSize: '2.5rem' }}>{categoryDetails?.name}</h2>
+            <h2 style={{ fontSize: '2.5rem' }}>{t(categoryDetails.name)}</h2>
           </div>
         </div>
       )}
       <Row className="justify-content-md-center" style={{ marginBottom: '20px' }}>
-        <Col>
-          <p style={{ fontSize: '1.2rem', textAlign: 'center' }}>{categoryDetails?.description}</p>
-        </Col>
+      <Col>
+  <p style={{ fontSize: '1.2rem', textAlign: 'center' }}>{t(categoryDetails?.description || '')}</p>
+</Col>
       </Row>
-      <Row>
+      <Row className="mx-lg-5">
         {products && products.map((product: Product) => (
           <Col xs={12} md={4} key={product.slug} className="mb-4">
             <ProductItem product={product} stockQuantity={product.quantity} />

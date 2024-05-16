@@ -9,8 +9,10 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { Helmet } from 'react-helmet-async'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
 import LoadingBox from '../components/LoadingBox'
+import { useTranslation } from 'react-i18next'
 
 export default function PlaceOrderPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate()
 
   const { state, dispatch } = useContext(Store)
@@ -62,7 +64,7 @@ export default function PlaceOrderPage() {
         localStorage.removeItem('cartItems')
         navigate(`/order/${data._id}`)
       } else {
-        toast.error('Unexpected response structure from order creation API.')
+        toast.error(t('Unexpected response structure from order creation API.'))
       }
     } catch (err) {
       toast.error(getError(err as ApiError))
@@ -81,36 +83,36 @@ export default function PlaceOrderPage() {
     <div>
       <CheckoutSteps step1 step2 step3 step4 />
       <Helmet>
-        <title>Place Order</title>
+        <title>{t('Place Order')}</title>
       </Helmet>
-      <h1 className="my-3">Preview Order</h1>
+      <h1 className="my-3">{t('Preview Order')}</h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Shipping</Card.Title>
+              <Card.Title>{t('Shipping')}</Card.Title>
               <Card.Text>
-                <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Address:</strong> {cart.shippingAddress.street},
+                <strong>{t('Name')}:</strong> {cart.shippingAddress.fullName} <br />
+                <strong>{t('Address')}:</strong> {cart.shippingAddress.street},
                 {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
                 {cart.shippingAddress.country}
               </Card.Text>
-              <Link to="/shipping">Edit</Link>
+              <Link to="/shipping">{t('Edit')}</Link>
             </Card.Body>
           </Card>
 
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Payment</Card.Title>
+              <Card.Title>{t('Payment')}</Card.Title>
               <Card.Text>
-                <strong>Method:</strong> {cart.paymentMethod}
+                <strong>{t('Method')}:</strong> {t(cart.paymentMethod)}
               </Card.Text>
-              <Link to="/payment">Edit</Link>
+              <Link to="/payment">{t('Edit')}</Link>
             </Card.Body>
           </Card>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Items</Card.Title>
+              <Card.Title>{t('Items')}</Card.Title>
               <ListGroup variant="flush">
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
@@ -131,36 +133,36 @@ export default function PlaceOrderPage() {
                   </ListGroup.Item>
                 ))}
               </ListGroup>
-              <Link to="/cart">Edit</Link>
+              <Link to="/cart">{t('Edit')}</Link>
             </Card.Body>
           </Card>
         </Col>
         <Col md={4}>
           <Card>
             <Card.Body>
-              <Card.Title>Order Summary</Card.Title>
+              <Card.Title>{t('Order Summary')}</Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Items</Col>
+                    <Col>{t('Items')}</Col>
                     <Col>£{cart.itemsPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Shipping</Col>
+                    <Col>{t('Shipping')}</Col>
                     <Col>£{cart.shippingPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Tax</Col>
+                    <Col>{t('Tax')}</Col>
                     <Col>£{cart.taxPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Total</Col>
+                    <Col>{t('Total')}</Col>
                     <Col>£{cart.totalPrice.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
@@ -172,7 +174,7 @@ export default function PlaceOrderPage() {
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0 || isLoading}
                     >
-                      Place Order
+                      {t('Place Order')}
                     </Button>
                     {isLoading && <LoadingBox></LoadingBox>}
                   </div>

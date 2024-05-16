@@ -2,17 +2,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Row, Col, Button, Form, InputGroup, FormControl, Offcanvas } from 'react-bootstrap';
 import { Product } from '../types/Product';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FaMagnifyingGlass, FaFilter } from 'react-icons/fa6';
 import { useSearchProducts } from '../hooks/searchHook';
 import { useGetCategoriesQuery } from '../hooks/categoryHook';
 import { useGetUniqueMaterialsQuery } from '../hooks/productHook';
 import ProductItem from '../components/ProductItem';
+import { useTranslation } from 'react-i18next';
 
 const SearchPage = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const query = new URLSearchParams(location.search);
+  const query = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   const [searchQuery, setSearchQuery] = useState(query.get('query') || '');
   const [minPrice, setMinPrice] = useState<number | undefined>();
@@ -43,11 +45,16 @@ const SearchPage = () => {
   const { data: uniqueMaterials, isLoading: isLoadingMaterials, isError: isErrorMaterials } = useGetUniqueMaterialsQuery();
 
   useEffect(() => {
-    setMinPrice(query.get('minPrice') ? Number(query.get('minPrice')) : undefined);
-    setMaxPrice(query.get('maxPrice') ? Number(query.get('maxPrice')) : undefined);
-    setSelectedCategories(query.get('categories')?.split(',') ?? []);
-    setSelectedMaterials(query.get('materials')?.split(',') ?? []);
-  }, [location.search]);
+    const minPriceValue = query.get('minPrice');
+    const maxPriceValue = query.get('maxPrice');
+    const categoriesValue = query.get('categories');
+    const materialsValue = query.get('materials');
+
+    setMinPrice(minPriceValue ? Number(minPriceValue) : undefined);
+    setMaxPrice(maxPriceValue ? Number(maxPriceValue) : undefined);
+    setSelectedCategories(categoriesValue ? categoriesValue.split(',') : []);
+    setSelectedMaterials(materialsValue ? materialsValue.split(',') : []);
+  }, [query]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,21 +101,21 @@ const SearchPage = () => {
   return (
     <>
       <Helmet>
-        <title>Search Results</title>
+        <title>{t('searchResults')}</title>
       </Helmet>
       <Row className="justify-content-md-center">
         <Col md="auto">
-          <h1>Search</h1>
+          <h1>{t('search')}</h1>
         </Col>
       </Row>
       <Row className="justify-content-center">
         <Col md={6} className="search-area">
           <Button variant="primary" onClick={handleShow}>
-            <FaFilter /> Filter
+            <FaFilter /> {t('filter')}
           </Button>
           <Form onSubmit={handleSearch} className="search-form">
             <InputGroup>
-              <FormControl placeholder="Search..." aria-label="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+              <FormControl placeholder={t('searchPlaceholder')} aria-label={t('search')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
               <Button variant="outline-primary" type="submit">
                 <FaMagnifyingGlass />
               </Button>
@@ -119,17 +126,17 @@ const SearchPage = () => {
 
       <Offcanvas show={showFilter} onHide={handleClose} placement="start">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Filters</Offcanvas.Title>
+          <Offcanvas.Title>{t('filters')}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleFilterSubmit}>
             <Row>
               <Col md={6}>
                 <Form.Group controlId="minPrice">
-                  <Form.Label>Minimum Price</Form.Label>
+                  <Form.Label>{t('minimumPrice')}</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Min Price"
+                    placeholder={t('minPrice')}
                     value={minPrice || ''}
                     onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : undefined)}
                   />
@@ -137,10 +144,10 @@ const SearchPage = () => {
               </Col>
               <Col md={6}>
                 <Form.Group controlId="maxPrice">
-                  <Form.Label>Maximum Price</Form.Label>
+                  <Form.Label>{t('maximumPrice')}</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Max Price"
+                    placeholder={t('maxPrice')}
                     value={maxPrice || ''}
                     onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : undefined)}
                   />
@@ -149,18 +156,18 @@ const SearchPage = () => {
             </Row>
             <Row className="mt-3">
               <Col md={12}>
-                <Form.Label>Categories</Form.Label>
+                <Form.Label>{t('categories')}</Form.Label>
                 {isLoadingCategories ? (
-                  <p>Loading categories...</p>
+                  <p>{t('loadingCategories')}</p>
                 ) : isErrorCategories ? (
-                  <p>Error loading categories</p>
+                  <p>{t('errorLoadingCategories')}</p>
                 ) : (
                   categories?.map((category) => (
                     <Form.Check
                       key={category._id}
                       type="checkbox"
                       id={`category-${category._id}`}
-                      label={category.name}
+                      label={t(category.name)}
                       value={category.slug}
                       checked={selectedCategories.includes(category.slug)}
                       onChange={(e) => {
@@ -178,18 +185,18 @@ const SearchPage = () => {
             </Row>
             <Row className="mt-3">
               <Col md={12}>
-                <Form.Label>Materials</Form.Label>
+                <Form.Label>{t('materials')}</Form.Label>
                 {isLoadingMaterials ? (
-                  <p>Loading materials...</p>
+                  <p>{t('loadingMaterials')}</p>
                 ) : isErrorMaterials ? (
-                  <p>Error loading materials</p>
+                  <p>{t('errorLoadingMaterials')}</p>
                 ) : (
                   uniqueMaterials?.map((material) => (
                     <Form.Check
                       key={material}
                       type="checkbox"
                       id={`material-${material}`}
-                      label={material.charAt(0).toUpperCase() + material.slice(1)} // Capitalize the first letter
+                      label={t(material.charAt(0).toUpperCase() + material.slice(1))} // Capitalize the first letter
                       value={material}
                       checked={selectedMaterials.includes(material)}
                       onChange={(e) => {
@@ -206,29 +213,29 @@ const SearchPage = () => {
               </Col>
             </Row>
             <Form.Group controlId="sortBy">
-              <Form.Label>Sort By</Form.Label>
+              <Form.Label>{t('sortBy')}</Form.Label>
               <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="">Default</option>
-                <option value="price">Price</option>
-                <option value="dateAdded">Newest</option>
-                <option value="inStock">In Stock</option>
+                <option value="">{t('default')}</option>
+                <option value="price">{t('price')}</option>
+                <option value="dateAdded">{t('newest')}</option>
+                <option value="inStock">{t('inStock')}</option>
               </Form.Select>
             </Form.Group>
 
             {sortBy && (
               <Form.Group controlId="sortOrder">
-                <Form.Label>Sort Order</Form.Label>
+                <Form.Label>{t('sortOrder')}</Form.Label>
                 <Form.Select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
+                  <option value="asc">{t('ascending')}</option>
+                  <option value="desc">{t('descending')}</option>
                 </Form.Select>
               </Form.Group>
             )}
             <Button variant="primary" type="submit" className="mt-3">
-              Apply Filters
+              {t('applyFilters')}
             </Button>
             <Button variant="danger" type="button" className="mt-3" onClick={resetFilters}>
-              Reset Filters
+              {t('resetFilters')}
             </Button>
           </Form>
         </Offcanvas.Body>
@@ -237,13 +244,13 @@ const SearchPage = () => {
         <Col>
           <Row className="justify-content-md-center">
             <Col className="my-4" md="auto">
-              <h2>Results</h2>
+              <h2>{t('results')}</h2>
             </Col>
           </Row>
           {isLoading ? (
-            <p>Loading...</p>
+            <p>{t('loading')}</p>
           ) : isError ? (
-            <p>Error fetching results.</p>
+            <p>{t('errorFetchingResults')}</p>
           ) : displayResults && displayResults.length > 0 ? (
             <Row className="mx-lg-5">
               {displayResults.map((product: Product) => (
@@ -253,7 +260,7 @@ const SearchPage = () => {
               ))}
             </Row>
           ) : (
-            <p>No results found</p>
+            <p>{t('noResultsFound')}</p>
           )}
         </Col>
       </Row>

@@ -45,6 +45,8 @@ import Dashboard from './backoffice/pages/Dashboard.tsx'
 import { NavigationSystem } from './backoffice/index.tsx'
 import MyWalletPage from './pages/MyWallet.tsx'
 import AddressesPage from './pages/AddressesPage.tsx'
+import i18n from './i18n.ts'
+import { I18nextProvider } from 'react-i18next'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -96,13 +98,15 @@ const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <StoreProvider>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </HelmetProvider>
-    </StoreProvider>
+    <I18nextProvider i18n={i18n}>
+      <StoreProvider>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </HelmetProvider>
+      </StoreProvider>
+    </I18nextProvider>
   </React.StrictMode>
 )

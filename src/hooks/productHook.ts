@@ -6,7 +6,8 @@ import { Stock } from '../types/Stock'
 export const useUpdateProductMutation = () => {
   return useMutation<Product, Error, Product>({
     mutationFn: async (product: Product) => {
-      const payload: any = {
+      // Define the payload directly using the Product type, ensuring all optional fields are handled
+      const payload: Partial<Product> = {
         _id: product._id,
         name: product.name,
         slug: product.slug,
@@ -15,12 +16,9 @@ export const useUpdateProductMutation = () => {
         description: product.description,
         stock: product.stock,
         priority: product.priority,
-      }
-
-      // Conditionally add category if it exists
-      if (product.category) {
-        payload.category = { ...product.category }
-      }
+        // Directly spread the category if it exists
+        category: product.category ? { ...product.category } : undefined,
+      };
 
       const response = await apiClient.put<Product>(`api/products/${product._id}`, payload)
       return response.data
@@ -142,4 +140,4 @@ export const useCreateProductMutation = () => {
       console.log('Product creation successful:', data);
     },
   });
-}
+};

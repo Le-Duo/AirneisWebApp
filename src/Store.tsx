@@ -128,13 +128,13 @@ const Store = React.createContext({
 })
 
 // Fournisseur de contexte pour l'application
-function StoreProvider(props: React.PropsWithChildren<Record<string, never>>) {
+function StoreProvider(props: React.PropsWithChildren<unknown>) {
   const [state, dispatch] = React.useReducer<React.Reducer<AppState, Action>>(
     reducer,
     initialState
-  )
+  );
 
-  return <Store.Provider value={{ state, dispatch }} {...props} />
+  return <Store.Provider value={{ state, dispatch }} {...props} />;
 }
 
 // Exportation du contexte et du fournisseur
