@@ -13,6 +13,7 @@ import { getError } from '../utils';
 import { useTranslation } from 'react-i18next';
 import ProductItem from '../components/ProductItem';
 import { Product } from '../types/Product';
+import { Carousel } from 'react-bootstrap';
 
 // Page produit
 export default function ProductPage() {
@@ -55,7 +56,13 @@ export default function ProductPage() {
     <div>
       <Row>
         <Col md={4}>
-          <img className="large" src={product.URLimages[0]} alt={product.name}></img>
+        <Carousel>
+          {product.URLimages.map((imageUrl, index) => (
+            <Carousel.Item key={index}>
+          <img className="large" src={imageUrl} alt={product.name}></img>
+          </Carousel.Item>
+            ))}
+          </Carousel>
         </Col>
         <Col md={5}>
           <ListGroup variant="flush">
