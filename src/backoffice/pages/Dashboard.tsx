@@ -135,7 +135,7 @@ const Dashboard = () => {
 
   const averageBasketByDate = calculateAverageBasketByDateAndCategory(orders);
 
-  console.log(averageBasketByDate);
+  console.log("averageBasketByDate", averageBasketByDate);
 
   // Custom Tooltip component for more detailed information
   const CustomTooltip: React.FC<{
@@ -196,11 +196,18 @@ const Dashboard = () => {
             <h3>Average Baskets by Category</h3>
             <BarChart width={600} height={300} data={averageBasketByDate}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
               <Legend />
               <Bar dataKey="averageBasket" fill="#82ca9d" />
+              <ReferenceLine y={averageSales} label="Avg" stroke="red" strokeDasharray="3 3" />
+              <Brush
+                  dataKey="name"
+                  height={30}
+                  stroke="#0065BF"
+                  onChange={({ startIndex, endIndex }) => setSelectedRange([startIndex, endIndex])}
+                />
             </BarChart>
           </div>
           {/* <div className="col-md-6">
