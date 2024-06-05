@@ -83,3 +83,31 @@ export const useSalesDataByDay = () => {
 
   return { salesData, orders, isLoading, isError };
 };
+
+export const useSalesByCategories = (orders: Order[]) => {
+  if (!orders) return [];
+
+  const salesByCategory: { [categoryName: string]: number } = {};
+
+  // Parcourez chaque commande pour extraire les ventes par catégorie
+  orders.forEach(order => {
+    order.orderItems.forEach(item => {
+      if (item.category) {
+        const categoryName = item.category.name;
+        if (!salesByCategory[categoryName]) {
+          salesByCategory[categoryName] = 0;
+        }
+        salesByCategory[categoryName] += item.price * item.quantity;
+      }
+    });
+  });
+  // Transformez les données en un tableau pour être compatible avec le format existant
+  const salesDataArray = Object.entries(salesByCategory).map(([name, sales]) => ({
+    name,
+    sales,
+  }));
+
+  return salesDataArray;
+};
+
+
