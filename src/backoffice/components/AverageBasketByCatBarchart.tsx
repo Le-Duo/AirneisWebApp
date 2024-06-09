@@ -1,5 +1,5 @@
 import { Order } from '../../types/Order';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Brush } from 'recharts';
 import { useSalesDataByDay } from '../../hooks/orderHook';
 
 const categoryColors: { [key: string]: string } = {
@@ -79,7 +79,7 @@ const AverageBasketByCatBarchart = () => {
       .sort((a, b) => a.date.localeCompare(b.date) || a.category.localeCompare(b.category));
   };
 
-  function transformData(data: AverageBasketByDateAndCategory[]): any[] {
+  const transformData = (data: AverageBasketByDateAndCategory[]): any[] => {
     const groupedData = data.reduce<Record<string, DateCategoryData>>((acc, { date, category, averageBasket }) => {
       if (!acc[date]) {
         acc[date] = { date, categories: {} };
@@ -93,13 +93,11 @@ const AverageBasketByCatBarchart = () => {
       date,
       ...categories,
     }));
-  }
+  };
 
   const enrichedOrders = transformOrdersToIOrders(orders);
   const averageBasketByDate = calculateAverageBasketByDateAndCategory(enrichedOrders);
   const transformedData = transformData(averageBasketByDate);
-
-  console.log(enrichedOrders)
 
   const allCategories = new Set<string>();
   transformedData.forEach((item) => {
@@ -119,6 +117,7 @@ const AverageBasketByCatBarchart = () => {
         {Array.from(allCategories).map((category) => (
           <Bar key={category} dataKey={category} stackId="a" fill={getCategoryColor(category)} />
         ))}
+        <Brush height={30} stroke="#0065BF"></Brush>
       </BarChart>
     </ResponsiveContainer>
   );

@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useState } from 'react';
-import { PieChart, Pie, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush, ReferenceLine, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush, ReferenceLine, BarChart, Bar } from 'recharts';
 import { useSalesByCategories, useSalesDataByDay } from '../../hooks/orderHook';
-  import DailyBarCharts from './../components/AverageBasketByCatBarchart';
+  import AverageBasketByCatBarchart from './../components/AverageBasketByCatBarchart';
+  import SalesByCatPiechart from '../components/SalesByCatPiechart';
 
 interface SaleData {
   name: string;
@@ -88,26 +89,12 @@ const Dashboard = () => {
         <div className="row mt-4">
           <div className="col-md-6">
             <h3>Average Baskets by Category</h3>
-             <DailyBarCharts />
+             <AverageBasketByCatBarchart />
           </div>
-          {/* <div className="col-md-6">
+          <div className="col-md-6">
             <h3>Sales Volume by Category</h3>
-            <PieChart width={400} height={400}>
-              <Pie data={categoryData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
-              <Tooltip />
-            </PieChart>
-          </div> */}
-        </div>
-      </div>
-
-      {/* TEST */}
-
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <h3>Total et moyenne des paniers par catégorie</h3>
-          <BarChart data={salesByCategories}>
-            <Bar dataKey="sales" fill="#8884d8" />
-          </BarChart>
+            <SalesByCatPiechart />
+          </div>
         </div>
       </div>
     </>
