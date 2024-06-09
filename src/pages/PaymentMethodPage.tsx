@@ -150,7 +150,7 @@ export default function PaymentMethodPage() {
               <Form.Group controlId="ccv" className="mb-3">
                 <Form.Label>{t("CCV")}</Form.Label>
                 <Form.Control
-                  type="number"
+                  type="text"
                   inputMode="numeric"
                   pattern="\d{3}"
                   maxLength={3}

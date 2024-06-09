@@ -30,6 +30,7 @@ export const useUpdateCategoryMutation = () => {
 
 export const useDeleteCategoryMutation = () => {
   return useMutation({
-    mutationFn: async (categoryId: string) => (await apiClient.delete(`api/categories/${categoryId}`)).data,
-  });
-};
+    mutationFn: async (categoryId: string) =>
+      (await apiClient.delete(`api/categories/${categoryId}`)).data,
+  })
+}
