@@ -1,9 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush, ReferenceLine, BarChart, Bar } from 'recharts';
 import { useSalesByCategories, useSalesDataByDay } from '../../hooks/orderHook';
-import { Order } from '../../types/Order';
-import { Category } from '../../types/Category';
+  import DailyBarCharts from './../components/AverageBasketByCatBarchart';
 
 interface SaleData {
   name: string;
@@ -12,27 +11,6 @@ interface SaleData {
   category?: {
     name: string;
   };
-}
-
-interface IProduct {
-  _id: string;
-  quantity: number;
-  price: number;
-  category: string;
-}
-interface IOrdersProps {
-  orders: Order[];
-}
-
-interface IOrder {
-  createdAt: string;
-  orderItems: IProduct[];
-}
-
-interface AverageBasketByDateAndCategory {
-  category: string;
-  date: string;
-  averageBasket: number;
 }
 
 const Dashboard = () => {
@@ -52,90 +30,6 @@ const Dashboard = () => {
       .reduce((acc: number, cur: SaleData) => acc + cur.sales, 0) /
     (selectedRange[1] - selectedRange[0]);
 
-  // async function getCategoryByProductId(id: string): Promise<string> {
-  //   // Ici, remplacez par votre logique pour appeler l'API ou la base de données
-  //   const response = await fetch(`api/product/id/${id}`);
-  //   const data = await response.json();
-  //   console.log('data:', data);
-  //   return data.Category.name;
-  // }
-
-  // const enrichOrdersWithCategories = async (orders: IOrder[]): Promise<IOrder[]> => {
-  //   for (let order of orders) {
-  //     for (let product of order.orderItems) {
-  //       product.category = await getCategoryByProductId(product._id);
-  //     }
-  //   }
-  //   return orders;
-  // };
-
-
- 
-  // const calculateAverageBasketByDate = (orders: IOrder[]): AverageBasketByDate[] => {
-
-  //   if (!orders) {
-  //     return []
-  //   }
-  //   const totalsByDate: { [key: string]: { totalSales: number; totalItems: number } } = {};
-  //   // Accumuler les ventes et les quantités pour chaque date
-  //   orders.forEach((order) => {
-  //     if (!totalsByDate[order.createdAt]) {
-  //       totalsByDate[order.createdAt] = { totalSales: 0, totalItems: 0 };
-  //     }
-  //     const orderTotal = order.orderItems.reduce((sum, product) => sum + product.price * product.quantity, 0);
-  //     const itemCount = order.orderItems.reduce((count, product) => count + product.quantity, 0);
-  //     totalsByDate[order.createdAt].totalSales += orderTotal;
-  //     totalsByDate[order.createdAt].totalItems += itemCount;
-  //   });
-
-  //   // Transformer les données accumulées en un tableau de résultats
-  //   const result: AverageBasketByDate[] = Object.keys(totalsByDate).map((date) => {
-  //     const { totalSales, totalItems } = totalsByDate[date];
-  //     const averageBasket = totalItems > 0 ? totalSales / totalItems : 0;
-  //     return { date, averageBasket, category };
-  //   });
-
-  //   // Trier le tableau par date
-  //   result.sort((a, b) => a.date.localeCompare(b.date));
-
-  //   return result;
-  // };
-
-  const calculateAverageBasketByDateAndCategory = (orders: IOrder[]): AverageBasketByDateAndCategory[] => {
-    const totalsByDateCategory: { [key: string]: { totalSales: number; totalItems: number } } = {};
-
-    // Parcourir chaque commande et chaque produit pour accumuler les données
-    orders.forEach((order) => {
-      order.orderItems.forEach((product) => {
-        const dateOnly = order.createdAt.split('T')[0];
-        const key = `${dateOnly}&${product.category}`;
-
-        if (!totalsByDateCategory[key]) {
-          totalsByDateCategory[key] = { totalSales: 0, totalItems: 0 };
-        }
-
-        totalsByDateCategory[key].totalSales += product.price * product.quantity;
-        totalsByDateCategory[key].totalItems += product.quantity;
-      });
-    });
-
-    // Convertir les données accumulées en un tableau structuré
-    const result: AverageBasketByDateAndCategory[] = Object.keys(totalsByDateCategory).map((key) => {
-      const [date, category] = key.split('&');
-      const { totalSales, totalItems } = totalsByDateCategory[key];
-      const averageBasket = totalItems > 0 ? totalSales / totalItems : 0;
-      return { date, category, averageBasket };
-    });
-
-    // Trier le tableau par date, puis par catégorie
-    result.sort((a, b) => a.date.localeCompare(b.date) || a.category.localeCompare(b.category));
-
-    return result;
-  };
-
-  const averageBasketByDate = calculateAverageBasketByDateAndCategory(orders);
-
-  console.log("averageBasketByDate", averageBasketByDate);
 
   // Custom Tooltip component for more detailed information
   const CustomTooltip: React.FC<{
@@ -194,21 +88,7 @@ const Dashboard = () => {
         <div className="row mt-4">
           <div className="col-md-6">
             <h3>Average Baskets by Category</h3>
-            <BarChart width={600} height={300} data={averageBasketByDate}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="averageBasket" fill="#82ca9d" />
-              <ReferenceLine y={averageSales} label="Avg" stroke="red" strokeDasharray="3 3" />
-              <Brush
-                  dataKey="name"
-                  height={30}
-                  stroke="#0065BF"
-                  onChange={({ startIndex, endIndex }) => setSelectedRange([startIndex, endIndex])}
-                />
-            </BarChart>
+             <DailyBarCharts />
           </div>
           {/* <div className="col-md-6">
             <h3>Sales Volume by Category</h3>

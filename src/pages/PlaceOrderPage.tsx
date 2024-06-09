@@ -58,7 +58,6 @@ export default function PlaceOrderPage() {
         isPaid: false,
         isDelivered: false,
       })
-      console.log(data)
       if (data && data._id) {
         dispatch({ type: 'CART_CLEAR' })
         localStorage.removeItem('cartItems')
