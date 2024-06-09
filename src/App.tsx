@@ -52,9 +52,9 @@ function App() {
   const location = useLocation();
   const isBackoffice = location.pathname.startsWith('/backoffice');
 
-  const [showOffcanvas, setShowOffcanvas] = useState(false); // Add state for offcanvas visibility
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
-  const handleCloseOffcanvas = () => setShowOffcanvas(false); // Helper function to close offcanvas
+  const handleCloseOffcanvas = () => setShowOffcanvas(false);
 
   return (
     <>
@@ -106,8 +106,8 @@ function App() {
                 id='offcanvasNavbar'
                 aria-labelledby='offcanvasNavbarLabel'
                 placement='end'
-                show={showOffcanvas} // Control visibility with state
-                onHide={handleCloseOffcanvas} // Handle hiding offcanvas
+                show={showOffcanvas}
+                onHide={handleCloseOffcanvas}
               >
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title id='offcanvasNavbarLabel'>

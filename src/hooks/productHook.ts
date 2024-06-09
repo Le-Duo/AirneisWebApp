@@ -6,7 +6,7 @@ import { Stock } from '../types/Stock'
 export const useUpdateProductMutation = () => {
   return useMutation<Product, Error, Product>({
     mutationFn: async (product: Product) => {
-      // Define the payload directly using the Product type, ensuring all optional fields are handled
+      
       const payload: Partial<Product> = {
         _id: product._id,
         name: product.name,
@@ -16,7 +16,7 @@ export const useUpdateProductMutation = () => {
         description: product.description,
         stock: product.stock,
         priority: product.priority,
-        // Directly spread the category if it exists
+        
         category: product.category ? { ...product.category } : undefined,
       };
 
@@ -24,7 +24,7 @@ export const useUpdateProductMutation = () => {
       return response.data
     },
     onSuccess: () => {
-      // This can be overridden by the component using this hook
+      
     },
   })
 }

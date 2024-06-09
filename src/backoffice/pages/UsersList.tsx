@@ -74,7 +74,7 @@ const UsersList = () => {
         columns={columns}
         onEdit={openEditModal}
         onAdd={openCreateModal}
-        onDelete={handleUserDelete} // Pass the delete function
+        onDelete={handleUserDelete} 
       />
       {showCreateModal && (
         <CreateUserModal

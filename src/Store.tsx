@@ -1,20 +1,20 @@
 import React from 'react'
 import { Cart, CartItem, ShippingAddress } from './types/Cart'
-import { UserInfo } from './types/UserInfo' // Importation: Utilisateur
+import { UserInfo } from './types/UserInfo' 
 
-// Définition du type pour l'état de l'application
+
 type AppState = {
   mode: string
   cart: Cart
   userInfo: UserInfo | null
-  existingAddresses: ShippingAddress[]; // Updated to match the structure from shippingAddress.ts
+  existingAddresses: ShippingAddress[]; 
 }
 
-// Initialisation de l'état de l'application
+
 const initialState: AppState = {
-  userInfo: localStorage.getItem('userInfo') // Utilisateur: Obtenir de la mémoire locale
-    ? JSON.parse(localStorage.getItem('userInfo')!) // Si existe: Obtenir de la mémoire locale
-    : null, // Sinon: Indéfini
+  userInfo: localStorage.getItem('userInfo') 
+    ? JSON.parse(localStorage.getItem('userInfo')!) 
+    : null, 
   mode: localStorage.getItem('mode') ?? 'light',
   cart: {
     cartItems: localStorage.getItem('cartItems')
@@ -22,7 +22,7 @@ const initialState: AppState = {
       : [],
     shippingAddress: localStorage.getItem('shippingAddress')
       ? JSON.parse(localStorage.getItem('shippingAddress')!)
-      : {} as ShippingAddress, // Updated to match the structure from shippingAddress.ts
+      : {} as ShippingAddress, 
     paymentMethod: localStorage.getItem('paymentMethod')
       ? localStorage.getItem('paymentMethod')!
       : 'Card',
@@ -31,12 +31,12 @@ const initialState: AppState = {
     taxPrice: 0,
     totalPrice: 0,
   },
-  existingAddresses: localStorage.getItem('existingAddresses') // Add this line
-    ? JSON.parse(localStorage.getItem('existingAddresses')!) // Ensure JSON structure matches ShippingAddress[]
-    : [], // Initialize as empty array if not found
+  existingAddresses: localStorage.getItem('existingAddresses') 
+    ? JSON.parse(localStorage.getItem('existingAddresses')!) 
+    : [], 
 }
 
-// Définition des actions possibles
+
 type Action =
   | { type: 'SWITCH_MODE' }
   | { type: 'CART_ADD_ITEM'; payload: CartItem }
@@ -44,10 +44,10 @@ type Action =
   | { type: 'CART_CLEAR' }
   | { type: 'USER_SIGNIN'; payload: UserInfo }
   | { type: 'USER_SIGNOUT' }
-  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress } // Updated payload to match the structure
+  | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress } 
   | { type: 'SAVE_PAYMENT_METHOD'; payload: string }
 
-// Fonction réducteur pour gérer les actions
+
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SWITCH_MODE': {
@@ -99,13 +99,13 @@ function reducer(state: AppState, action: Action): AppState {
           totalPrice: 0,
         },
         existingAddresses: [],
-        userInfo: null, // Set userInfo to null on sign out
+        userInfo: null, 
       }
     case 'SAVE_SHIPPING_ADDRESS': {
       const { payload } = action;
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: payload }, // Updated to directly use the payload
+        cart: { ...state.cart, shippingAddress: payload }, 
       };
     }
     case 'SAVE_PAYMENT_METHOD':
@@ -118,16 +118,16 @@ function reducer(state: AppState, action: Action): AppState {
   }
 }
 
-// Dispatch par défaut
+
 const defaultDispatch: React.Dispatch<Action> = () => initialState
 
-// Création du contexte de l'application
+
 const Store = React.createContext({
   state: initialState,
   dispatch: defaultDispatch,
 })
 
-// Fournisseur de contexte pour l'application
+
 function StoreProvider(props: React.PropsWithChildren<unknown>) {
   const [state, dispatch] = React.useReducer<React.Reducer<AppState, Action>>(
     reducer,
@@ -137,5 +137,5 @@ function StoreProvider(props: React.PropsWithChildren<unknown>) {
   return <Store.Provider value={{ state, dispatch }} {...props} />;
 }
 
-// Exportation du contexte et du fournisseur
+
 export { Store, StoreProvider }

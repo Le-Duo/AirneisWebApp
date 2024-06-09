@@ -15,15 +15,15 @@ import ProductItem from '../components/ProductItem';
 import { Product } from '../types/Product';
 import { Carousel } from 'react-bootstrap';
 
-// Page produit
+
 export default function ProductPage() {
   const { t } = useTranslation();
-  // Récupération du slug du produit depuis l'URL
+  
   const { slug } = useParams();
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
 
-  // Utilisation du hook pour obtenir les détails du produit
+  
   const { data: product, isLoading, error } = useGetProductDetailsBySlugQuery(slug!);
 
   const categoryId = product?.category?._id ?? '';
@@ -44,7 +44,7 @@ export default function ProductPage() {
     toast.success(t('Product added to cart'));
   };
 
-  // Gestion des différents états de la requête
+  
   return isLoading ? (
     <LoadingBox />
   ) : error ? (
@@ -52,7 +52,7 @@ export default function ProductPage() {
   ) : !product ? (
     <MessageBox variant="danger">{t('Product Not Found')}</MessageBox>
   ) : (
-    // Affichage du produit
+    
     <div>
       <Row>
         <Col md={4}>

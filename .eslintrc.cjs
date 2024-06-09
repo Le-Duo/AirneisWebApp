@@ -5,16 +5,16 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:@tanstack/query/recommended', // Updated TanStack Query ESLint plugin reference
+    'plugin:@tanstack/query/recommended', 
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', '@tanstack/query'], // Updated TanStack Query plugin reference
+  plugins: ['react-refresh', '@tanstack/query'], 
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
-    // Add any TanStack Query specific rules here if needed
+    
   },
 }

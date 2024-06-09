@@ -15,7 +15,7 @@ export default function OrderPage() {
 
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId!);
 
-  // Function to format date based on current language
+  
   const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
     return date.toLocaleString(i18n.language, { dateStyle: 'full', timeStyle: 'short' });

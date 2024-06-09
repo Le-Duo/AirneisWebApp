@@ -15,14 +15,14 @@ interface EditProductModalProps {
   onHide: () => void
   product: Product
   categories: Category[]
-  onProductUpdate: () => void // Add this prop to signal an update
+  onProductUpdate: () => void
 }
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
   show,
   onHide,
   product,
-  onProductUpdate, // Add this prop to signal an update
+  onProductUpdate,
 }) => {
   const [editedProduct, setEditedProduct] = useState<Product>({
     ...product,
@@ -89,7 +89,7 @@ const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategorie
       quantity: editedProduct.stock || 0,
     }
     try {
-      if (editedProduct._id) { // Ensure productId is not undefined
+      if (editedProduct._id) {
         if (stockData) {
           await updateStock.mutateAsync(stockUpdatePayload as { productId: string; quantity: number; })
         } else {

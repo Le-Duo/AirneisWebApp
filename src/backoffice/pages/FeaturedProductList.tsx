@@ -14,7 +14,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Product } from '../../types/Product';
 
 const FeaturedProductList = () => {
-  const { data: products, isLoading: isLoadingProducts } = useGetProductsQuery(null); // Fetch all products
+  const { data: products, isLoading: isLoadingProducts } = useGetProductsQuery(null); 
   const { data: featuredProducts, isLoading: isLoadingFeaturedProducts } = useGetFeaturedProductsQuery();
   const createMutation = useCreateFeaturedProductMutation();
   const updateMutation = useUpdateFeaturedProductMutation();

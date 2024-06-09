@@ -8,7 +8,7 @@ import apiClient from '../apiClient'
 import { UserAddress, UserInfo } from '../types/UserInfo'
 import { CreditCard } from '../types/CreditCard'
 
-// ici on utilise useMutation de react-query pour faire des requetes post signup et signin, mutation est un hook qui permet de faire des requetes post, put, delete (CRUD)
+
 export const useUserSigninMutation = () =>
   useMutation({
     mutationFn: async ({
@@ -80,7 +80,7 @@ export const useGetUsersQuery = (): UseQueryResult<UserInfo[], Error> => {
         const response = await apiClient.get('api/users')
         return response.data
       } catch (error) {
-        // Handle or throw the error appropriately
+        
         throw new Error('Failed to fetch users')
       }
     },
@@ -110,7 +110,7 @@ export const useGetUserByIdQuery = (userId: string): UseQueryResult<UserInfo, Er
   })
 }
 
-// update user
+
 export const useUpdateUserMutation = (userId: string) => 
 useMutation({
   mutationFn: async (user: {
@@ -126,7 +126,7 @@ useMutation({
   ).data,
 })
 
-// change default card for a user
+
 export const useUpdateDefaultCardMutation = (userId: string) => 
 useMutation({
   mutationFn: async (cardId: string) => {
@@ -135,7 +135,7 @@ useMutation({
   }
 })
 
-// add credit card
+
 export const useAddPaymentCardMutation = (userId: string) => 
 useMutation({
   mutationFn: async (card: {
@@ -153,7 +153,7 @@ useMutation({
 }
 })
 
-// add address to user
+
 export const useAddAddressMutation = (userId: string) => 
 useMutation({
   mutationFn: async (address: {
@@ -170,7 +170,7 @@ useMutation({
 }
 })
 
-// change default address for user
+
 export const useUpdateDefaultAddressMutation = (userId: string) => 
 useMutation({
   mutationFn: async (addressId: string) => {
@@ -179,7 +179,7 @@ useMutation({
   }
 })
 
-// update address
+
 export const useUpdateAddressMutation = (userId: string, addressId: string) => 
 useMutation({
   mutationFn: async (address: {

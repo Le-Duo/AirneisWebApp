@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
-import { FaPlus, FaPen, FaTrash } from 'react-icons/fa6' // Import the icons
+import { FaPlus, FaPen, FaTrash } from 'react-icons/fa6' 
 
 export interface Column<T> {
   _id: string
@@ -37,7 +37,6 @@ function CustomTable<T>({ data = [], columns, onAdd, onEdit, onDelete, children 
     <Container fluid>
       <Row className='mb-2'>
         <Col>
-          {/* Add Button with Icon */}
           {onAdd && (
             <Button variant="primary" onClick={onAdd} className="mb-3">
               <FaPlus />

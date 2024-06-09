@@ -18,21 +18,17 @@ body {
 }
 
 #root {
-  /* Assurez-vous que l'ID correspond à l'élément racine de votre application React */
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
 footer {
-  margin-top: auto; /* Pousse le pied de page vers le bas */
-  position: relative; /* au lieu de fixed ou absolute */
+  margin-top: auto;
+  position: relative;
 }
 
 :root {
-  /* font-family: Inter, Avenir, Helvetica, Arial, sans-serif; */
-  /* font-family: 'Noto Sans', sans-serif; */
-  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -86,22 +82,21 @@ img.thumbnail {
 }
 
 .carousel .d-block.w-100 {
-  height: 40dvh; /* Fixed height for the carousel */
-  object-fit: cover; /* Images cover the entire area of the carousel */
-  object-position: center; /* Images are centered in the carousel */
-  width: 100%; /* Carousel takes the full width of the page */
+  height: 40dvh;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
 }
 .carousel .carousel-caption.dark-mode {
-  color: white; /* ou une autre couleur appropriée pour le mode sombre */
+  color: white;
 }
 
 .category-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Cela répartira l'espace uniformément autour des éléments */
+  justify-content: space-between;
 }
 
-/* Styles pour les petits écrans (par défaut) */
 .category-item {
   display: flex;
   justify-content: center;
@@ -154,17 +149,17 @@ footer .desktop-footer .icon-links {
   max-width: 600px;
 }
 
-/* STYLE CREDIT CARDS */
-
-.credit-card, .address-card {
+.credit-card,
+.address-card {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: box-shadow 0.3s ease;
-  position: relative; /* Pour positionner le badge */
+  position: relative;
 }
 
-.credit-card:hover, .address-card:hover {
+.credit-card:hover,
+.address-card:hover {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -172,8 +167,8 @@ footer .desktop-footer .icon-links {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #28a745; /* Couleur de fond verte pour le badge */
-  color: #fff; /* Couleur du texte */
+  background-color: #28a745;
+  color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
   font-weight: bold;
@@ -209,8 +204,6 @@ footer .desktop-footer .icon-links {
   margin-top: 15px;
 }
 
-
-/* STYLE ADDRESS CARDS */
 @media (min-width: 992px) and (max-width: 1223px) {
   #filter-collapse {
     display: block !important;
@@ -325,11 +318,13 @@ footer .desktop-footer .icon-links {
   font-weight: bold;
 }
 
-html::-webkit-scrollbar, body::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
   display: none !important;
 }
 
-html, body {
-  -ms-overflow-style: none !important;  /* IE and Edge */
-  scrollbar-width: none !important;  /* Firefox */
+html,
+body {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }

@@ -56,20 +56,20 @@ const Dashboard = () => {
     isError: categoriesError,
   } = useGetCategoriesQuery();
 
-  // State to keep track of the selected range in the Brush component
+  
   const [selectedRange, setSelectedRange] = useState([0, salesData.length]);
 
   if (ordersLoading || categoriesLoading) return <div>Loading...</div>;
   if (ordersError || categoriesError) return <div>Error loading data</div>;
 
-  // Calculate average sales based on the selected range
+  
   const averageSales =
     salesData
-      .slice(selectedRange[0], selectedRange[1]) // Use the selected range for calculation
+      .slice(selectedRange[0], selectedRange[1]) 
       .reduce((acc: number, cur: SaleData) => acc + cur.sales, 0) /
     (selectedRange[1] - selectedRange[0]);
 
-  // Custom Tooltip component for more detailed information
+  
   const CustomTooltip: React.FC<{
     active?: boolean;
     payload?: Record<string, unknown>[];
@@ -94,12 +94,12 @@ const Dashboard = () => {
     return null;
   };
 
-  // Calculate Average Baskets by Category
+  
   const categoryAggregates: CategoryAggregate = salesData?.reduce(
     (acc: CategoryAggregate, order: Order) => { 
       (order.orderItems || []).forEach((item) => {
         if (!item.category) return;
-        // Assuming item.category.name is a string and can serve as a unique key
+        
         const categoryName = item.category.name;
         if (!acc[categoryName]) {
           acc[categoryName] = { total: 0, count: 0 };
@@ -120,7 +120,7 @@ const Dashboard = () => {
       categoryAggregates[category].total / categoryAggregates[category].count,
   }));
 
-  // Calculate total sales for each category
+  
   const calculateTotalSalesForCategories = (categories: Category[], salesData: SaleData[]) => {
     const salesByCategory = salesData.reduce((acc, sale) => {
       if (!sale.category) return acc;
@@ -128,7 +128,7 @@ const Dashboard = () => {
       if (!acc[categoryName]) {
         acc[categoryName] = 0;
       }
-      acc[categoryName] += sale.sales; // Assuming `sale.sales` holds the sale value
+      acc[categoryName] += sale.sales; 
       return acc;
     }, {} as SalesByCategory);
 

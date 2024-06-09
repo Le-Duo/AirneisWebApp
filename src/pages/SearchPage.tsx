@@ -65,7 +65,7 @@ const SearchPage = () => {
       ...(selectedCategories.length > 0 && { categories: selectedCategories.join(',') }),
       ...(selectedMaterials.length > 0 && { materials: selectedMaterials.join(',') }),
       ...(sortBy && { sortBy }),
-      ...(sortBy && { sortOrder }), // Include sortOrder only if sortBy has a value
+      ...(sortBy && { sortOrder }),
     }).toString();
     navigate(`/search?${params}`);
   };
@@ -82,7 +82,7 @@ const SearchPage = () => {
       ...(selectedCategories.length > 0 && { categories: selectedCategories.join(',') }),
       ...(selectedMaterials.length > 0 && { materials: selectedMaterials.join(',') }),
       ...(sortBy && { sortBy }),
-      ...(sortBy && { sortOrder }), // Include sortOrder only if sortBy has a value
+      ...(sortBy && { sortOrder }),
     }).toString();
     navigate(`/search?${params}`);
     setShowFilter(false);
@@ -115,7 +115,12 @@ const SearchPage = () => {
           </Button>
           <Form onSubmit={handleSearch} className="search-form">
             <InputGroup>
-              <FormControl placeholder={t('searchPlaceholder')} aria-label={t('search')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+              <FormControl
+                placeholder={t('searchPlaceholder')}
+                aria-label={t('search')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
               <Button variant="outline-primary" type="submit">
                 <FaMagnifyingGlass />
               </Button>
@@ -196,7 +201,7 @@ const SearchPage = () => {
                       key={material}
                       type="checkbox"
                       id={`material-${material}`}
-                      label={t(material.charAt(0).toUpperCase() + material.slice(1))} // Capitalize the first letter
+                      label={t(material.charAt(0).toUpperCase() + material.slice(1))}
                       value={material}
                       checked={selectedMaterials.includes(material)}
                       onChange={(e) => {

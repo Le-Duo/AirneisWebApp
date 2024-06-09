@@ -17,8 +17,8 @@ const EditCarouselModal: React.FC<EditCarouselModalProps> = ({
   onCarouselUpdate,
 }) => {
   const { mutate: updateCarouselItem, status } = useUpdateCarouselItemMutation()
-  const isLoading = status === 'pending' // Adjusted to use 'pending' instead of 'loading'
-  const [editedCarousel, setEditedCarousel] = useState<CarouselItem>(carousel) // Use full CarouselItem
+  const isLoading = status === 'pending'
+  const [editedCarousel, setEditedCarousel] = useState<CarouselItem>(carousel)
 
   const handleChange = (name: string, value: string) => {
     setEditedCarousel(prev => ({ ...prev, [name]: value }))
@@ -29,9 +29,9 @@ const EditCarouselModal: React.FC<EditCarouselModalProps> = ({
     try {
       await updateCarouselItem(editedCarousel, {
         onSuccess: () => {
-          onCarouselUpdate() // Invoke onCarouselUpdate on successful update
+          onCarouselUpdate()
         },
-      }) // Use the corrected function with onSuccess callback
+      })
     } catch (error) {
       console.error('Error updating carousel:', error)
     } finally {
@@ -40,7 +40,7 @@ const EditCarouselModal: React.FC<EditCarouselModalProps> = ({
   }
 
   useEffect(() => {
-    setEditedCarousel(carousel) // Update to use the full carousel item
+    setEditedCarousel(carousel)
   }, [carousel])
 
   return (

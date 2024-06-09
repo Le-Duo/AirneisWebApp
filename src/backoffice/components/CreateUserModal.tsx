@@ -84,7 +84,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
                 name="password"
                 value={newUser.password}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
-                className="me-2" // Add margin to separate the Form.Control and Button
+                className="me-2"
               />
               <Button variant="secondary" onClick={() => generatePassword()}>
                 Generate
