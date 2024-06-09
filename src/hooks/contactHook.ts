@@ -2,7 +2,6 @@ import apiClient from '../apiClient'
 import { Contact } from '../types/Contact'
 import { UseQueryResult, useMutation, useQuery } from '@tanstack/react-query'
 
-//Création d'un message par formulaire de contact
 export const useCreateContactMutation = () =>
   useMutation({
     mutationFn: async (contact: {

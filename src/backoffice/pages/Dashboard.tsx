@@ -18,21 +18,19 @@ const Dashboard = () => {
   const { salesData, orders, isLoading: ordersLoading, isError: ordersError } = useSalesDataByDay();
   const salesByCategories = useSalesByCategories(orders);
 
-  // State to keep track of the selected range in the Brush component
+  
   const [selectedRange, setSelectedRange] = useState([0, salesData.length]);
 
   if (ordersLoading) return <div>Loading...</div>;
   if (ordersError) return <div>Error loading data</div>;
 
-  // Calculate average sales based on the selected range
+  
   const averageSales =
     salesData
-      .slice(selectedRange[0], selectedRange[1]) // Use the selected range for calculation
+      .slice(selectedRange[0], selectedRange[1]) 
       .reduce((acc: number, cur: SaleData) => acc + cur.sales, 0) /
     (selectedRange[1] - selectedRange[0]);
 
-
-  // Custom Tooltip component for more detailed information
   const CustomTooltip: React.FC<{
     active?: boolean;
     payload?: Record<string, unknown>[];
@@ -56,6 +54,56 @@ const Dashboard = () => {
 
     return null;
   };
+
+  const categoryAggregates: CategoryAggregate = salesData?.reduce(
+    (acc: CategoryAggregate, order: Order) => { 
+      (order.orderItems || []).forEach((item) => {
+        if (!item.category) return;
+        
+        const categoryName = item.category.name;
+        if (!acc[categoryName]) {
+          acc[categoryName] = { total: 0, count: 0 };
+        }
+        acc[categoryName].total += item.price * item.quantity;
+        acc[categoryName].count += item.quantity;
+      });
+      return acc;
+    },
+    {}
+  );
+
+  const averageBasketsByCategory: AverageBasketByCategory[] = Object.keys(
+    categoryAggregates
+  ).map((category) => ({
+    name: category,
+    average:
+      categoryAggregates[category].total / categoryAggregates[category].count,
+  }));
+
+  
+  const calculateTotalSalesForCategories = (categories: Category[], salesData: SaleData[]) => {
+    const salesByCategory = salesData.reduce((acc, sale) => {
+      if (!sale.category) return acc;
+      const categoryName = sale.category.name;
+      if (!acc[categoryName]) {
+        acc[categoryName] = 0;
+      }
+      acc[categoryName] += sale.sales; 
+      return acc;
+    }, {} as SalesByCategory);
+
+    return categories.map(category => ({
+      ...category,
+      totalSales: salesByCategory[category.name] || 0,
+    }));
+  };
+
+  const enhancedCategories = calculateTotalSalesForCategories(categories!, salesData);
+
+  const categoryData = enhancedCategories?.map((category) => ({
+    name: category.name,
+    value: category.totalSales,
+  }));
 
   return (
     <>

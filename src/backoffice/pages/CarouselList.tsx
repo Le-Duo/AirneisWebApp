@@ -68,7 +68,7 @@ const CarouselList = () => {
   const columns = useMemo(
     () => [
       {
-        _id: "srcColumn", // Add an _id property
+        _id: "srcColumn", 
         key: "src" as const,
         label: "Image",
         renderer: (item: CarouselItem) => (
@@ -80,12 +80,12 @@ const CarouselList = () => {
         ),
       },
       {
-        _id: "altColumn", // Add an _id property
+        _id: "altColumn", 
         key: "alt" as const,
         label: "Alt Text",
       },
       {
-        _id: "captionColumn", // Add an _id property
+        _id: "captionColumn", 
         key: "caption" as const,
         label: "Caption",
       },

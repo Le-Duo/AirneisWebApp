@@ -73,7 +73,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ show, onHide, user, onUse
             <Form.Label>Admin</Form.Label>
             <Form.Select
               name='admin'
-              value={editedUser.isAdmin ? 'true' : 'false'} // Directly use boolean expression
+              value={editedUser.isAdmin ? 'true' : 'false'} 
               onChange={e => handleChange(e.target.name, e.target.value)}
             >
               <option value='true'>Yes</option>

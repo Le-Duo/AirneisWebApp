@@ -46,8 +46,6 @@ export default function ProfilePage() {
         } catch (err) {
             console.log(err);
             toast.error(getError(err as ApiError));
-        } finally {
-            //   setIsLoading(false)
         }
     };
 
@@ -92,7 +90,6 @@ export default function ProfilePage() {
                     <Button type="submit" style={{ borderRadius: '100px' }}>
                         {t('Update')}
                     </Button>
-                    {/* {isLoading && <LoadingBox />} */}
                 </div>
             </Form>
         </Container>
