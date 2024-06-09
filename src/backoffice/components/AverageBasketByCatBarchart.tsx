@@ -88,7 +88,6 @@ const AverageBasketByCatBarchart = () => {
       return acc;
     }, {});
 
-    // Flatten the groupedData to match the format required for charting
     return Object.values(groupedData).map(({ date, categories }) => ({
       date,
       ...categories,
@@ -97,10 +96,10 @@ const AverageBasketByCatBarchart = () => {
 
   const enrichedOrders = transformOrdersToIOrders(orders);
   const averageBasketByDate = calculateAverageBasketByDateAndCategory(enrichedOrders);
-  const transformedData = transformData(averageBasketByDate);
+  const barChartData = transformData(averageBasketByDate);
 
   const allCategories = new Set<string>();
-  transformedData.forEach((item) => {
+  barChartData.forEach((item) => {
     Object.keys(item).forEach((key) => {
       if (key !== 'date') allCategories.add(key);
     });
@@ -108,7 +107,7 @@ const AverageBasketByCatBarchart = () => {
 
   return (
     <ResponsiveContainer width="100%" height={500}>
-      <BarChart data={transformedData}>
+      <BarChart data={barChartData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
         <YAxis />
