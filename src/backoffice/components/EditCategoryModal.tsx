@@ -82,6 +82,14 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
               onChange={e => handleChange('urlImage', e.target.value)}
             />
           </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Label>Order</Form.Label>
+            <Form.Control
+              type='number'
+              value={editedCategory.order}
+              onChange={e => handleChange('order', e.target.value)}
+            />
+          </Form.Group>
 
           <Button type='submit' disabled={isLoading}>
             Save

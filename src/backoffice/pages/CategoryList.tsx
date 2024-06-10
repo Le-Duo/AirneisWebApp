@@ -86,6 +86,11 @@ const CategoryList = () => {
         key: "urlImage" as const,
         label: "Image",
       },
+      {
+        _id: "orderColumn",
+        key: "order" as const,
+        label: "Order",
+      },
     ],
     []
   );

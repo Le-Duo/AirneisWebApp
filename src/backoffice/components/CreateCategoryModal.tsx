@@ -17,6 +17,7 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
   const [newCategory, setNewCategory] = useState<Partial<Category>>({
     name: "",
     description: "",
+    order: 0,
   });
   const { mutateAsync: createCategory } = useCreateCategoryMutation();
 
@@ -76,6 +77,15 @@ const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({
               type="text"
               name="urlImage"
               value={newCategory.urlImage}
+              onChange={(e) => handleChange(e.target.name, e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Order</Form.Label>
+            <Form.Control
+              type="number"
+              name="order"
+              value={newCategory.order}
               onChange={(e) => handleChange(e.target.name, e.target.value)}
             />
           </Form.Group>

@@ -4,4 +4,5 @@ export type Category = {
   slug: string
   urlImage: string
   description: string
+  order: number
 }
