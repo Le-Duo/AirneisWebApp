@@ -66,7 +66,7 @@ export default function HomePage() {
         <div className="category-grid">
           <Container>
             <Row>
-              {categories.map((category) => (
+              {categories.sort((a, b) => a.order - b.order).map((category) => (
                 <Col
                   xs={12}
                   md={4}
