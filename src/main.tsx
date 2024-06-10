@@ -21,18 +21,10 @@ import SignupPage from './pages/SignupPage'
 import ShippingAddressPage from './pages/ShippingAddressPage.tsx'
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
-import AdminRoute from './components/AdminRoute.tsx'
 import PlaceOrderPage from './pages/PlaceOrderPage.tsx'
 import OrderPage from './pages/OrderPage.tsx'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import Index from './pages/index.tsx'
-import OrdersList from './backoffice/pages/OrdersList.tsx'
-import UsersList from './backoffice/pages/UsersList.tsx'
-import ProductsList from './backoffice/pages/ProductsList.tsx'
-import CarouselList from './backoffice/pages/CarouselList.tsx'
-import ContactList from './backoffice/pages/MessagesContactList.tsx'
-import FeaturedProductList from './backoffice/pages/FeaturedProductList.tsx'
-import CategoryList from './backoffice/pages/CategoryList.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
 import AboutPage from './pages/About.tsx'
 import PasswordResetRequest from './components/PasswordResetRequest'
@@ -41,8 +33,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StoreProvider } from './Store'
-import Dashboard from './backoffice/pages/Dashboard.tsx'
-import { NavigationSystem } from './backoffice/index.tsx'
 import MyWalletPage from './pages/MyWallet.tsx'
 import AddressesPage from './pages/AddressesPage.tsx'
 import i18n from './i18n.ts'
@@ -77,18 +67,6 @@ const router = createBrowserRouter(
         <Route path="placeorder" element={<PlaceOrderPage />} />
         <Route path="order/:id" element={<OrderPage />} />
         <Route path="/orderhistory" element={<OrderHistoryPage />} />
-      </Route>
-      <Route path="" element={<AdminRoute />}>
-        <Route element={<NavigationSystem />}>
-          <Route path="/backoffice" element={<Dashboard />} />
-          <Route path="/backoffice/orders" element={<OrdersList />} />
-          <Route path="/backoffice/users" element={<UsersList />} />
-          <Route path="/backoffice/categories" element={<CategoryList />} />
-          <Route path="/backoffice/products" element={<ProductsList />} />
-          <Route path="/backoffice/carousel" element={<CarouselList />} />
-          <Route path="/backoffice/contact" element={<ContactList />} />
-          <Route path="/backoffice/featured-products" element={<FeaturedProductList />} />
-        </Route>
       </Route>
     </Route>
   )
