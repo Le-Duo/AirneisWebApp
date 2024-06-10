@@ -11,6 +11,7 @@ import { useGetCategoriesQuery } from './hooks/categoryHook'
 import useScrollToTop from './hooks/useScrollToTop';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import PullToRefresh from 'react-pull-to-refresh';
 
 function App() {
   useScrollToTop(); 
@@ -53,9 +54,19 @@ function App() {
 
   const handleCloseOffcanvas = () => setShowOffcanvas(false);
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => {
+    return new Promise((resolve) => {
+      // Perform your refresh logic here
+      console.log('Refreshed!');
+      resolve();
+    });
+  };
+
   return (
     <>
-      <div className='d-flex flex-column vh-100'>
+      <div className='d-flex flex-column vh-100' key={refreshKey}>
         <ToastContainer position='bottom-center' limit={1} />
         <header>
           <Navbar expand={false} className='justify-content-between'>
@@ -171,7 +182,9 @@ function App() {
         </header>
         <main>
           <Container fluid className='mt-3'>
-            <Outlet />
+            <PullToRefresh onRefresh={handleRefresh}>
+              <Outlet key={refreshKey} />
+            </PullToRefresh>
           </Container>
         </main>
         <footer>

@@ -37,6 +37,7 @@ import MyWalletPage from './pages/MyWallet.tsx'
 import AddressesPage from './pages/AddressesPage.tsx'
 import i18n from './i18n.ts'
 import { I18nextProvider } from 'react-i18next'
+import '@ionic/react/css/core.css';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
